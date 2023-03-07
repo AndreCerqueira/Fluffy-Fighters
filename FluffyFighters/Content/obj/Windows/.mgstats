@@ -1,0 +1,5 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"C:/Users/User/Desktop/Fluffy-Fighters/FluffyFighters/Content/Character.png","C:/Users/User/Desktop/Fluffy-Fighters/FluffyFighters/Content/bin/Windows/Character.xnb","TextureProcessor","Texture2DContent",1543,65621,0,2144559
+"C:/Users/User/Desktop/Fluffy-Fighters/FluffyFighters/Content/File.spritefont","C:/Users/User/Desktop/Fluffy-Fighters/FluffyFighters/Content/bin/Windows/File.xnb","FontDescriptionProcessor","SpriteFontContent",2068,21535,0,1998365
+"C:/Users/User/Desktop/Fluffy-Fighters/FluffyFighters/Content/Grass.png","C:/Users/User/Desktop/Fluffy-Fighters/FluffyFighters/Content/bin/Windows/Grass.xnb","TextureProcessor","Texture2DContent",381,16469,0,0091049
+"C:/Users/User/Desktop/Fluffy-Fighters/FluffyFighters/Content/Rock.png","C:/Users/User/Desktop/Fluffy-Fighters/FluffyFighters/Content/bin/Windows/Rock.xnb","TextureProcessor","Texture2DContent",718,16469,0,0076102
