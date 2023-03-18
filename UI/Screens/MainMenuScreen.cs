@@ -13,16 +13,20 @@ namespace FluffyFighters.UI.Screens
 {
     public class MainMenuScreen : GameScreen
     {
-        // Properties
-        private Texture2D _playButtonTexture;
-        private Texture2D _settingsButtonTexture;
-        private Texture2D _exitButtonTexture;
-        private Button _playButton;
-        private Button _settingsButton;
-        private Button _exitButton;
+        // Constants
+        private const string BACKGROUND_ASSET_PATH = "sprites/ui/background";
+        private const string BUTTON_ASSET_PATH = "sprites/ui/button";
+        private const int BUTTON_PADDING = 20;
 
-        // background
-        private Texture2D _backgroundTexture;
+        // Properties
+        private SpriteBatch spriteBatch;
+        private Texture2D buttonTexture;
+        private Texture2D backgroundTexture;
+        private Button playButton;
+        private Button settingsButton;
+        private Button exitButton;
+
+        Point center => new(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
 
 
         public MainMenuScreen(Game game) : base(game)
@@ -32,28 +36,38 @@ namespace FluffyFighters.UI.Screens
 
         public override void Initialize()
         {
-            _playButton = new Button(Game, _playButtonTexture, new Rectangle(200, 200, 200, 50));
-            _playButton.Clicked += OnPlayButtonClicked;
+            // Get center coordinates of the screen
+            Point buttonSize = new Point(192, 64);
+            Point playButtonPosition = center - new Point(buttonSize.X / 2, (buttonSize.Y + BUTTON_PADDING) * 1);
+            Point settingsButtonPosition = center - new Point(buttonSize.X / 2, 0);
+            Point exitButtonPosition = center - new Point(buttonSize.X / 2, (buttonSize.Y + BUTTON_PADDING) * -1);
 
-            _settingsButton = new Button(Game, _settingsButtonTexture, new Rectangle(200, 300, 200, 50));
-            _settingsButton.Clicked += OnSettingsButtonClicked;
+            Label playLabel = new(Game, Content.Load<SpriteFont>("File"), "Play", playButtonPosition + new Point(0, 10));
 
-            _exitButton = new Button(Game, _exitButtonTexture, new Rectangle(200, 400, 200, 50));
-            _exitButton.Clicked += OnExitButtonClicked;
+            // Create buttons
+            playButton = new Button(Game, buttonTexture, playButtonPosition, playLabel);
+            playButton.Clicked += OnPlayButtonClicked;
+
+            settingsButton = new Button(Game, buttonTexture, settingsButtonPosition);
+            settingsButton.Clicked += OnSettingsButtonClicked;
+
+            exitButton = new Button(Game, buttonTexture, exitButtonPosition);
+            exitButton.Clicked += OnExitButtonClicked;
 
             base.Initialize();
         }
 
-        //protected override void LoadContent()
-        //{
-        //    _playButtonTexture = Game.Content.Load<Texture2D>("UI/Buttons/playButton");
-        //    _settingsButtonTexture = Game.Content.Load<Texture2D>("UI/Buttons/settingsButton");
-        //    _exitButtonTexture = Game.Content.Load<Texture2D>("UI/Buttons/exitButton");
 
-        //    _backgroundTexture = Game.Content.Load<Texture2D>("UI/Backgrounds/mainMenuBackground");
+        public override void LoadContent()
+        {
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        //    base.LoadContent();
-        //}
+            // Load textures
+            buttonTexture = Content.Load<Texture2D>(BUTTON_ASSET_PATH);
+            backgroundTexture = Content.Load<Texture2D>(BACKGROUND_ASSET_PATH);
+
+            base.LoadContent();
+        }
 
 
         private void OnPlayButtonClicked(object sender, EventArgs e)
@@ -78,24 +92,21 @@ namespace FluffyFighters.UI.Screens
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _playButton.Draw(gameTime);
-            _settingsButton.Draw(gameTime);
-            _exitButton.Draw(gameTime);
-
-            // Draw background
-
-            var spriteBatch = new SpriteBatch(GraphicsDevice);
             spriteBatch.Begin();
-            // spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, 800, 600), Color.White);
+            // spriteBatch.Draw(backgroundTexture, new Rectangle(0, 0, 800, 600), Color.White);
             spriteBatch.End();
+
+            playButton.Draw(gameTime);
+            settingsButton.Draw(gameTime);
+            exitButton.Draw(gameTime);
         }
 
 
         public override void Update(GameTime gameTime)
         {
-            _playButton.Update(gameTime);
-            _settingsButton.Update(gameTime);
-            _exitButton.Update(gameTime);
+            playButton.Update(gameTime);
+            settingsButton.Update(gameTime);
+            exitButton.Update(gameTime);
         }
     }
 }

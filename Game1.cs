@@ -8,39 +8,48 @@ namespace MonoGameMenu
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private ScreenManager _screenManager;
+        // Properties
+        private GraphicsDeviceManager graphics;
+        private ScreenManager screenManager;
 
+        
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            _screenManager = new ScreenManager();
-            Components.Add(_screenManager);
+
+            graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
+
+            screenManager = new ScreenManager();
+            Components.Add(screenManager);
         }
 
+        
         protected override void Initialize()
         {
             // Create a new instance of the MainMenuScreen and add it to the ScreenManager
             var mainMenuScreen = new MainMenuScreen(this);
-            _screenManager.LoadScreen(mainMenuScreen);
+            screenManager.LoadScreen(mainMenuScreen);
 
             base.Initialize();
         }
-
+        
+        
         protected override void Update(GameTime gameTime)
         {
             // Update the ScreenManager
-            _screenManager.Update(gameTime);
+            screenManager.Update(gameTime);
 
             base.Update(gameTime);
         }
 
+
         protected override void Draw(GameTime gameTime)
         {
             // Draw the ScreenManager
-            _screenManager.Draw(gameTime);
+            screenManager.Draw(gameTime);
 
             base.Draw(gameTime);
         }

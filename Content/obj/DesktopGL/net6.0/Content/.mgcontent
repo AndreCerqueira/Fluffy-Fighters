@@ -4,10 +4,10 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/IPCA/Fluffy-Fighters/Content/File.spritefont</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/background.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/button.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/title.png</File>
+    <File>D:/IPCA/Fluffy-Fighters/Content/File.spritefont</File>
+    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/background.png</File>
+    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/button.png</File>
+    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/title.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />
