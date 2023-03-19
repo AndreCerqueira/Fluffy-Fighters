@@ -30,7 +30,7 @@ namespace MonoGameMenu
         protected override void Initialize()
         {
             // Create a new instance of the MainMenuScreen and add it to the ScreenManager
-            var mainMenuScreen = new MainMenuScreen(this);
+            var mainMenuScreen = new MainMenuScreen(this, screenManager);
             screenManager.LoadScreen(mainMenuScreen);
 
             base.Initialize();

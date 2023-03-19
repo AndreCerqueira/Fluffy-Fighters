@@ -2,29 +2,27 @@
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace FluffyFighters.UI.Components
 {
     public class Button : DrawableGameComponent
     {
+        static public readonly MouseCursor defaultCursor = MouseCursor.Arrow;
+        static public readonly MouseCursor hoverCursor = MouseCursor.Hand;
+        
         // Properties
-        private Rectangle rectangle => new(position.X, position.Y, texture.Width, texture.Height);
+        private Rectangle rectangle;
         private Texture2D texture;
-        private Point position;
         private Color defaultColor = Color.White;
         private Color hoverColor = Color.LightGray;
         private Label label;
+        private Vector2 labelPosition => new Vector2(rectangle.X + rectangle.Width / 2f, rectangle.Y + rectangle.Height / 2f) - label.font.MeasureString(label.text) / 2f;
 
         // Clicked event
         public event EventHandler Clicked;
 
         
-        private bool isHovering
+        public bool isHovering
         {
             get
             {
@@ -36,17 +34,18 @@ namespace FluffyFighters.UI.Components
         }
 
 
-        private bool isClicked => Mouse.GetState().LeftButton == ButtonState.Pressed;
+        public bool isClicked => Mouse.GetState().LeftButton == ButtonState.Pressed;
 
 
         // Constructors
         public Button(Game game, Texture2D texture, Point position, Label label = null) : base(game)
         {
             this.texture = texture;
-            this.position = position;
             this.label = label;
+
+            rectangle = new(position.X, position.Y, texture.Width, texture.Height);
+            label?.SetPosition(labelPosition);
         }
-        
 
         // Methods
         public override void Update(GameTime gameTime)
@@ -65,18 +64,15 @@ namespace FluffyFighters.UI.Components
             
             spriteBatch.Begin();
             spriteBatch.Draw(texture, rectangle, color);
-
-            if (label != null) { 
-            label.position = new Vector2(rectangle.X + rectangle.Width / 2f, rectangle.Y + rectangle.Height / 2f) - label.font.MeasureString(label.text) / 2f;
-            label.Draw(gameTime);
-            }
-
             spriteBatch.End();
+            
+            label?.Draw(gameTime);
 
             base.Draw(gameTime);
         }
 
 
         public void OnClicked() => Clicked?.Invoke(this, new EventArgs());
+        
     }
 }
