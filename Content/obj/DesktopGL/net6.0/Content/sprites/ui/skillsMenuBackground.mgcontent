@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/skillsMenuBackground.png</SourceFile>
-  <SourceTime>2023-03-18T23:06:04.2630196+00:00</SourceTime>
+  <SourceTime>2023-03-19T22:56:05.2878814+00:00</SourceTime>
   <DestFile>D:/IPCA/Fluffy-Fighters/Content/bin/DesktopGL/Content/sprites/ui/skillsMenuBackground.xnb</DestFile>
-  <DestTime>2023-03-19T17:09:19.041289+00:00</DestTime>
+  <DestTime>2023-03-19T22:56:09.7313226+00:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T12:44:56+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

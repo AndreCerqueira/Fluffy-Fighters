@@ -2,20 +2,26 @@
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using System;
+using System.Reflection.Metadata;
 
 namespace FluffyFighters.UI.Components
 {
     public class Button : DrawableGameComponent
     {
+        // Cursors
         static public readonly MouseCursor defaultCursor = MouseCursor.Arrow;
         static public readonly MouseCursor hoverCursor = MouseCursor.Hand;
-        
+
+        // Constants
+        private const string ASSET_PATH = "sprites/ui/button";
+        public const int PADDING = 20;
+
         // Properties
         private Rectangle rectangle;
-        private Texture2D texture;
+        public Texture2D texture;
         private Color defaultColor = Color.White;
         private Color hoverColor = Color.LightGray;
-        private Label label;
+        public Label label;
         private Vector2 labelPosition => new Vector2(rectangle.X + rectangle.Width / 2f, rectangle.Y + rectangle.Height / 2f) - label.font.MeasureString(label.text) / 2f;
 
         // Clicked event
@@ -38,15 +44,17 @@ namespace FluffyFighters.UI.Components
 
 
         // Constructors
-        public Button(Game game, Texture2D texture, Point position, Label label = null) : base(game)
+        public Button(Game game, string text = null) : base(game)
         {
-            this.texture = texture;
-            this.label = label;
+            this.texture = game.Content.Load<Texture2D>(ASSET_PATH);
+            
+            rectangle = new(0, 0, texture.Width, texture.Height);
 
-            rectangle = new(position.X, position.Y, texture.Width, texture.Height);
-            label?.SetPosition(labelPosition);
+            if (text != null)
+                label = new Label(game, text);
         }
 
+        
         // Methods
         public override void Update(GameTime gameTime)
         {
@@ -73,6 +81,14 @@ namespace FluffyFighters.UI.Components
 
 
         public void OnClicked() => Clicked?.Invoke(this, new EventArgs());
-        
+
+
+        public void SetPosition(Point position)
+        {
+            rectangle.X = position.X;
+            rectangle.Y = position.Y;
+            
+            label?.SetPosition(labelPosition);
+        }
     }
 }

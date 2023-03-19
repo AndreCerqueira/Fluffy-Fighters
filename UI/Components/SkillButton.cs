@@ -2,21 +2,25 @@
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using System;
+using FluffyFighters.Enums;
 
 namespace FluffyFighters.UI.Components
 {
     public class SkillButton : DrawableGameComponent
     {
-        static public readonly MouseCursor defaultCursor = MouseCursor.Arrow;
-        static public readonly MouseCursor hoverCursor = MouseCursor.Hand;
+        // Constants
+        private const string ASSET_PATH = "sprites/ui/skillButton1";
 
         // Properties
         private Rectangle rectangle;
-        private Texture2D texture;
+        public Texture2D texture;
         private Color defaultColor = Color.White;
         private Color hoverColor = Color.LightGray;
-        private Label label;
         private Vector2 labelPosition => new Vector2(rectangle.X + rectangle.Width / 2f, rectangle.Y + rectangle.Height / 2f) - label.font.MeasureString(label.text) / 2f;
+
+        // Components
+        private Label label;
+        private ElementIcon elementIcon;
 
         // Clicked event
         public event EventHandler Clicked;
@@ -38,14 +42,12 @@ namespace FluffyFighters.UI.Components
 
 
         // Constructors
-        public SkillButton(Game game, Texture2D texture, Point position, Label label = null) : base(game)
+        public SkillButton(Game game) : base(game)
         {
-            this.texture = texture;
-            this.label = label;
-
-            rectangle = new(position.X, position.Y, texture.Width, texture.Height);
-            label?.SetPosition(labelPosition);
+            texture = game.Content.Load<Texture2D>(ASSET_PATH);
+            rectangle = new(0, 0, texture.Width, texture.Height);
         }
+        
 
         // Methods
         public override void Update(GameTime gameTime)
@@ -67,11 +69,30 @@ namespace FluffyFighters.UI.Components
             spriteBatch.End();
 
             label?.Draw(gameTime);
+            elementIcon?.Draw(gameTime);
 
             base.Draw(gameTime);
         }
 
 
         public void OnClicked() => Clicked?.Invoke(this, new EventArgs());
+
+
+        public void SetAttack(Element element, string text)
+        {
+            label = new Label(Game, text);
+            elementIcon = new ElementIcon(Game, element);
+            label?.SetPosition(labelPosition);
+            elementIcon?.SetPosition(new Point(rectangle.X + 12, rectangle.Y + 16));
+        }
+
+
+        public void SetPosition(int x, int y)
+        {
+            rectangle.X = x;
+            rectangle.Y = y;
+            label?.SetPosition(labelPosition);
+            elementIcon?.SetPosition(new Point(x + 12, y + 16));
+        }
     }
 }

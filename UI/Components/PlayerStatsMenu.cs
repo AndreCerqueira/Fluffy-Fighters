@@ -1,30 +1,26 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluffyFighters.UI.Components
 {
     public class PlayerStatsMenu : DrawableGameComponent
     {
+        // Constants
+        private const string BACKGROUND_ASSET_PATH = "sprites/ui/playerStatsBackground";
+        private const int PADDING = 10;
+
         // Properties
         private Rectangle rectangle;
-        private Texture2D texture;
+        private Texture2D backgroundTexture;
+
+        private Point topCenterPosition => new(PADDING, PADDING);
 
 
         // Constructors
-        public PlayerStatsMenu(Game game, Texture2D texture) : base(game)
+        public PlayerStatsMenu(Game game) : base(game)
         {
-            this.texture = texture;
-
-            // Get position at left top of screen
-            int padding = 10;
-            Point position = new(padding, padding);
-
-            rectangle = new(position.X, position.Y, texture.Width, texture.Height);
+            backgroundTexture = game.Content.Load<Texture2D>(BACKGROUND_ASSET_PATH);
+            rectangle = new(topCenterPosition.X, topCenterPosition.Y, backgroundTexture.Width, backgroundTexture.Height);
         }
 
 
@@ -40,7 +36,7 @@ namespace FluffyFighters.UI.Components
             var spriteBatch = new SpriteBatch(GraphicsDevice);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(texture, rectangle, Color.White);
+            spriteBatch.Draw(backgroundTexture, rectangle, Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);

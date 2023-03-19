@@ -11,26 +11,19 @@ namespace FluffyFighters.UI.Screens
     {
         // Constants
         private const string BACKGROUND_ASSET_PATH = "sprites/ui/background";
-        private const string BUTTON_ASSET_PATH = "sprites/ui/button";
         private const string LOGO_ASSET_PATH = "sprites/ui/title";
-        private const int BUTTON_PADDING = 20;
 
         // Properties
         private ScreenManager screenManager;
         private SpriteBatch spriteBatch;
-        private Texture2D buttonTexture;
         private Texture2D backgroundTexture;
         private Texture2D logoTexture;
         private Button playButton;
         private Button settingsButton;
         private Button exitButton;
-        private SpriteFont font;
 
         // Positioning
         Point center => new(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-        Point playButtonPosition => new(center.X - (buttonTexture.Width / 2), center.Y + (buttonTexture.Height + BUTTON_PADDING) * -1);
-        Point exitButtonPosition => new(center.X - (buttonTexture.Width / 2), center.Y + (buttonTexture.Height + BUTTON_PADDING) * 1);
-        Point settingsButtonPosition => new(center.X - (buttonTexture.Width / 2), center.Y + 0);
         Vector2 logoPosition => new(center.X - (logoTexture.Width / 2), center.Y - (logoTexture.Height / 2) - 240);
 
 
@@ -51,43 +44,31 @@ namespace FluffyFighters.UI.Screens
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Load textures
-            buttonTexture = Content.Load<Texture2D>(BUTTON_ASSET_PATH);
             backgroundTexture = Content.Load<Texture2D>(BACKGROUND_ASSET_PATH);
             logoTexture = Content.Load<Texture2D>(LOGO_ASSET_PATH);
-            font = Content.Load<SpriteFont>("File");
 
             // Create buttons
-            CreatePlayButton();
-            CreateSettingsButton();
-            CreateExitButton();
+            CreateButtons();
 
             base.LoadContent();
         }
         
 
-        private void CreatePlayButton()
+        private void CreateButtons()
         {
-            Label label = new(Game, font, "Play", playButtonPosition);
-
-            playButton = new Button(Game, buttonTexture, playButtonPosition, label);
+            playButton = new Button(Game, "Play");
+            Point position = new(center.X - (playButton.texture.Width / 2), center.Y + (playButton.texture.Height + Button.PADDING) * -1);
+            playButton.SetPosition(position);
             playButton.Clicked += OnPlayButtonClicked;
-        }
 
-
-        private void CreateSettingsButton()
-        {
-            Label label = new(Game, font, "Settings", settingsButtonPosition);
-
-            settingsButton = new Button(Game, buttonTexture, settingsButtonPosition, label);
+            settingsButton = new Button(Game, "Settings");
+            position = new(center.X - (settingsButton.texture.Width / 2), center.Y + 0);
+            settingsButton.SetPosition(position);
             settingsButton.Clicked += OnSettingsButtonClicked;
-        }
 
-        
-        private void CreateExitButton()
-        {
-            Label label = new(Game, font, "Exit", exitButtonPosition);
-
-            exitButton = new Button(Game, buttonTexture, exitButtonPosition, label);
+            exitButton = new Button(Game, "Exit");
+            position = new(center.X - (exitButton.texture.Width / 2), center.Y + (exitButton.texture.Height + Button.PADDING) * 1);
+            exitButton.SetPosition(position);
             exitButton.Clicked += OnExitButtonClicked;
         }
 
@@ -115,7 +96,7 @@ namespace FluffyFighters.UI.Screens
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(backgroundTexture, new Rectangle(Point.Zero, new Point(1280, 720)), Color.White);
+            spriteBatch.Draw(backgroundTexture, new Rectangle(Point.Zero, new Point(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height)), Color.White);
             spriteBatch.Draw(logoTexture, logoPosition, Color.White);
             spriteBatch.End();
 

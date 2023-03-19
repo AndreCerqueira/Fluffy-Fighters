@@ -1,43 +1,29 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluffyFighters.UI.Components
 {
     public class Label : DrawableGameComponent
     {
+        // Constants
+        private const string FONT_ASSET_PATH = "File";
+        
         // Properties
         private SpriteBatch spriteBatch;
         public SpriteFont font;
         public string text;
-        private Vector2 position;
+        public Vector2 position;
         private Vector2 offset;
         private Color color;
         private float scale;
 
 
         // Constructors
-        public Label(Game game, SpriteFont font, string text, Point position, Color color) : base(game)
+        public Label(Game game, string text, SpriteFont font = null) : base(game)
         {
-            this.font = font;
-            this.text = text;
-            this.color = color;
-            this.position = new Vector2(position.X, position.Y);
-            this.offset = Vector2.Zero;
-        }
-
-
-        public Label(Game game, SpriteFont font, string text, Point position) : base(game)
-        {
-            this.font = font;
+            this.font = font ?? game.Content.Load<SpriteFont>(FONT_ASSET_PATH);
             this.text = text;
             this.color = Color.Black;
-            this.position = new Vector2(position.X, position.Y);
             this.offset = Vector2.Zero;
         }
 
