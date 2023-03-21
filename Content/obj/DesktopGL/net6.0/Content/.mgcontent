@@ -9,18 +9,24 @@
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/grass.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/neutral.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/water.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/Bolhinha.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/background.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/button.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/hearth.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/playerStatsBackground.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/progressBar.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/progressBarContent.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/Round-Broadcast.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/Skill-Description.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/skillButton1.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/skillButton2.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/skillsMenuBackground.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/title.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

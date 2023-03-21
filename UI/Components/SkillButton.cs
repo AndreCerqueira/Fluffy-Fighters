@@ -12,7 +12,7 @@ namespace FluffyFighters.UI.Components
         private const string ASSET_PATH = "sprites/ui/skillButton1";
 
         // Properties
-        private Rectangle rectangle;
+        public Rectangle rectangle;
         public Texture2D texture;
         private Color defaultColor = Color.White;
         private Color hoverColor = Color.LightGray;
@@ -94,5 +94,7 @@ namespace FluffyFighters.UI.Components
             label?.SetPosition(labelPosition);
             elementIcon?.SetPosition(new Point(x + 12, y + 16));
         }
+
+        public Point GetPosition() => new Point(rectangle.X, rectangle.Y);
     }
 }

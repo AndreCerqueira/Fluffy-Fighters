@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Xml;
+using FluffyFighters.Enums;
 
 namespace FluffyFighters.UI.Components
 {
@@ -12,13 +13,19 @@ namespace FluffyFighters.UI.Components
         private const int LABEL_PADDING = 15;
 
         // Properties
+        private CombatPosition combatPosition;
         private Rectangle rectangle;
         private Texture2D backgroundTexture;
-        private Point topCenterPosition => new(PADDING, PADDING);
-        private Point sliderPosition => new(topCenterPosition.X + PADDING * 2, topCenterPosition.Y + (backgroundTexture.Height/2));
-        private Point sliderPositionInStatsMenu => topCenterPosition + sliderPosition;
-        private Point nameLabelPosition => new(topCenterPosition.X + LABEL_PADDING, topCenterPosition.Y + LABEL_PADDING);
-        private Point levelLabelPosition => new(topCenterPosition.X + backgroundTexture.Width - LABEL_PADDING * 4, topCenterPosition.Y + LABEL_PADDING);
+        private SpriteEffects spriteEffect;
+
+        // Positions
+        private Point topLeftCenterPosition => new(PADDING, PADDING);
+        private Point topRightCenterPosition => new(Game.Window.ClientBounds.Width - backgroundTexture.Width - PADDING, PADDING);
+        private Point selectedPosition => (combatPosition == CombatPosition.Left) ? topLeftCenterPosition : topRightCenterPosition;
+        private Point sliderPosition => new(selectedPosition.X + PADDING * 2, selectedPosition.Y + (backgroundTexture.Height/2));
+        private Point sliderPositionInStatsMenu => (combatPosition == CombatPosition.Left) ? selectedPosition + sliderPosition : topLeftCenterPosition + sliderPosition;
+        private Point nameLabelPosition => new(selectedPosition.X + LABEL_PADDING, selectedPosition.Y + LABEL_PADDING);
+        private Point levelLabelPosition => new(selectedPosition.X + backgroundTexture.Width - LABEL_PADDING * 4, selectedPosition.Y + LABEL_PADDING);
 
         // Components
         private Label nameLabel;
@@ -27,10 +34,13 @@ namespace FluffyFighters.UI.Components
 
 
         // Constructors
-        public StatsMenu(Game game) : base(game)
+        public StatsMenu(Game game, CombatPosition combatPosition) : base(game)
         {
+            this.combatPosition = combatPosition;
             backgroundTexture = game.Content.Load<Texture2D>(BACKGROUND_ASSET_PATH);
-            rectangle = new(topCenterPosition.X, topCenterPosition.Y, backgroundTexture.Width, backgroundTexture.Height);
+            rectangle = new(selectedPosition.X, selectedPosition.Y, backgroundTexture.Width, backgroundTexture.Height);
+
+            spriteEffect = combatPosition == CombatPosition.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             nameLabel = new(game, "Fighter");
             nameLabel.SetPosition(nameLabelPosition);
@@ -56,7 +66,7 @@ namespace FluffyFighters.UI.Components
             var spriteBatch = new SpriteBatch(GraphicsDevice);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(backgroundTexture, rectangle, Color.White);
+            spriteBatch.Draw(backgroundTexture, rectangle, null, Color.White, 0f, Vector2.Zero, spriteEffect, 0f);
             spriteBatch.End();
 
             nameLabel.Draw(gameTime);
@@ -65,5 +75,8 @@ namespace FluffyFighters.UI.Components
 
             base.Draw(gameTime);
         }
+
+
+        public void SetHealth(int value) => healthSlider.SetValue(value);
     }
 }
