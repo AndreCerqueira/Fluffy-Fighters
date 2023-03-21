@@ -4,21 +4,21 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>D:/IPCA/Fluffy-Fighters/Content/File.spritefont</File>
-    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/elements/fire.png</File>
-    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/elements/grass.png</File>
-    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/elements/neutral.png</File>
-    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/elements/water.png</File>
-    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/background.png</File>
-    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/button.png</File>
-    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/hearth.png</File>
-    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/playerStatsBackground.png</File>
-    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/progressBar.png</File>
-    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/progressBarContent.png</File>
-    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/skillButton1.png</File>
-    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/skillButton2.png</File>
-    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/skillsMenuBackground.png</File>
-    <File>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/title.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/File.spritefont</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/fire.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/grass.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/neutral.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/water.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/background.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/button.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/hearth.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/playerStatsBackground.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/progressBar.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/progressBarContent.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/skillButton1.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/skillButton2.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/skillsMenuBackground.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/title.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />

@@ -31,6 +31,7 @@ namespace FluffyFighters.UI.Components
         // Methods
         public Vector2 GetPosition() => position + offset;
         public Vector2 SetPosition(Vector2 position) => this.position = position;
+        public Vector2 SetPosition(Point position) => this.position = new Vector2(position.X, position.Y);
         public void SetOffset(Vector2 offset) => this.offset = offset;
         public void SetScale(float scale) => this.scale = scale;
 

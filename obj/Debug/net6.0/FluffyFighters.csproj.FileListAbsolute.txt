@@ -96,3 +96,14 @@ D:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\progressBarContent.x
 D:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\skillButton1.xnb
 D:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\skillButton2.xnb
 D:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\skillsMenuBackground.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\elements\fire.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\elements\grass.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\elements\neutral.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\elements\water.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\hearth.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\playerStatsBackground.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\progressBar.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\progressBarContent.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\skillButton1.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\skillButton2.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\skillsMenuBackground.xnb

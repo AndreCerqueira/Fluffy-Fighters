@@ -11,7 +11,7 @@ namespace FluffyFighters.UI.Screens
         // Properties
         private ScreenManager screenManager;
         private SkillsMenu skillsMenu;
-        private PlayerStatsMenu playerStatsMenu;
+        private StatsMenu playerStatsMenu;
         
 
         // Constructors
@@ -27,7 +27,7 @@ namespace FluffyFighters.UI.Screens
 
             // Create components
             skillsMenu = new SkillsMenu(Game);
-            playerStatsMenu = new PlayerStatsMenu(Game);
+            playerStatsMenu = new StatsMenu(Game);
 
             base.LoadContent();
         }
