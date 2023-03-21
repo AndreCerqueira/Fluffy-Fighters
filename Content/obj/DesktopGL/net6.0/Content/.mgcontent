@@ -9,7 +9,8 @@
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/grass.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/neutral.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/water.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/Bolhinha.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/Bolhas.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/Fofi.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/background.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/button.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/hearth.png</File>
@@ -24,6 +25,7 @@
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/title.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

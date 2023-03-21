@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System.Xml;
 using FluffyFighters.Enums;
+using FluffyFighters.Others;
 
 namespace FluffyFighters.UI.Components
 {
@@ -34,7 +35,7 @@ namespace FluffyFighters.UI.Components
 
 
         // Constructors
-        public StatsMenu(Game game, CombatPosition combatPosition) : base(game)
+        public StatsMenu(Game game, CombatPosition combatPosition, Monster monster) : base(game)
         {
             this.combatPosition = combatPosition;
             backgroundTexture = game.Content.Load<Texture2D>(BACKGROUND_ASSET_PATH);
@@ -42,15 +43,15 @@ namespace FluffyFighters.UI.Components
 
             spriteEffect = combatPosition == CombatPosition.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
-            nameLabel = new(game, "Fighter");
+            nameLabel = new(game, monster.name);
             nameLabel.SetPosition(nameLabelPosition);
 
-            levelLabel = new(game, "Lv. 1");
+            levelLabel = new(game, $"Lv. {monster.level}");
             levelLabel.SetPosition(levelLabelPosition);
 
-            healthSlider = new(game, 100);
+            healthSlider = new(game, monster.maxHealth);
             healthSlider.SetPosition(sliderPositionInStatsMenu);
-            healthSlider.SetValue(70);
+            healthSlider.SetValue(monster.currentHealth);
         }
 
 

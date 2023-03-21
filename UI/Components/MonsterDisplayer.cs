@@ -1,14 +1,13 @@
 ﻿using FluffyFighters.Enums;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using FluffyFighters.Others;
+using MonoGame.Extended.Content;
 
 namespace FluffyFighters.UI.Components
 {
-    public class CombatMonster : DrawableGameComponent
+    public class MonsterDisplayer : DrawableGameComponent
     {
-        // Constants
-        private const string ASSET_PATH = "sprites/monsters/Bolhinha";
-
         // Properties
         private SpriteBatch spriteBatch;
         public Texture2D texture;
@@ -17,9 +16,9 @@ namespace FluffyFighters.UI.Components
 
 
         // Constructors
-        public CombatMonster(Game game, CombatPosition combatPosition) : base(game)
+        public MonsterDisplayer(Game game, CombatPosition combatPosition, Monster monster) : base(game)
         {
-            texture = game.Content.Load<Texture2D>(ASSET_PATH);
+            texture = game.Content.Load<Texture2D>(monster.assetPath);
             rectangle = new(0, 0, texture.Width, texture.Height);
             spriteEffect = combatPosition == CombatPosition.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 

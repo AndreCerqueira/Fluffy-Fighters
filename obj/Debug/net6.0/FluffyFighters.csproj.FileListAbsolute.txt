@@ -107,6 +107,7 @@ C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\progressBarContent.x
 C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\skillButton1.xnb
 C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\skillButton2.xnb
 C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\skillsMenuBackground.xnb
-C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\monsters\Bolhinha.xnb
 C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\Round-Broadcast.xnb
 C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\Skill-Description.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\monsters\Bolhas.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\monsters\Fofi.xnb

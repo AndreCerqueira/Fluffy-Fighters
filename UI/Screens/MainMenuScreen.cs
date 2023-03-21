@@ -1,4 +1,6 @@
-﻿using FluffyFighters.UI.Components;
+﻿using FluffyFighters.Enums;
+using FluffyFighters.Others;
+using FluffyFighters.UI.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -75,7 +77,14 @@ namespace FluffyFighters.UI.Screens
         
         private void OnPlayButtonClicked(object sender, EventArgs e)
         {
-            screenManager.LoadScreen(new CombatScreen(Game, screenManager));
+            Attack tacle = new Attack("Tacle", Element.Neutral, 10, 80, 100);
+            Attack waterPulse = new Attack("Water Pulse", Element.Water, 20, 80, 100);
+            Attack ember = new Attack("Ember", Element.Fire, 30, 40, 100);
+            Attack magicalLeaf = new Attack("Magical Leaf", Element.Grass, 40, 90, 100);
+            Monster monster1 = new Monster("Bolhas", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas");
+            Monster monster2 = new Monster("Fofi", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", 2);
+
+            screenManager.LoadScreen(new CombatScreen(Game, screenManager, monster1, monster2));
         }
 
         

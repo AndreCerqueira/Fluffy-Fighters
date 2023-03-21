@@ -1,4 +1,5 @@
 ﻿using FluffyFighters.Enums;
+using FluffyFighters.Others;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Linq;
@@ -10,7 +11,6 @@ namespace FluffyFighters.UI.Components
         // Constants 
         private const string BACKGROUND_ASSET_PATH = "sprites/ui/skillsMenuBackground";
         private const int PADDING = 10;
-        private const int DESCRIPTOR_OFFSET_Y = -10;
         private const int OFFSET_X = 45;
         private const int OFFSET_Y = 20;
 
@@ -24,7 +24,7 @@ namespace FluffyFighters.UI.Components
 
 
         // Constructors
-        public SkillsMenu(Game game) : base(game)
+        public SkillsMenu(Game game, Monster monster) : base(game)
         {
             this.texture = game.Content.Load<Texture2D>(BACKGROUND_ASSET_PATH);
 
@@ -34,7 +34,7 @@ namespace FluffyFighters.UI.Components
 
             skillDescriptor = new SkillDescriptor(game);
 
-            CreateSkillButtons();
+            CreateSkillButtons(monster);
         }
 
 
@@ -65,24 +65,22 @@ namespace FluffyFighters.UI.Components
             if (hoveredButton != null)
             {
                 skillDescriptor.Draw(gameTime);
-                skillDescriptor.SetPosition(GetSkillDescriptorPosition(hoveredButton));
+                skillDescriptor.SetPosition(hoveredButton);
             }
 
             base.Draw(gameTime);
         }
 
 
-        string[] attacks = new string[] { "Tackle", "Water Pulse", "Ember", "Magical Leaf" };
-        Element[] elements = new Element[] { Element.Neutral, Element.Water, Element.Fire, Element.Grass };
-        private void CreateSkillButtons()
+        private void CreateSkillButtons(Monster monster)
         {
-            skillButtons = new SkillButton[4];
+            skillButtons = new SkillButton[monster.attacks.Length];
             for (int i = 0; i < skillButtons.Length; i++)
             {
                 skillButtons[i] = new SkillButton(Game);
                 int x = screenWidth / 2 - texture.Width / 2 + 10 + (skillButtons[i].texture.Width + PADDING) * i + OFFSET_X;
                 int y = screenHeight - texture.Height + 10 + OFFSET_Y;
-                skillButtons[i].SetAttack(elements[i], attacks[i]);
+                skillButtons[i].SetAttack(monster.attacks[i]);
                 skillButtons[i].SetPosition(x, y);
             }
         }
@@ -98,13 +96,6 @@ namespace FluffyFighters.UI.Components
                     return bt;
 
             return null;
-        }
-
-
-        public Point GetSkillDescriptorPosition(SkillButton skillButton)
-        {
-            return new Point(skillButton.rectangle.X + (skillButton.rectangle.Width / 2) - (skillDescriptor.texture.Width / 2),
-                skillButton.rectangle.Y - skillDescriptor.texture.Height + DESCRIPTOR_OFFSET_Y);
         }
     }
 }

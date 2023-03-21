@@ -1,4 +1,5 @@
 ﻿using FluffyFighters.Enums;
+using FluffyFighters.Others;
 using FluffyFighters.UI.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,7 +12,7 @@ namespace FluffyFighters.UI.Screens
     {
         // Constants
         private const int MONSTER_OFFSET_X = 160;
-        private const int MONSTER_OFFSET_Y = 200;
+        private const int MONSTER_OFFSET_Y = 100;
 
         // Properties
         private ScreenManager screenManager;
@@ -21,19 +22,22 @@ namespace FluffyFighters.UI.Screens
         private Point combatBroadcastPosition => new(skillsMenu.rectangle.X + (skillsMenu.rectangle.Width / 2) - (combatBroadcast.texture.Width / 2),
         skillsMenu.rectangle.Y - combatBroadcast.texture.Height);
 
-
+        private Monster leftMonster;
         private StatsMenu monsterLeftStatsMenu;
-        private CombatMonster combatMonsterLeft;
+        private MonsterDisplayer combatMonsterLeft;
         private Point monsterLeftPosition => new(MONSTER_OFFSET_X, MONSTER_OFFSET_Y);
 
+        private Monster rightMonster;
         private StatsMenu monsterRightStatsMenu;
-        private CombatMonster combatMonsterRight;
+        private MonsterDisplayer combatMonsterRight;
         private Point monsterRightPosition => new(GraphicsDevice.Viewport.Width - combatMonsterRight.texture.Width - MONSTER_OFFSET_X, MONSTER_OFFSET_Y);
 
         // Constructors
-        public CombatScreen(Game game, ScreenManager screenManager) : base(game)
+        public CombatScreen(Game game, ScreenManager screenManager, Monster leftMonster, Monster rightMonster) : base(game)
         {
             this.screenManager = screenManager;
+            this.leftMonster = leftMonster;
+            this.rightMonster = rightMonster;
         }
 
 
@@ -41,19 +45,18 @@ namespace FluffyFighters.UI.Screens
         public override void Initialize()
         {
             // Create components
-            skillsMenu = new SkillsMenu(Game);
+            skillsMenu = new SkillsMenu(Game, leftMonster);
 
             combatBroadcast = new CombatBroadcast(Game, "The game has started!");
             combatBroadcast.SetPosition(combatBroadcastPosition);
 
-            monsterLeftStatsMenu = new StatsMenu(Game, CombatPosition.Left);
-            combatMonsterLeft = new CombatMonster(Game, CombatPosition.Left);
+            monsterLeftStatsMenu = new StatsMenu(Game, CombatPosition.Left, leftMonster);
+            combatMonsterLeft = new MonsterDisplayer(Game, CombatPosition.Left, leftMonster);
             combatMonsterLeft.SetPosition(monsterLeftPosition);
 
-            monsterRightStatsMenu = new StatsMenu(Game, CombatPosition.Right);
-            combatMonsterRight = new CombatMonster(Game, CombatPosition.Right);
+            monsterRightStatsMenu = new StatsMenu(Game, CombatPosition.Right, rightMonster);
+            combatMonsterRight = new MonsterDisplayer(Game, CombatPosition.Right, rightMonster);
             combatMonsterRight.SetPosition(monsterRightPosition);
-            monsterRightStatsMenu.SetHealth(50);
 
             base.Initialize();
         }

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using System;
 using FluffyFighters.Enums;
+using FluffyFighters.Others;
 
 namespace FluffyFighters.UI.Components
 {
@@ -16,6 +17,7 @@ namespace FluffyFighters.UI.Components
         public Texture2D texture;
         private Color defaultColor = Color.White;
         private Color hoverColor = Color.LightGray;
+        public Attack attack;
         private Vector2 labelPosition => new Vector2(rectangle.X + rectangle.Width / 2f, rectangle.Y + rectangle.Height / 2f) - label.font.MeasureString(label.text) / 2f;
 
         // Components
@@ -78,10 +80,11 @@ namespace FluffyFighters.UI.Components
         public void OnClicked() => Clicked?.Invoke(this, new EventArgs());
 
 
-        public void SetAttack(Element element, string text)
+        public void SetAttack(Attack attack)
         {
-            label = new Label(Game, text);
-            elementIcon = new ElementIcon(Game, element);
+            this.attack = attack;
+            label = new Label(Game, attack.name);
+            elementIcon = new ElementIcon(Game, attack.element);
             label?.SetPosition(labelPosition);
             elementIcon?.SetPosition(new Point(rectangle.X + 12, rectangle.Y + 16));
         }

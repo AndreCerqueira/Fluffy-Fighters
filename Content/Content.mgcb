@@ -68,7 +68,7 @@
 /processorParam:TextureFormat=Color
 /build:sprites/elements/water.png
 
-#begin sprites/monsters/Bolhinha.png
+#begin sprites/monsters/Bolhas.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -78,7 +78,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:sprites/monsters/Bolhinha.png
+/build:sprites/monsters/Bolhas.png
+
+#begin sprites/monsters/Fofi.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:sprites/monsters/Fofi.png
 
 #begin sprites/ui/background.png
 /importer:TextureImporter
