@@ -1,10 +1,12 @@
-﻿using FluffyFighters.Enums;
+﻿using FluffyFighters.Args;
+using FluffyFighters.Enums;
 using FluffyFighters.Others;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Linq;
+using static FluffyFighters.UI.Components.Combat.SkillButton;
 
-namespace FluffyFighters.UI.Components
+namespace FluffyFighters.UI.Components.Combat
 {
     public class SkillsMenu : DrawableGameComponent
     {
@@ -19,22 +21,28 @@ namespace FluffyFighters.UI.Components
         public Texture2D texture { get; private set; }
         private SkillButton[] skillButtons;
         private SkillDescriptor skillDescriptor;
+        private Team playerTeam, enemyTeam;
+        private Monster playerMonster => playerTeam.GetSelectedMonster();
+        private Monster enemyMonster => enemyTeam.GetSelectedMonster();
+
         private int screenWidth => GraphicsDevice.Viewport.Width;
         private int screenHeight => GraphicsDevice.Viewport.Height;
 
 
         // Constructors
-        public SkillsMenu(Game game, Monster monster) : base(game)
+        public SkillsMenu(Game game, Team playerTeam, Team enemyTeam) : base(game)
         {
-            this.texture = game.Content.Load<Texture2D>(BACKGROUND_ASSET_PATH);
+            texture = game.Content.Load<Texture2D>(BACKGROUND_ASSET_PATH);
+            this.playerTeam = playerTeam;
+            this.enemyTeam = enemyTeam;
 
             // Get position at bottom center of screen
-            Point position = new(screenWidth / 2 - texture.Width / 2, screenHeight - texture.Height );
+            Point position = new(screenWidth / 2 - texture.Width / 2, screenHeight - texture.Height);
             rectangle = new(position.X, position.Y, texture.Width, texture.Height);
 
             skillDescriptor = new SkillDescriptor(game);
 
-            CreateSkillButtons(monster);
+            CreateSkillButtons();
         }
 
 
@@ -48,7 +56,7 @@ namespace FluffyFighters.UI.Components
 
             base.Update(gameTime);
         }
-        
+
 
         public override void Draw(GameTime gameTime)
         {
@@ -72,17 +80,29 @@ namespace FluffyFighters.UI.Components
         }
 
 
-        private void CreateSkillButtons(Monster monster)
+        private void CreateSkillButtons()
         {
-            skillButtons = new SkillButton[monster.attacks.Length];
+            skillButtons = new SkillButton[playerMonster.attacks.Length];
             for (int i = 0; i < skillButtons.Length; i++)
             {
                 skillButtons[i] = new SkillButton(Game);
+
                 int x = screenWidth / 2 - texture.Width / 2 + 10 + (skillButtons[i].texture.Width + PADDING) * i + OFFSET_X;
                 int y = screenHeight - texture.Height + 10 + OFFSET_Y;
-                skillButtons[i].SetAttack(monster.attacks[i]);
+
+                skillButtons[i].SetAttack(playerMonster.attacks[i]);
                 skillButtons[i].SetPosition(x, y);
+
+                skillButtons[i].Clicked += enemyMonster.TakeDamage;
+                skillButtons[i].Clicked += BlockAllSkillButtons;
             }
+        }
+
+
+        public void SubscribeSkillClicked(AttackEventHandler attackEvent)
+        {
+            foreach (var bt in skillButtons)
+                bt.Clicked += attackEvent;
         }
 
 
@@ -96,6 +116,20 @@ namespace FluffyFighters.UI.Components
                     return bt;
 
             return null;
+        }
+
+
+        public void BlockAllSkillButtons(object sender, AttackEventArgs e)
+        {
+            foreach (var item in skillButtons)
+                item.Block(sender, e);
+        }
+
+
+        public void UnblockAllSkillButtons()
+        {
+            foreach (var item in skillButtons)
+                item.Unblock();
         }
     }
 }

@@ -11,9 +11,15 @@
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/water.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/Bolhas.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/Fofi.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/Tonco.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/background.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/button.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/hearth.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/monster-icons/bolhas-icon.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/monster-icons/default-icon.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/monster-icons/defeated-icon.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/monster-icons/fofi-icon.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/monster-icons/tonco-icon.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/playerStatsBackground.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/progressBar.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/progressBarContent.png</File>
@@ -25,6 +31,12 @@
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/title.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

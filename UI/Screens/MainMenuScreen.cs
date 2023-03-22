@@ -81,10 +81,23 @@ namespace FluffyFighters.UI.Screens
             Attack waterPulse = new Attack("Water Pulse", Element.Water, 20, 80, 100);
             Attack ember = new Attack("Ember", Element.Fire, 30, 40, 100);
             Attack magicalLeaf = new Attack("Magical Leaf", Element.Grass, 40, 90, 100);
-            Monster monster1 = new Monster("Bolhas", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas");
-            Monster monster2 = new Monster("Fofi", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", 2);
+            Monster monster1 = new Monster("Bolhas", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
+            Monster monster2 = new Monster("Fofi", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
+            Monster monster3 = new Monster("Tonco", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
+            Team team1 = new Team();
+            team1.AddMonster(monster3);
+            team1.AddMonster(monster1);
+            team1.AddMonster(monster2);
 
-            screenManager.LoadScreen(new CombatScreen(Game, screenManager, monster1, monster2));
+            Monster monster4 = new Monster("Bolhas", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
+            Monster monster5 = new Monster("Fofi", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
+            Monster monster6 = new Monster("Tonco", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
+            Team team2 = new Team();
+            team2.AddMonster(monster5);
+            team2.AddMonster(monster4);
+            team2.AddMonster(monster6);
+
+            screenManager.LoadScreen(new CombatScreen(Game, screenManager, team1, team2));
         }
 
         

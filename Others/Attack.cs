@@ -1,4 +1,5 @@
-﻿using FluffyFighters.Enums;
+﻿using FluffyFighters.Args;
+using FluffyFighters.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,11 @@ namespace FluffyFighters.Others
     public class Attack
     {
         // Properties
-        public string name { get; set; }
-        public Element element { get; set; }
-        public int damage { get; set; }
-        public int speed { get; set; }
-        public float missChance { get; set; }
+        public string name { get; private set; }
+        public Element element { get; private set; }
+        public int damage { get; private set; }
+        public int speed { get; private set; }
+        public float missChance { get; private set; }
 
         // Constructors
         public Attack(string name, Element element, int damage, int speed, float missChance)

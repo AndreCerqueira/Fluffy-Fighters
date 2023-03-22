@@ -4,19 +4,26 @@ using Microsoft.Xna.Framework;
 using System;
 using FluffyFighters.Enums;
 using FluffyFighters.Others;
+using FluffyFighters.Args;
 
-namespace FluffyFighters.UI.Components
+namespace FluffyFighters.UI.Components.Combat
 {
     public class SkillButton : DrawableGameComponent
     {
+        // Delegates
+        public delegate void AttackEventHandler(object sender, AttackEventArgs e);
+
         // Constants
         private const string ASSET_PATH = "sprites/ui/skillButton1";
 
         // Properties
+        private SpriteBatch spriteBatch;
         public Rectangle rectangle;
         public Texture2D texture;
         private Color defaultColor = Color.White;
         private Color hoverColor = Color.LightGray;
+        private Color blockedColor = Color.DarkGray;
+        private bool isBlocked = false;
         public Attack attack;
         private Vector2 labelPosition => new Vector2(rectangle.X + rectangle.Width / 2f, rectangle.Y + rectangle.Height / 2f) - label.font.MeasureString(label.text) / 2f;
 
@@ -25,7 +32,7 @@ namespace FluffyFighters.UI.Components
         private ElementIcon elementIcon;
 
         // Clicked event
-        public event EventHandler Clicked;
+        public event AttackEventHandler Clicked;
 
 
         public bool isHovering
@@ -48,13 +55,17 @@ namespace FluffyFighters.UI.Components
         {
             texture = game.Content.Load<Texture2D>(ASSET_PATH);
             rectangle = new(0, 0, texture.Width, texture.Height);
+
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            Block(this, null);
         }
-        
+
 
         // Methods
         public override void Update(GameTime gameTime)
         {
-            if (isClicked && isHovering)
+            if (isClicked && isHovering && !isBlocked)
                 OnClicked();
 
             base.Update(gameTime);
@@ -63,8 +74,7 @@ namespace FluffyFighters.UI.Components
 
         public override void Draw(GameTime gameTime)
         {
-            var color = isHovering ? hoverColor : defaultColor;
-            var spriteBatch = new SpriteBatch(GraphicsDevice);
+            var color = GetColor();
 
             spriteBatch.Begin();
             spriteBatch.Draw(texture, rectangle, color);
@@ -77,7 +87,20 @@ namespace FluffyFighters.UI.Components
         }
 
 
-        public void OnClicked() => Clicked?.Invoke(this, new EventArgs());
+        public void Block(object sender, AttackEventArgs e) => isBlocked = true;
+        public void Unblock() => isBlocked = false;
+
+
+        private Color GetColor()
+        {
+            if (isBlocked)
+                return blockedColor;
+
+            return isHovering ? hoverColor : defaultColor;
+        }
+
+
+        public void OnClicked() => Clicked?.Invoke(this, new AttackEventArgs(attack));
 
 
         public void SetAttack(Attack attack)
@@ -97,6 +120,7 @@ namespace FluffyFighters.UI.Components
             label?.SetPosition(labelPosition);
             elementIcon?.SetPosition(new Point(x + 12, y + 16));
         }
+
 
         public Point GetPosition() => new Point(rectangle.X, rectangle.Y);
     }

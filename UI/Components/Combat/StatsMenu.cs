@@ -4,7 +4,7 @@ using System.Xml;
 using FluffyFighters.Enums;
 using FluffyFighters.Others;
 
-namespace FluffyFighters.UI.Components
+namespace FluffyFighters.UI.Components.Combat
 {
     public class StatsMenu : DrawableGameComponent
     {
@@ -22,13 +22,14 @@ namespace FluffyFighters.UI.Components
         // Positions
         private Point topLeftCenterPosition => new(PADDING, PADDING);
         private Point topRightCenterPosition => new(Game.Window.ClientBounds.Width - backgroundTexture.Width - PADDING, PADDING);
-        private Point selectedPosition => (combatPosition == CombatPosition.Left) ? topLeftCenterPosition : topRightCenterPosition;
-        private Point sliderPosition => new(selectedPosition.X + PADDING * 2, selectedPosition.Y + (backgroundTexture.Height/2));
-        private Point sliderPositionInStatsMenu => (combatPosition == CombatPosition.Left) ? selectedPosition + sliderPosition : topLeftCenterPosition + sliderPosition;
+        private Point selectedPosition => combatPosition == CombatPosition.Left ? topLeftCenterPosition : topRightCenterPosition;
+        private Point sliderPosition => new(selectedPosition.X + PADDING * 2, selectedPosition.Y + backgroundTexture.Height / 2);
+        private Point sliderPositionInStatsMenu => combatPosition == CombatPosition.Left ? selectedPosition + sliderPosition : topLeftCenterPosition + sliderPosition;
         private Point nameLabelPosition => new(selectedPosition.X + LABEL_PADDING, selectedPosition.Y + LABEL_PADDING);
         private Point levelLabelPosition => new(selectedPosition.X + backgroundTexture.Width - LABEL_PADDING * 4, selectedPosition.Y + LABEL_PADDING);
 
         // Components
+        private Monster monster;
         private Label nameLabel;
         private Label levelLabel;
         private Slider healthSlider;
@@ -37,6 +38,7 @@ namespace FluffyFighters.UI.Components
         // Constructors
         public StatsMenu(Game game, CombatPosition combatPosition, Monster monster) : base(game)
         {
+            this.monster = monster;
             this.combatPosition = combatPosition;
             backgroundTexture = game.Content.Load<Texture2D>(BACKGROUND_ASSET_PATH);
             rectangle = new(selectedPosition.X, selectedPosition.Y, backgroundTexture.Width, backgroundTexture.Height);
@@ -69,6 +71,8 @@ namespace FluffyFighters.UI.Components
             spriteBatch.Begin();
             spriteBatch.Draw(backgroundTexture, rectangle, null, Color.White, 0f, Vector2.Zero, spriteEffect, 0f);
             spriteBatch.End();
+
+            nameLabel.SetText($"{monster.name} ({monster.currentHealth}/{monster.maxHealth})");
 
             nameLabel.Draw(gameTime);
             levelLabel.Draw(gameTime);

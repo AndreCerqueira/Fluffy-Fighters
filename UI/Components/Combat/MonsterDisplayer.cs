@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using FluffyFighters.Others;
 using MonoGame.Extended.Content;
 
-namespace FluffyFighters.UI.Components
+namespace FluffyFighters.UI.Components.Combat
 {
     public class MonsterDisplayer : DrawableGameComponent
     {

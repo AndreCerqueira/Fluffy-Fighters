@@ -35,6 +35,7 @@ namespace FluffyFighters.UI.Components
         public void SetColor(Color color) => this.color = color;
         public void SetOffset(Vector2 offset) => this.offset = offset;
         public void SetScale(float scale) => this.scale = scale;
+        public void SetText(string text) => this.text = text;
 
 
         public override void Update(GameTime gameTime)

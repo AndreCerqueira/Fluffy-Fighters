@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace FluffyFighters.UI.Components
+namespace FluffyFighters.UI.Components.Combat
 {
     public class ElementIcon : DrawableGameComponent
     {
@@ -31,7 +31,7 @@ namespace FluffyFighters.UI.Components
             base.Draw(gameTime);
         }
 
-        
+
         public void SetPosition(Point position)
         {
             rectangle.X = position.X;

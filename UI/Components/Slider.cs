@@ -22,6 +22,7 @@ namespace FluffyFighters.UI.Components
         private Rectangle foregroundRectangle;
         private int value;
         private int maxValue;
+        private float percentage => (float)value / maxValue;
 
         private Color foregroundColor => (value / (float)maxValue) switch
         {
@@ -65,7 +66,7 @@ namespace FluffyFighters.UI.Components
         public void SetValue(int value)
         {
             this.value = value;
-            foregroundRectangle.Width = (int)(backgroundRectangle.Width * ((float)value / maxValue));
+            foregroundRectangle.Width = (int)Math.Round(percentage * (backgroundTexture.Width - FOREGROUND_OFFSET * 2));
         }
 
 

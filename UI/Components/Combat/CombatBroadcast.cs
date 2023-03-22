@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace FluffyFighters.UI.Components
+namespace FluffyFighters.UI.Components.Combat
 {
     internal class CombatBroadcast : DrawableGameComponent
     {
@@ -56,5 +56,8 @@ namespace FluffyFighters.UI.Components
             rectangle.Y = position.Y;
             label.SetPosition(labelPosition);
         }
+
+
+        public void SetText(string text) => label.SetText(text);
     }
 }

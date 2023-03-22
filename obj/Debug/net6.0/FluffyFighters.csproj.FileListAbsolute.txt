@@ -111,3 +111,9 @@ C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\Round-Broadcast.xnb
 C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\Skill-Description.xnb
 C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\monsters\Bolhas.xnb
 C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\monsters\Fofi.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\monsters\Tonco.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\monster-icons\bolhas-icon.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\monster-icons\default-icon.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\monster-icons\fofi-icon.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\monster-icons\tonco-icon.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\ui\monster-icons\defeated-icon.xnb

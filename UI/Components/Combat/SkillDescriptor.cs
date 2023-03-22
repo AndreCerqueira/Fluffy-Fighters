@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluffyFighters.Others;
 
-namespace FluffyFighters.UI.Components
+namespace FluffyFighters.UI.Components.Combat
 {
     internal class SkillDescriptor : DrawableGameComponent
     {
@@ -75,7 +75,7 @@ namespace FluffyFighters.UI.Components
 
         public void SetPosition(SkillButton skillButton)
         {
-            position = new Point(skillButton.rectangle.X + (skillButton.rectangle.Width / 2) - (texture.Width / 2),
+            position = new Point(skillButton.rectangle.X + skillButton.rectangle.Width / 2 - texture.Width / 2,
                 skillButton.rectangle.Y - texture.Height + DESCRIPTOR_OFFSET_Y);
 
             label.text = $"Damage: {skillButton.attack.damage} \n Speed: {skillButton.attack.speed} \n Chance: {skillButton.attack.missChance}%";
