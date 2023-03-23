@@ -1,13 +1,15 @@
-﻿using System;
+﻿using FluffyFighters.Args;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluffyFighters.Others
 {
     public class Team
     {
+        // Delegates
+        public delegate void LoseEventHandler(object sender, LoseEventArgs e);
+
         // Constants
         public const int MAX_MONSTERS = 3;
 
@@ -15,12 +17,16 @@ namespace FluffyFighters.Others
         private Monster[] monsters { get; set; }
         private int currentMonsterIndex { get; set; }
 
+        // Events
+        public event LoseEventHandler OnLose;
+
 
         // Constructors
         public Team()
         {
             this.monsters = new Monster[MAX_MONSTERS];
             currentMonsterIndex = 0;
+
         }
 
 
@@ -32,6 +38,7 @@ namespace FluffyFighters.Others
             if (pos > MAX_MONSTERS || !HaveAvailableSpots())
                 throw new ArgumentOutOfRangeException("position", "Position must be less than or equal to MAX_MONSTERS.");
 
+            monster.OnDeath += OnMonsterDeath;
             monsters[pos] = monster;
         }
 
@@ -68,6 +75,19 @@ namespace FluffyFighters.Others
 
 
         public bool HaveAvailableSpots() => monsters.Where(m => m == null).ToList().Count > 0;
+
+
+        private bool HaveMonstersAlive() => monsters.Where(m => m != null && m.currentHealth > 0).ToList().Count > 0;
         
+
+        private void OnMonsterDeath(object sender, MonsterEventArgs e)
+        {
+            if (!HaveMonstersAlive())
+                Lose();
+        }
+
+
+        private void Lose() => OnLose?.Invoke(this, new LoseEventArgs(this));
+
     }
 }

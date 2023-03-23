@@ -44,9 +44,9 @@ namespace FluffyFighters.UI.Components.Buttons
 
 
         // Constructors
-        public Button(Game game, string text = null) : base(game)
+        public Button(Game game, string text = null, string customAssetPath = null) : base(game)
         {
-            texture = game.Content.Load<Texture2D>(ASSET_PATH);
+            texture = game.Content.Load<Texture2D>(customAssetPath ?? ASSET_PATH);
 
             rectangle = new(0, 0, texture.Width, texture.Height);
 

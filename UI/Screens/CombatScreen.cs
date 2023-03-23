@@ -25,6 +25,10 @@ namespace FluffyFighters.UI.Screens
         private ScreenManager screenManager;
         private SkillsMenu skillsMenu;
 
+        private LevelUpMenu levelUpMenu;
+        private Point levelUpMenuPosition => new(skillsMenu.rectangle.X + (skillsMenu.rectangle.Width / 2) - (levelUpMenu.texture.Width / 2), 
+            GraphicsDevice.Viewport.Height / 3 - levelUpMenu.texture.Height);
+
         private CombatBroadcast combatBroadcast; 
         private Point combatBroadcastPosition => new(skillsMenu.rectangle.X + (skillsMenu.rectangle.Width / 2) - (combatBroadcast.texture.Width / 2),
         skillsMenu.rectangle.Y - combatBroadcast.texture.Height);
@@ -53,6 +57,9 @@ namespace FluffyFighters.UI.Screens
             // Create components
             skillsMenu = new SkillsMenu(Game, playerTeamMenu.team, enemyTeamMenu.team);
 
+            levelUpMenu = new LevelUpMenu(Game, playerTeam);
+            levelUpMenu.SetPosition(levelUpMenuPosition);
+
             combatBroadcast = new CombatBroadcast(Game, $"A wild {enemySelectedMonster.name} appears!");
             combatBroadcast.SetPosition(combatBroadcastPosition);
             _ = StartBroadcastTurn();
@@ -65,6 +72,9 @@ namespace FluffyFighters.UI.Screens
 
             enemyTeamMenu.SubscribeSelectMonster(SelectMonster);
 
+            enemyTeam.OnLose += levelUpMenu.Show;
+            enemyTeam.OnLose += BlockAllButtons;
+
             base.Initialize();
         }
 
@@ -75,7 +85,7 @@ namespace FluffyFighters.UI.Screens
             playerTeamMenu.Update(gameTime);
             enemyTeamMenu.Update(gameTime);
 
-            Mouse.SetCursor(skillsMenu.isHovering || playerTeamMenu.isHovering ? Button.hoverCursor : Button.defaultCursor);
+            Mouse.SetCursor(skillsMenu.isHovering || playerTeamMenu.isHovering || levelUpMenu.nextButton.isHovering ? Button.hoverCursor : Button.defaultCursor);
         }
 
 
@@ -88,6 +98,7 @@ namespace FluffyFighters.UI.Screens
 
             playerTeamMenu.Draw(gameTime);
             enemyTeamMenu.Draw(gameTime);
+            levelUpMenu.Draw(gameTime);
         }
 
 
@@ -202,6 +213,7 @@ namespace FluffyFighters.UI.Screens
 
         public void BlockAllButtons(object sender, AttackEventArgs e) => BlockAllButtons();
         public void BlockAllButtons(object sender, MonsterEventArgs e) => BlockAllButtons();
+        public void BlockAllButtons(object sender, EventArgs e) => BlockAllButtons();
         public void UnblockAllButtons(object sender, AttackEventArgs e) => UnblockAllButtons();
         public void UnblockAllButtons(object sender, MonsterEventArgs e) => UnblockAllButtons();
 

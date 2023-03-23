@@ -25,7 +25,6 @@ namespace FluffyFighters.UI.Components.Menus
         private SkillDescriptor skillDescriptor;
         private Team playerTeam, enemyTeam;
         private Monster playerMonster => playerTeam.GetSelectedMonster();
-        private Monster enemyMonster => enemyTeam.GetSelectedMonster();
 
         private int screenWidth => GraphicsDevice.Viewport.Width;
         private int screenHeight => GraphicsDevice.Viewport.Height;

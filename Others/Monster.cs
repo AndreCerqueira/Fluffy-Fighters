@@ -1,10 +1,6 @@
 ﻿using FluffyFighters.Args;
 using FluffyFighters.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluffyFighters.Others
 {
@@ -23,6 +19,7 @@ namespace FluffyFighters.Others
         public int currentHealth { get; private set; }
         public int maxHealth { get; private set; }
         public int level { get; private set; }
+        public int maxXp { get; private set; }
         public int xp { get; private set; }
         public Element element { get; }
         public Attack[] attacks { get; private set; }

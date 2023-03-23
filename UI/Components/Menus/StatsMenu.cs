@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using System.Xml;
 using FluffyFighters.Enums;
 using FluffyFighters.Others;
+using FluffyFighters.UI.Components.Others;
 
 namespace FluffyFighters.UI.Components.Menus
 {
@@ -27,8 +28,19 @@ namespace FluffyFighters.UI.Components.Menus
         private Point sliderPositionInStatsMenu => combatPosition == CombatPosition.Left ? selectedPosition + sliderPosition : topLeftCenterPosition + sliderPosition;
         private Point nameLabelPosition => new(selectedPosition.X + LABEL_PADDING, selectedPosition.Y + LABEL_PADDING);
         private Point levelLabelPosition => new(selectedPosition.X + backgroundTexture.Width - LABEL_PADDING * 4, selectedPosition.Y + LABEL_PADDING);
+        private Point elementPosition
+        {
+            get
+            {
+                if (combatPosition == CombatPosition.Left)
+                    return new(selectedPosition.X + backgroundTexture.Width - PADDING * 2, selectedPosition.Y + backgroundTexture.Height - PADDING * 2);
+                else
+                    return new(selectedPosition.X - PADDING, selectedPosition.Y + backgroundTexture.Height - PADDING * 2);
+            }
+        }
 
         // Components
+        private ElementIcon elementIcon;
         private Monster monster;
         private Label nameLabel;
         private Label levelLabel;
@@ -44,6 +56,9 @@ namespace FluffyFighters.UI.Components.Menus
             rectangle = new(selectedPosition.X, selectedPosition.Y, backgroundTexture.Width, backgroundTexture.Height);
 
             spriteEffect = combatPosition == CombatPosition.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
+            elementIcon = new(game, monster.element);
+            elementIcon.SetPosition(elementPosition);
 
             nameLabel = new(game, monster.name);
             nameLabel.SetPosition(nameLabelPosition);
@@ -77,6 +92,7 @@ namespace FluffyFighters.UI.Components.Menus
             nameLabel.Draw(gameTime);
             levelLabel.Draw(gameTime);
             healthSlider.Draw(gameTime);
+            elementIcon.Draw(gameTime);
 
             base.Draw(gameTime);
         }
@@ -90,6 +106,9 @@ namespace FluffyFighters.UI.Components.Menus
             this.monster = monster;
             healthSlider.SetMaxValue(monster.maxHealth);
             healthSlider.SetValue(monster.currentHealth, false);
+
+            elementIcon = new(Game, monster.element);
+            elementIcon.SetPosition(elementPosition);
         }
     }
 }

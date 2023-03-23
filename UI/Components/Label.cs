@@ -25,6 +25,7 @@ namespace FluffyFighters.UI.Components
             this.text = text;
             this.color = Color.Black;
             this.offset = Vector2.Zero;
+            scale = 1;
         }
 
 
@@ -48,7 +49,7 @@ namespace FluffyFighters.UI.Components
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             spriteBatch.Begin();
-            spriteBatch.DrawString(font, text, GetPosition(), color);
+            spriteBatch.DrawString(font, text, GetPosition(), color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             spriteBatch.End();
 
             base.Draw(gameTime);

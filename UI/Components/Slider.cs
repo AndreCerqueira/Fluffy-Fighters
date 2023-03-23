@@ -25,6 +25,7 @@ namespace FluffyFighters.UI.Components
         private float maxValue;
         private float percentage => value / maxValue;
 
+        private Color? fixedColor;
         private Color foregroundColor => (value / maxValue) switch
         {
             float r when r < 0.33f => Color.Red,
@@ -58,7 +59,7 @@ namespace FluffyFighters.UI.Components
             var spriteBatch = new SpriteBatch(GraphicsDevice);
             spriteBatch.Begin();
             spriteBatch.Draw(backgroundTexture, backgroundRectangle, Color.White);
-            spriteBatch.Draw(foregroundTexture, foregroundRectangle, foregroundColor);
+            spriteBatch.Draw(foregroundTexture, foregroundRectangle, fixedColor ?? foregroundColor);
             spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -82,6 +83,9 @@ namespace FluffyFighters.UI.Components
             backgroundRectangle = new(position.X, position.Y, backgroundTexture.Width, backgroundTexture.Height);
             foregroundRectangle = new(position.X + FOREGROUND_OFFSET, position.Y + FOREGROUND_OFFSET, foregroundTexture.Width, foregroundTexture.Height);
         }
+
+
+        public void SetColor(Color color) => fixedColor = color;
 
 
         // AnimateValue is a coroutine that animates the value of the slider

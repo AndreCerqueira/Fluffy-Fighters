@@ -78,20 +78,20 @@ namespace FluffyFighters.UI.Screens
         private void OnPlayButtonClicked(object sender, EventArgs e)
         {
             Attack tacle = new Attack("Tackle", Element.Neutral, 10, 80, 100);
-            Attack waterPulse = new Attack("Water Pulse", Element.Water, 20, 70, 80);
-            Attack ember = new Attack("Ember", Element.Fire, 30, 60, 60);
-            Attack magicalLeaf = new Attack("Magical Leaf", Element.Grass, 40, 50, 40);
+            Attack waterPulse = new Attack("Water Pulse", Element.Water, 20, 70, 100);
+            Attack ember = new Attack("Ember", Element.Fire, 30, 60, 100);
+            Attack magicalLeaf = new Attack("Magical Leaf", Element.Grass, 40, 50, 100);
             Monster monster1 = new Monster("Bolhas", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
-            Monster monster2 = new Monster("Fofi", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
-            Monster monster3 = new Monster("Tonco", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
+            Monster monster2 = new Monster("Fofi", 100, Element.Fire, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
+            Monster monster3 = new Monster("Tonco", 100, Element.Grass, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
             Team team1 = new Team();
             team1.AddMonster(monster3);
             team1.AddMonster(monster1);
             team1.AddMonster(monster2);
 
-            Monster monster4 = new Monster("Bolhas", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
-            Monster monster5 = new Monster("Fofi", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
-            Monster monster6 = new Monster("Tonco", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
+            Monster monster4 = new Monster("Bolhas", 1, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
+            Monster monster5 = new Monster("Fofi", 1, Element.Fire, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
+            Monster monster6 = new Monster("Tonco", 1, Element.Grass, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
             Team team2 = new Team();
             int random = new Random().Next(4, 7);
             if (random == 4)

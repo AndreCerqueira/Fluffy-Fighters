@@ -23,6 +23,7 @@ namespace FluffyFighters.UI.Components.Buttons
         private Color hoverColor = Color.LightGray;
         private Color blockedColor = Color.DarkGray;
         private bool isBlocked = false;
+        public bool isInteractible = true;
         private Rectangle rectangle;
         private Monster monster;
 
@@ -34,6 +35,9 @@ namespace FluffyFighters.UI.Components.Buttons
         {
             get
             {
+                if (!isInteractible)
+                    return false;
+
                 var mouseState = Mouse.GetState();
                 var mouseRectangle = new Rectangle(mouseState.X, mouseState.Y, 1, 1);
 
@@ -46,11 +50,11 @@ namespace FluffyFighters.UI.Components.Buttons
 
 
         // Constructors
-        public MonsterButton(Game game, Monster monster) : base(game)
+        public MonsterButton(Game game, Monster monster, float scale = TEXTURE_SCALE) : base(game)
         {
             this.monster = monster;
             texture = game.Content.Load<Texture2D>(monster.iconAssetPath);
-            texture = ResizeTexture(texture, TEXTURE_SCALE);
+            texture = ResizeTexture(texture, scale);
             defeatedTexture = game.Content.Load<Texture2D>(DEFEATED_ASSET_PATH);
 
             rectangle = new(0, 0, texture.Width, texture.Height);
@@ -78,7 +82,7 @@ namespace FluffyFighters.UI.Components.Buttons
             spriteBatch.Begin();
             spriteBatch.Draw(texture, rectangle, GetColor());
 
-            if (monster.IsDead())
+            if (monster.IsDead() && isInteractible)
                 spriteBatch.Draw(defeatedTexture, rectangle, defaultColor);
 
             spriteBatch.End();
@@ -96,6 +100,9 @@ namespace FluffyFighters.UI.Components.Buttons
 
         private Color GetColor()
         {
+            if (!isInteractible)
+                return defaultColor;
+
             if (isBlocked || monster.IsDead())
                 return blockedColor;
 
