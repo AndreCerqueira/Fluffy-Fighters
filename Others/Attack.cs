@@ -15,16 +15,16 @@ namespace FluffyFighters.Others
         public Element element { get; private set; }
         public int damage { get; private set; }
         public int speed { get; private set; }
-        public float missChance { get; private set; }
+        public float successChance { get; private set; }
 
         // Constructors
-        public Attack(string name, Element element, int damage, int speed, float missChance)
+        public Attack(string name, Element element, int damage, int speed, float successChance)
         {
             this.name = name;
             this.element = element;
             this.damage = damage;
             this.speed = speed;
-            this.missChance = missChance;
+            this.successChance = successChance;
         }
     }
 }

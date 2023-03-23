@@ -46,9 +46,9 @@ namespace FluffyFighters.Others
 
 
         // Methods
-        public void TakeDamage(int damage)
+        public void TakeDamage(float damage)
         {
-            currentHealth -= damage;
+            currentHealth -= (int)Math.Round(damage);
 
             if (currentHealth <= 0)
             {

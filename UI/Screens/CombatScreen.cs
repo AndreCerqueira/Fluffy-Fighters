@@ -113,7 +113,6 @@ namespace FluffyFighters.UI.Screens
             else if (playerAttack.speed == enemyAttack.speed)
                 playerAttackedFirst = (new Random().Next(0, 2) == 0);
 
-
             Monster firstAttacker = playerAttackedFirst ? playerSelectedMonster : enemySelectedMonster;
             Monster secondAttacker = playerAttackedFirst ? enemySelectedMonster : playerSelectedMonster;
 
@@ -142,8 +141,27 @@ namespace FluffyFighters.UI.Screens
         {
             if (attacker.IsDead()) return;
 
+            // Check if attack misses TEMP
+            Random random = new Random();
+            int chance = random.Next(0, 100);
+            if (attack.successChance < chance)
+            {
+                combatBroadcast.SetText($"{attacker.name}'s attack missed!");
+                return;
+            }
+
             combatBroadcast.SetText($"{attacker.name} used {attack.name}!");
-            target.GetSelectedMonster().TakeDamage(attack.damage);
+
+            ElementEffectiveness effectiveness = attack.element.GetElementEffectiveness(target.GetSelectedMonster().element);
+
+            float multiplier = effectiveness switch
+            {
+                ElementEffectiveness.Effective => 1.5f,
+                ElementEffectiveness.NotEffective => 0.5f,
+                _ => 1f
+            };
+
+            target.GetSelectedMonster().TakeDamage(attack.damage * multiplier);
 
             UpdateHealthBar(target);
         }

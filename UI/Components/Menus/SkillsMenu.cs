@@ -94,9 +94,6 @@ namespace FluffyFighters.UI.Components.Menus
 
                 skillButtons[i].SetAttack(playerMonster.attacks[i]);
                 skillButtons[i].SetPosition(x, y);
-
-                // skillButtons[i].Clicked += enemyMonster.TakeDamage;
-                // skillButtons[i].Clicked += BlockAllSkillButtons;
             }
         }
 

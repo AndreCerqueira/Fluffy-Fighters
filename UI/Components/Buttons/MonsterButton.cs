@@ -66,7 +66,7 @@ namespace FluffyFighters.UI.Components.Buttons
         // Methods
         public override void Update(GameTime gameTime)
         {
-            if (isClicked && isHovering && !isBlocked)
+            if (isClicked && isHovering && !isBlocked && !monster.IsDead())
                 Clicked();
 
             base.Update(gameTime);

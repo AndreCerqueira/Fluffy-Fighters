@@ -79,7 +79,7 @@ namespace FluffyFighters.UI.Components.Others
             position = new Point(skillButton.rectangle.X + skillButton.rectangle.Width / 2 - texture.Width / 2,
                 skillButton.rectangle.Y - texture.Height + DESCRIPTOR_OFFSET_Y);
 
-            label.text = $"Damage: {skillButton.attack.damage} \n Speed: {skillButton.attack.speed} \n Chance: {skillButton.attack.missChance}%";
+            label.text = $"Damage: {skillButton.attack.damage} \n Speed: {skillButton.attack.speed} \n Chance: {skillButton.attack.successChance}%";
             rectangle.X = position.X;
             rectangle.Y = position.Y + (int)yOffset;
             label?.SetPosition(labelPosition);
