@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Screens;
 using System.Linq;
+using static FluffyFighters.Others.Monster;
 
 namespace FluffyFighters.UI.Components.Menus
 {
@@ -77,6 +78,27 @@ namespace FluffyFighters.UI.Components.Menus
             statsMenu.UpdateMonster(e.monster);
             monsterDisplayer.UpdateMonster(e.monster);
             monsterDisplayer.SetPosition(combatPosition == CombatPosition.Left ? monsterLeftPosition : monsterRightPosition);
+        }
+
+
+        public void SubscribeSelectMonster(MonsterEventHandler eventHandler)
+        {
+            foreach (var item in monsterButtons)
+                item.OnClicked += eventHandler;
+        }
+
+
+        public void BlockAllMonsterButtons()
+        {
+            foreach (var item in monsterButtons)
+                item.Block();
+        }
+
+
+        public void UnblockAllMonsterButtons()
+        {
+            foreach (var item in monsterButtons)
+                item.Unblock();
         }
 
 

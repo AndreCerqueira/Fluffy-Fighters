@@ -9,7 +9,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Screens;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
+using static FluffyFighters.Others.Monster;
+using static FluffyFighters.UI.Components.Buttons.SkillButton;
 
 namespace FluffyFighters.UI.Screens
 {
@@ -52,10 +55,15 @@ namespace FluffyFighters.UI.Screens
 
             combatBroadcast = new CombatBroadcast(Game, $"A wild {enemySelectedMonster.name} appears!");
             combatBroadcast.SetPosition(combatBroadcastPosition);
-            StartBroadcast();
+            _ = StartBroadcastTurn();
 
+            skillsMenu.SubscribeSkillClicked(BlockAllButtons);
             skillsMenu.SubscribeSkillClicked(SelectAttackOrder);
 
+            playerTeamMenu.SubscribeSelectMonster(SelectMonster);
+            playerTeamMenu.SubscribeSelectMonster(BlockAllButtons);
+
+            enemyTeamMenu.SubscribeSelectMonster(SelectMonster);
 
             base.Initialize();
         }
@@ -123,9 +131,7 @@ namespace FluffyFighters.UI.Screens
             PerformAttack(secondAttack, secondAttacker, firstTeam);
 
             // End turn
-            await Task.Delay(BROADCAST_DELAY);
-            combatBroadcast.SetText($"What will {playerSelectedMonster.name} do?");
-            skillsMenu.UnblockAllSkillButtons();
+            await StartBroadcastTurn();
         }
 
 
@@ -143,6 +149,20 @@ namespace FluffyFighters.UI.Screens
         }
 
 
+        public async void SelectMonster(object sender, MonsterEventArgs e)
+        {
+            BlockAllButtons();
+
+            combatBroadcast.SetText($"{e.monster.name} joined the battle!");
+            await Task.Delay(BROADCAST_DELAY);
+
+            Attack enemyAttack = SelectEnemyAttack();
+            PerformAttack(enemyAttack, enemySelectedMonster, playerTeam);
+
+            await StartBroadcastTurn();
+        }
+
+
         /*
             A wild ratata appears!
             What will player do?
@@ -154,21 +174,31 @@ namespace FluffyFighters.UI.Screens
             name grew to level 11.
          */
 
-        public async void NextTurn(object sender, AttackEventArgs e)
-        {
-            //await Task.Delay(BROADCAST_DELAY);
-            //combatBroadcast.SetText($"What will {playerSelectedMonster.name} do?");
-
-            skillsMenu.UnblockAllSkillButtons();
-        }
-
-
-        public async void StartBroadcast()
+        public async Task StartBroadcastTurn()
         {
             await Task.Delay(BROADCAST_DELAY);
             combatBroadcast.SetText($"What will {playerSelectedMonster.name} do?");
+            UnblockAllButtons();
+        }
 
+
+        public void BlockAllButtons(object sender, AttackEventArgs e) => BlockAllButtons();
+        public void BlockAllButtons(object sender, MonsterEventArgs e) => BlockAllButtons();
+        public void UnblockAllButtons(object sender, AttackEventArgs e) => UnblockAllButtons();
+        public void UnblockAllButtons(object sender, MonsterEventArgs e) => UnblockAllButtons();
+
+
+        public void BlockAllButtons()
+        {
+            skillsMenu.BlockAllSkillButtons();
+            playerTeamMenu.BlockAllMonsterButtons();
+        }
+
+
+        public void UnblockAllButtons()
+        {
             skillsMenu.UnblockAllSkillButtons();
+            playerTeamMenu.UnblockAllMonsterButtons();
         }
     }
 }

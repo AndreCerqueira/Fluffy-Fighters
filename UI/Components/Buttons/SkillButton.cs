@@ -57,7 +57,7 @@ namespace FluffyFighters.UI.Components.Buttons
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Block(this, null);
+            Block();
         }
 
 
@@ -86,7 +86,7 @@ namespace FluffyFighters.UI.Components.Buttons
         }
 
 
-        public void Block(object sender, AttackEventArgs e) => isBlocked = true;
+        public void Block() => isBlocked = true;
         public void Unblock() => isBlocked = false;
 
 

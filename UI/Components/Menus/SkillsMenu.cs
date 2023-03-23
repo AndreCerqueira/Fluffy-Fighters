@@ -96,7 +96,7 @@ namespace FluffyFighters.UI.Components.Menus
                 skillButtons[i].SetPosition(x, y);
 
                 // skillButtons[i].Clicked += enemyMonster.TakeDamage;
-                skillButtons[i].Clicked += BlockAllSkillButtons;
+                // skillButtons[i].Clicked += BlockAllSkillButtons;
             }
         }
 
@@ -121,10 +121,10 @@ namespace FluffyFighters.UI.Components.Menus
         }
 
 
-        public void BlockAllSkillButtons(object sender, AttackEventArgs e)
+        public void BlockAllSkillButtons()
         {
             foreach (var item in skillButtons)
-                item.Block(sender, e);
+                item.Block();
         }
 
 

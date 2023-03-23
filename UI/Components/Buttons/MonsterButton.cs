@@ -58,6 +58,8 @@ namespace FluffyFighters.UI.Components.Buttons
             monster.OnDeath += Block;
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            Block();
         }
 
 
@@ -76,7 +78,7 @@ namespace FluffyFighters.UI.Components.Buttons
             spriteBatch.Begin();
             spriteBatch.Draw(texture, rectangle, GetColor());
 
-            if (isBlocked)
+            if (monster.IsDead())
                 spriteBatch.Draw(defeatedTexture, rectangle, defaultColor);
 
             spriteBatch.End();
@@ -94,7 +96,7 @@ namespace FluffyFighters.UI.Components.Buttons
 
         private Color GetColor()
         {
-            if (isBlocked)
+            if (isBlocked || monster.IsDead())
                 return blockedColor;
 
             return isHovering ? hoverColor : defaultColor;
@@ -105,6 +107,8 @@ namespace FluffyFighters.UI.Components.Buttons
 
 
         public void Block(object sender, MonsterEventArgs e) => isBlocked = true;
+        public void Block() => isBlocked = true;
+        public void Unblock() => isBlocked = false;
 
 
         private static Texture2D ResizeTexture(Texture2D texture, float scaleFactor)
