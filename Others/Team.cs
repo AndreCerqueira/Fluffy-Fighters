@@ -47,10 +47,8 @@ namespace FluffyFighters.Others
         public List<Monster> GetMonsters() => monsters.Where(m => m != null).ToList();
 
 
-        public void SelectMonster(int position)
-        {
-            currentMonsterIndex = position;
-        }
+        public void SelectMonster(int position) => currentMonsterIndex = position;
+        public void SelectMonster(Monster monster) => currentMonsterIndex = monsters.ToList().IndexOf(monster);
 
 
         public void SelectNextMonster()

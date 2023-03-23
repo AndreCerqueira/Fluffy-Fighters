@@ -1,12 +1,14 @@
 ﻿using FluffyFighters.Args;
 using FluffyFighters.Enums;
 using FluffyFighters.Others;
+using FluffyFighters.UI.Components.Buttons;
+using FluffyFighters.UI.Components.Others;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Linq;
-using static FluffyFighters.UI.Components.Combat.SkillButton;
+using static FluffyFighters.UI.Components.Buttons.SkillButton;
 
-namespace FluffyFighters.UI.Components.Combat
+namespace FluffyFighters.UI.Components.Menus
 {
     public class SkillsMenu : DrawableGameComponent
     {
@@ -93,7 +95,7 @@ namespace FluffyFighters.UI.Components.Combat
                 skillButtons[i].SetAttack(playerMonster.attacks[i]);
                 skillButtons[i].SetPosition(x, y);
 
-                skillButtons[i].Clicked += enemyMonster.TakeDamage;
+                // skillButtons[i].Clicked += enemyMonster.TakeDamage;
                 skillButtons[i].Clicked += BlockAllSkillButtons;
             }
         }

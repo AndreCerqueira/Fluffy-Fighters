@@ -4,32 +4,30 @@ using FluffyFighters.Others;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static FluffyFighters.UI.Components.Combat.SkillButton;
+using static FluffyFighters.Others.Monster;
+using static FluffyFighters.UI.Components.Buttons.SkillButton;
 
-namespace FluffyFighters.UI.Components.Combat
+namespace FluffyFighters.UI.Components.Buttons
 {
     public class MonsterButton : DrawableGameComponent
     {
         // Constants
+        private const string DEFEATED_ASSET_PATH = "sprites/ui/monster-icons/defeated-icon";
         private const float TEXTURE_SCALE = 0.3f;
 
         // Properties
         private SpriteBatch spriteBatch;
         public Texture2D texture;
+        private Texture2D defeatedTexture;
         private Color defaultColor = Color.White;
         private Color hoverColor = Color.LightGray;
         private Color blockedColor = Color.DarkGray;
         private bool isBlocked = false;
         private Rectangle rectangle;
+        private Monster monster;
 
         // Clicked event
-        public event AttackEventHandler Clicked;
+        public event MonsterEventHandler OnClicked;
 
 
         public bool isHovering
@@ -48,11 +46,16 @@ namespace FluffyFighters.UI.Components.Combat
 
 
         // Constructors
-        public MonsterButton(Game game, CombatPosition combatPosition, Monster monster) : base(game)
+        public MonsterButton(Game game, Monster monster) : base(game)
         {
+            this.monster = monster;
             texture = game.Content.Load<Texture2D>(monster.iconAssetPath);
             texture = ResizeTexture(texture, TEXTURE_SCALE);
+            defeatedTexture = game.Content.Load<Texture2D>(DEFEATED_ASSET_PATH);
+
             rectangle = new(0, 0, texture.Width, texture.Height);
+
+            monster.OnDeath += Block;
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
         }
@@ -62,7 +65,7 @@ namespace FluffyFighters.UI.Components.Combat
         public override void Update(GameTime gameTime)
         {
             if (isClicked && isHovering && !isBlocked)
-                OnClicked();
+                Clicked();
 
             base.Update(gameTime);
         }
@@ -72,6 +75,10 @@ namespace FluffyFighters.UI.Components.Combat
         {
             spriteBatch.Begin();
             spriteBatch.Draw(texture, rectangle, GetColor());
+
+            if (isBlocked)
+                spriteBatch.Draw(defeatedTexture, rectangle, defaultColor);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -94,7 +101,10 @@ namespace FluffyFighters.UI.Components.Combat
         }
 
 
-        public void OnClicked() => Clicked?.Invoke(this, new AttackEventArgs(null));
+        public void Clicked() => OnClicked?.Invoke(this, new MonsterEventArgs(monster));
+
+
+        public void Block(object sender, MonsterEventArgs e) => isBlocked = true;
 
 
         private static Texture2D ResizeTexture(Texture2D texture, float scaleFactor)

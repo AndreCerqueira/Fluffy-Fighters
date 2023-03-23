@@ -1,12 +1,14 @@
 ﻿using FluffyFighters.Args;
 using FluffyFighters.Enums;
 using FluffyFighters.Others;
-using FluffyFighters.UI.Components;
-using FluffyFighters.UI.Components.Combat;
+using FluffyFighters.UI.Components.Buttons;
+using FluffyFighters.UI.Components.Menus;
+using FluffyFighters.UI.Components.Others;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Screens;
+using System;
 using System.Threading.Tasks;
 
 namespace FluffyFighters.UI.Screens
@@ -14,8 +16,6 @@ namespace FluffyFighters.UI.Screens
     public class CombatScreen : GameScreen
     {
         // Constants
-        private const int MONSTER_OFFSET_X = 160;
-        private const int MONSTER_OFFSET_Y = 100;
         private const int BROADCAST_DELAY = 1500;
 
         // Properties
@@ -28,6 +28,8 @@ namespace FluffyFighters.UI.Screens
 
         private TeamMenu playerTeamMenu;
         private TeamMenu enemyTeamMenu;
+        private Team playerTeam;
+        private Team enemyTeam;
         private Monster playerSelectedMonster => playerTeamMenu.team.GetSelectedMonster();
         private Monster enemySelectedMonster => enemyTeamMenu.team.GetSelectedMonster();
 
@@ -35,6 +37,8 @@ namespace FluffyFighters.UI.Screens
         public CombatScreen(Game game, ScreenManager screenManager, Team playerTeam, Team enemyTeam) : base(game)
         {
             this.screenManager = screenManager;
+            this.playerTeam = playerTeam;
+            this.enemyTeam = enemyTeam;
             this.playerTeamMenu = new TeamMenu(game, playerTeam, CombatPosition.Left);
             this.enemyTeamMenu = new TeamMenu(game, enemyTeam, CombatPosition.Right);
         }
@@ -50,8 +54,7 @@ namespace FluffyFighters.UI.Screens
             combatBroadcast.SetPosition(combatBroadcastPosition);
             StartBroadcast();
 
-            skillsMenu.SubscribeSkillClicked(NextTurn);
-            skillsMenu.SubscribeSkillClicked(UpdateEnemyHealthBar);
+            skillsMenu.SubscribeSkillClicked(SelectAttackOrder);
 
 
             base.Initialize();
@@ -80,9 +83,63 @@ namespace FluffyFighters.UI.Screens
         }
 
 
-        public void UpdateEnemyHealthBar(object sender, AttackEventArgs e)
+        public void UpdateHealthBar(Team team)
         {
-            enemyTeamMenu.statsMenu.SetHealth(enemySelectedMonster.currentHealth);
+            TeamMenu teamMenu = (team == playerTeamMenu.team) ? playerTeamMenu : enemyTeamMenu;
+            teamMenu.statsMenu.SetHealth(team.GetSelectedMonster().currentHealth);
+        }
+
+
+        public async void SelectAttackOrder(object sender, AttackEventArgs e)
+        {
+            Attack playerAttack = e.attack;
+            Attack enemyAttack = SelectEnemyAttack();
+
+            if (playerSelectedMonster.IsDead() || enemySelectedMonster.IsDead())
+                return;
+
+            // get whose is faster
+            bool playerAttackedFirst = false;
+            if (playerAttack.speed > enemyAttack.speed)
+                playerAttackedFirst = true;
+            else if (playerAttack.speed == enemyAttack.speed)
+                playerAttackedFirst = (new Random().Next(0, 2) == 0);
+
+
+            Monster firstAttacker = playerAttackedFirst ? playerSelectedMonster : enemySelectedMonster;
+            Monster secondAttacker = playerAttackedFirst ? enemySelectedMonster : playerSelectedMonster;
+
+            // Get teams
+            Team firstTeam = playerAttackedFirst ? playerTeam : enemyTeam;
+            Team secondTeam = playerAttackedFirst ? enemyTeam : playerTeam;
+
+            // Get attacks
+            Attack firstAttack = playerAttackedFirst ? playerAttack : enemyAttack;
+            Attack secondAttack = playerAttackedFirst ? enemyAttack : playerAttack;
+
+            // Perform attacks
+            PerformAttack(firstAttack, firstAttacker, secondTeam);
+            await Task.Delay(BROADCAST_DELAY);
+            PerformAttack(secondAttack, secondAttacker, firstTeam);
+
+            // End turn
+            await Task.Delay(BROADCAST_DELAY);
+            combatBroadcast.SetText($"What will {playerSelectedMonster.name} do?");
+            skillsMenu.UnblockAllSkillButtons();
+        }
+
+
+        public Attack SelectEnemyAttack() => enemySelectedMonster.GetRandomAttack();
+
+
+        public void PerformAttack(Attack attack, Monster attacker, Team target)
+        {
+            if (attacker.IsDead()) return;
+
+            combatBroadcast.SetText($"{attacker.name} used {attack.name}!");
+            target.GetSelectedMonster().TakeDamage(attack.damage);
+
+            UpdateHealthBar(target);
         }
 
 
@@ -99,14 +156,8 @@ namespace FluffyFighters.UI.Screens
 
         public async void NextTurn(object sender, AttackEventArgs e)
         {
-            combatBroadcast.SetText($"{playerSelectedMonster.name} used {e.attack.name}");
-
-            await Task.Delay(BROADCAST_DELAY);
-
-            combatBroadcast.SetText($"{enemySelectedMonster.name} was paralized!");
-
-            await Task.Delay(BROADCAST_DELAY);
-            combatBroadcast.SetText($"What will {playerSelectedMonster.name} do?");
+            //await Task.Delay(BROADCAST_DELAY);
+            //combatBroadcast.SetText($"What will {playerSelectedMonster.name} do?");
 
             skillsMenu.UnblockAllSkillButtons();
         }

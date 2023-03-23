@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace FluffyFighters.UI.Components.Combat
+namespace FluffyFighters.UI.Components.Others
 {
     public class ElementIcon : DrawableGameComponent
     {

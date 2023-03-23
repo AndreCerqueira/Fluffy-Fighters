@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Reflection.Metadata;
 
-namespace FluffyFighters.UI.Components
+namespace FluffyFighters.UI.Components.Buttons
 {
     public class Button : DrawableGameComponent
     {
@@ -27,7 +27,7 @@ namespace FluffyFighters.UI.Components
         // Clicked event
         public event EventHandler Clicked;
 
-        
+
         public bool isHovering
         {
             get
@@ -46,15 +46,15 @@ namespace FluffyFighters.UI.Components
         // Constructors
         public Button(Game game, string text = null) : base(game)
         {
-            this.texture = game.Content.Load<Texture2D>(ASSET_PATH);
-            
+            texture = game.Content.Load<Texture2D>(ASSET_PATH);
+
             rectangle = new(0, 0, texture.Width, texture.Height);
 
             if (text != null)
                 label = new Label(game, text);
         }
 
-        
+
         // Methods
         public override void Update(GameTime gameTime)
         {
@@ -63,17 +63,17 @@ namespace FluffyFighters.UI.Components
 
             base.Update(gameTime);
         }
-        
+
 
         public override void Draw(GameTime gameTime)
         {
             var color = isHovering ? hoverColor : defaultColor;
             var spriteBatch = new SpriteBatch(GraphicsDevice);
-            
+
             spriteBatch.Begin();
             spriteBatch.Draw(texture, rectangle, color);
             spriteBatch.End();
-            
+
             label?.Draw(gameTime);
 
             base.Draw(gameTime);
@@ -87,7 +87,7 @@ namespace FluffyFighters.UI.Components
         {
             rectangle.X = position.X;
             rectangle.Y = position.Y;
-            
+
             label?.SetPosition(labelPosition);
         }
     }

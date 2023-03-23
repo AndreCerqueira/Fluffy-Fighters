@@ -10,6 +10,9 @@ namespace FluffyFighters.Others
 {
     public class Monster
     {
+        // Delegates
+        public delegate void MonsterEventHandler(object sender, MonsterEventArgs e);
+
         // Constants
         public const string DEFAULT_ICON_ASSET_PATH = "sprites/ui/monster-icons/default-icon";
 
@@ -23,6 +26,9 @@ namespace FluffyFighters.Others
         public int xp { get; private set; }
         public Element element { get; }
         public Attack[] attacks { get; private set; }
+
+        // Events
+        public event MonsterEventHandler OnDeath;
 
 
         // Constructors
@@ -40,9 +46,48 @@ namespace FluffyFighters.Others
 
 
         // Methods
-        public void TakeDamage(object sender, AttackEventArgs e)
+        public void TakeDamage(int damage)
         {
-            currentHealth -= e.attack.damage;
+            currentHealth -= damage;
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                Death();
+            }
         }
+
+
+        public void Heal(int amount)
+        {
+            currentHealth += amount;
+            if (currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+        }
+
+
+        public void GainXp(int amount)
+        {
+            xp += amount;
+            if (xp >= 100)
+            {
+                level++;
+                xp -= 100;
+            }
+        }
+
+
+        public Attack GetRandomAttack()
+        {
+            return attacks[new Random().Next(attacks.Length)];
+        }
+
+
+        public void Death() => OnDeath?.Invoke(this, new MonsterEventArgs(this));
+
+
+        public bool IsDead() => currentHealth <= 0;
     }
 }

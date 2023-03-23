@@ -14,17 +14,18 @@ namespace FluffyFighters.UI.Components
         private const string BACKGROUND_ASSET_PATH = "sprites/ui/progressBar";
         private const string FOREGROUND_ASSET_PATH = "sprites/ui/progressBarContent";
         private const int FOREGROUND_OFFSET = 4;
+        private const float ANIMATION_DURATION = 1f;
 
         // Properties
         private Texture2D backgroundTexture;
         private Texture2D foregroundTexture;
         private Rectangle backgroundRectangle;
         private Rectangle foregroundRectangle;
-        private int value;
-        private int maxValue;
-        private float percentage => (float)value / maxValue;
+        private float value;
+        private float maxValue;
+        private float percentage => value / maxValue;
 
-        private Color foregroundColor => (value / (float)maxValue) switch
+        private Color foregroundColor => (value / maxValue) switch
         {
             float r when r < 0.33f => Color.Red,
             float y when y < 0.66f => Color.Yellow,
@@ -63,10 +64,16 @@ namespace FluffyFighters.UI.Components
         }
 
 
-        public void SetValue(int value)
+        public void SetMaxValue(int value) => maxValue = value;
+        public async void SetValue(int value, bool isAnimated = true)
         {
-            this.value = value;
-            foregroundRectangle.Width = (int)Math.Round(percentage * (backgroundTexture.Width - FOREGROUND_OFFSET * 2));
+            if (isAnimated)
+                await AnimateValue(value);
+            else
+            {
+                this.value = value;
+                foregroundRectangle.Width = (int)(foregroundTexture.Width * percentage);
+            }
         }
 
 
@@ -76,6 +83,23 @@ namespace FluffyFighters.UI.Components
             foregroundRectangle = new(position.X + FOREGROUND_OFFSET, position.Y + FOREGROUND_OFFSET, foregroundTexture.Width, foregroundTexture.Height);
         }
 
+
+        // AnimateValue is a coroutine that animates the value of the slider
+        private async Task AnimateValue(int value)
+        {
+            float startValue = this.value;
+            float endValue = value;
+            float duration = ANIMATION_DURATION;
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += (float)Game.TargetElapsedTime.TotalSeconds;
+                float t = elapsed / duration;
+                this.value = MathHelper.Lerp(startValue, endValue, t);
+                foregroundRectangle.Width = (int)(foregroundTexture.Width * percentage);
+                await Task.Delay(1);
+            }
+        }
 
     }
 }

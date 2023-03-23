@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace FluffyFighters.UI.Components.Combat
+namespace FluffyFighters.UI.Components.Others
 {
     internal class CombatBroadcast : DrawableGameComponent
     {

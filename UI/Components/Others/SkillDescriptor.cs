@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluffyFighters.Others;
+using FluffyFighters.UI.Components.Buttons;
 
-namespace FluffyFighters.UI.Components.Combat
+namespace FluffyFighters.UI.Components.Others
 {
     internal class SkillDescriptor : DrawableGameComponent
     {

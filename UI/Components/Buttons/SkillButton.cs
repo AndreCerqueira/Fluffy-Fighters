@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
-using System;
-using FluffyFighters.Enums;
 using FluffyFighters.Others;
 using FluffyFighters.Args;
+using FluffyFighters.UI.Components.Others;
 
-namespace FluffyFighters.UI.Components.Combat
+namespace FluffyFighters.UI.Components.Buttons
 {
     public class SkillButton : DrawableGameComponent
     {

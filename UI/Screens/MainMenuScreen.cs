@@ -1,6 +1,6 @@
 ﻿using FluffyFighters.Enums;
 using FluffyFighters.Others;
-using FluffyFighters.UI.Components;
+using FluffyFighters.UI.Components.Buttons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -77,10 +77,10 @@ namespace FluffyFighters.UI.Screens
         
         private void OnPlayButtonClicked(object sender, EventArgs e)
         {
-            Attack tacle = new Attack("Tacle", Element.Neutral, 10, 80, 100);
-            Attack waterPulse = new Attack("Water Pulse", Element.Water, 20, 80, 100);
-            Attack ember = new Attack("Ember", Element.Fire, 30, 40, 100);
-            Attack magicalLeaf = new Attack("Magical Leaf", Element.Grass, 40, 90, 100);
+            Attack tacle = new Attack("Tackle", Element.Neutral, 10, 80, 100);
+            Attack waterPulse = new Attack("Water Pulse", Element.Water, 20, 70, 100);
+            Attack ember = new Attack("Ember", Element.Fire, 30, 60, 100);
+            Attack magicalLeaf = new Attack("Magical Leaf", Element.Grass, 40, 50, 100);
             Monster monster1 = new Monster("Bolhas", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
             Monster monster2 = new Monster("Fofi", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
             Monster monster3 = new Monster("Tonco", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
@@ -93,9 +93,13 @@ namespace FluffyFighters.UI.Screens
             Monster monster5 = new Monster("Fofi", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
             Monster monster6 = new Monster("Tonco", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
             Team team2 = new Team();
-            team2.AddMonster(monster5);
-            team2.AddMonster(monster4);
-            team2.AddMonster(monster6);
+            int random = new Random().Next(4, 7);
+            if (random == 4)
+                team2.AddMonster(monster4);
+            else if (random == 5)
+                team2.AddMonster(monster5);
+            else if (random == 6)
+                team2.AddMonster(monster6);
 
             screenManager.LoadScreen(new CombatScreen(Game, screenManager, team1, team2));
         }

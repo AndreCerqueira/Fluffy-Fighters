@@ -4,7 +4,7 @@ using System.Xml;
 using FluffyFighters.Enums;
 using FluffyFighters.Others;
 
-namespace FluffyFighters.UI.Components.Combat
+namespace FluffyFighters.UI.Components.Menus
 {
     public class StatsMenu : DrawableGameComponent
     {
@@ -83,5 +83,13 @@ namespace FluffyFighters.UI.Components.Combat
 
 
         public void SetHealth(int value) => healthSlider.SetValue(value);
+
+
+        public void UpdateMonster(Monster monster)
+        {
+            this.monster = monster;
+            healthSlider.SetMaxValue(monster.maxHealth);
+            healthSlider.SetValue(monster.currentHealth, false);
+        }
     }
 }
