@@ -14,7 +14,6 @@ namespace FluffyFighters.UI.Components.Others
         public Texture2D texture;
         private SpriteEffects spriteEffect;
         private Rectangle rectangle;
-        private bool isVisible = true;
         private Monster monster;
 
 

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluffyFighters.Args;
+using System.Threading;
 
 namespace FluffyFighters.UI.Components.Menus
 {
@@ -32,7 +33,21 @@ namespace FluffyFighters.UI.Components.Menus
         public Texture2D texture { get; private set; }
         private Rectangle rectangle;
         private Team team;
-        private bool isVisible;
+        private Queue<Monster> monsters;
+        private bool _isVisible;
+        private bool isVisible
+        {
+            get => _isVisible;
+            set
+            {
+                _isVisible = value;
+
+                if (!_isVisible)
+                    nextButton?.Block();
+                else
+                    nextButton?.Unblock();
+            }
+        }
 
         private MonsterButton monsterButton;
         private Point monsterButtonPosition => new(GraphicsDevice.Viewport.Width / 2 - MONSTER_BUTTON_OFFSET_X,
@@ -71,10 +86,22 @@ namespace FluffyFighters.UI.Components.Menus
 
             nextButton = new Button(game, customAssetPath: BUTTON_ASSET_PATH);
             nextButton.SetPosition(buttonNextPosition);
+            nextButton.Block();
+
+            nextButton.OnClicked += SetMonster;
+            nextButton.OnClicked += TemporaryBlockButton;
         }
 
 
         // Methods
+        public override void Update(GameTime gameTime)
+        {
+            nextButton.Update(gameTime);
+
+            base.Update(gameTime);
+        }
+
+
         public override void Draw(GameTime gameTime)
         {
             if (!isVisible) return;
@@ -99,8 +126,36 @@ namespace FluffyFighters.UI.Components.Menus
         }
 
 
-        public void SetMonster(Monster monster)
+        public void StartQueue()
         {
+            monsters = new Queue<Monster>();
+            foreach (var monster in team.GetMonsters())
+                monsters.Enqueue(monster);
+
+            SetMonster(this, EventArgs.Empty);
+        }
+
+
+        public void SetMonsters(object sender, EventArgs e)
+        {
+            // while (monsters.Count > 0)
+                // SetMonster();
+
+            // Close Menu
+            // Close();
+        }
+
+
+        public void SetMonster(object sender, EventArgs e)
+        {
+            if (monsters.Count == 0)
+            {
+                Close();
+                return;
+            }
+
+            Monster monster = monsters.Dequeue();
+
             monsterButton = new MonsterButton(Game, monster, 1);
             monsterButton.SetPosition(monsterButtonPosition);
             monsterButton.Unblock();
@@ -117,9 +172,23 @@ namespace FluffyFighters.UI.Components.Menus
 
         public void Show(object sender, LoseEventArgs e) // won team
         {
-            SetMonster(team.GetSelectedMonster());
+            // SetMonster(team.GetSelectedMonster());
+            StartQueue();
             isVisible = true;
         }
+
+
+        public async void TemporaryBlockButton(object sender, EventArgs e)
+        {
+            nextButton.Block();
+            await Task.Delay(1000);
+            nextButton.Unblock();
+        }
         
+
+        public void Close()
+        {
+            isVisible = false;
+        }
     }
 }

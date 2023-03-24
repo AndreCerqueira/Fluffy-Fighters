@@ -61,17 +61,17 @@ namespace FluffyFighters.UI.Screens
             playButton = new Button(Game, "Play");
             Point position = new(center.X - (playButton.texture.Width / 2), center.Y + (playButton.texture.Height + Button.PADDING) * -1);
             playButton.SetPosition(position);
-            playButton.Clicked += OnPlayButtonClicked;
+            playButton.OnClicked += OnPlayButtonClicked;
 
             settingsButton = new Button(Game, "Settings");
             position = new(center.X - (settingsButton.texture.Width / 2), center.Y + 0);
             settingsButton.SetPosition(position);
-            settingsButton.Clicked += OnSettingsButtonClicked;
+            settingsButton.OnClicked += OnSettingsButtonClicked;
 
             exitButton = new Button(Game, "Exit");
             position = new(center.X - (exitButton.texture.Width / 2), center.Y + (exitButton.texture.Height + Button.PADDING) * 1);
             exitButton.SetPosition(position);
-            exitButton.Clicked += OnExitButtonClicked;
+            exitButton.OnClicked += OnExitButtonClicked;
         }
 
         
@@ -89,9 +89,9 @@ namespace FluffyFighters.UI.Screens
             team1.AddMonster(monster1);
             team1.AddMonster(monster2);
 
-            Monster monster4 = new Monster("Bolhas", 1, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
-            Monster monster5 = new Monster("Fofi", 1, Element.Fire, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
-            Monster monster6 = new Monster("Tonco", 1, Element.Grass, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
+            Monster monster4 = new Monster("Bolhas", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
+            Monster monster5 = new Monster("Fofi", 100, Element.Fire, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
+            Monster monster6 = new Monster("Tonco", 100, Element.Grass, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
             Team team2 = new Team();
             int random = new Random().Next(4, 7);
             if (random == 4)

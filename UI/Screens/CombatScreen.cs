@@ -4,23 +4,19 @@ using FluffyFighters.Others;
 using FluffyFighters.UI.Components.Buttons;
 using FluffyFighters.UI.Components.Menus;
 using FluffyFighters.UI.Components.Others;
+using FluffyFighters.UI.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Screens;
 using System;
-using System.Threading;
+using System.IO;
 using System.Threading.Tasks;
-using static FluffyFighters.Others.Monster;
-using static FluffyFighters.UI.Components.Buttons.SkillButton;
 
 namespace FluffyFighters.UI.Screens
 {
     public class CombatScreen : GameScreen
     {
-        // Constants
-        private const int BROADCAST_DELAY = 1500;
-
         // Properties
         private ScreenManager screenManager;
         private SkillsMenu skillsMenu;
@@ -29,25 +25,23 @@ namespace FluffyFighters.UI.Screens
         private Point levelUpMenuPosition => new(skillsMenu.rectangle.X + (skillsMenu.rectangle.Width / 2) - (levelUpMenu.texture.Width / 2), 
             GraphicsDevice.Viewport.Height / 3 - levelUpMenu.texture.Height);
 
-        private CombatBroadcast combatBroadcast; 
+        private CombatBroadcast combatBroadcast;
         private Point combatBroadcastPosition => new(skillsMenu.rectangle.X + (skillsMenu.rectangle.Width / 2) - (combatBroadcast.texture.Width / 2),
         skillsMenu.rectangle.Y - combatBroadcast.texture.Height);
 
         private TeamMenu playerTeamMenu;
         private TeamMenu enemyTeamMenu;
-        private Team playerTeam;
-        private Team enemyTeam;
-        private Monster playerSelectedMonster => playerTeamMenu.team.GetSelectedMonster();
-        private Monster enemySelectedMonster => enemyTeamMenu.team.GetSelectedMonster();
+        private CombatManager cm;
+        private BroadcastManager bm;
 
         // Constructors
         public CombatScreen(Game game, ScreenManager screenManager, Team playerTeam, Team enemyTeam) : base(game)
         {
             this.screenManager = screenManager;
-            this.playerTeam = playerTeam;
-            this.enemyTeam = enemyTeam;
-            this.playerTeamMenu = new TeamMenu(game, playerTeam, CombatPosition.Left);
-            this.enemyTeamMenu = new TeamMenu(game, enemyTeam, CombatPosition.Right);
+            playerTeamMenu = new TeamMenu(game, playerTeam, CombatPosition.Left);
+            enemyTeamMenu = new TeamMenu(game, enemyTeam, CombatPosition.Right);
+
+            cm = new CombatManager(playerTeam, enemyTeam);
         }
 
 
@@ -57,23 +51,36 @@ namespace FluffyFighters.UI.Screens
             // Create components
             skillsMenu = new SkillsMenu(Game, playerTeamMenu.team, enemyTeamMenu.team);
 
-            levelUpMenu = new LevelUpMenu(Game, playerTeam);
+            levelUpMenu = new LevelUpMenu(Game, cm.playerTeam);
             levelUpMenu.SetPosition(levelUpMenuPosition);
 
-            combatBroadcast = new CombatBroadcast(Game, $"A wild {enemySelectedMonster.name} appears!");
+            combatBroadcast = new CombatBroadcast(Game, $"A wild {cm.enemySelectedMonster.name} appears!");
             combatBroadcast.SetPosition(combatBroadcastPosition);
-            _ = StartBroadcastTurn();
+            bm = new BroadcastManager(combatBroadcast);
+            // _ = StartBroadcastTurn();
 
-            skillsMenu.SubscribeSkillClicked(BlockAllButtons);
-            skillsMenu.SubscribeSkillClicked(SelectAttackOrder);
 
-            playerTeamMenu.SubscribeSelectMonster(SelectMonster);
+            UnblockAllButtons(); // <----------- FORCED
+
+
+            skillsMenu.SubscribeSkillClicked(cm.DoTurn);
+
+            playerTeamMenu.SubscribeSelectMonster(cm.SelectMonster);
             playerTeamMenu.SubscribeSelectMonster(BlockAllButtons);
 
-            enemyTeamMenu.SubscribeSelectMonster(SelectMonster);
+            cm.onMonsterSelected += BroadcastMonsterJoined;
+            cm.onMonsterSelected += UnblockAllButtons;
 
-            enemyTeam.OnLose += levelUpMenu.Show;
-            enemyTeam.OnLose += BlockAllButtons;
+            cm.enemyTeam.OnLose += levelUpMenu.Show;
+            cm.enemyTeam.OnLose += BlockAllButtons;
+
+            cm.onTurnStart += BlockAllButtons;
+            cm.onTurnStart += BroadcastStartTurn;
+            cm.onTurnEnd += UnblockAllButtons;
+
+            cm.onAttackPerformed += UpdateHealthBar;
+            cm.onAttackPerformed += BroadcastMonsterAttacked;
+            cm.onAttackFailed += BroadcastMonsterMissed;
 
             base.Initialize();
         }
@@ -84,6 +91,7 @@ namespace FluffyFighters.UI.Screens
             skillsMenu.Update(gameTime);
             playerTeamMenu.Update(gameTime);
             enemyTeamMenu.Update(gameTime);
+            levelUpMenu.Update(gameTime);
 
             Mouse.SetCursor(skillsMenu.isHovering || playerTeamMenu.isHovering || levelUpMenu.nextButton.isHovering ? Button.hoverCursor : Button.defaultCursor);
         }
@@ -102,120 +110,44 @@ namespace FluffyFighters.UI.Screens
         }
 
 
-        public void UpdateHealthBar(Team team)
+        public void UpdateHealthBar(object sender, AttackPerformedEventArgs e)
         {
-            TeamMenu teamMenu = (team == playerTeamMenu.team) ? playerTeamMenu : enemyTeamMenu;
-            teamMenu.statsMenu.SetHealth(team.GetSelectedMonster().currentHealth);
+            TeamMenu teamMenu = (e.target == playerTeamMenu.team) ? playerTeamMenu : enemyTeamMenu;
+            teamMenu.statsMenu.SetHealth(e.target.GetSelectedMonster().currentHealth);
         }
 
 
-        public async void SelectAttackOrder(object sender, AttackEventArgs e)
+        #region Broadcasts
+
+        public async void BroadcastStartTurn(object sender, EventArgs e)
         {
-            Attack playerAttack = e.attack;
-            Attack enemyAttack = SelectEnemyAttack();
-
-            if (playerSelectedMonster.IsDead() || enemySelectedMonster.IsDead())
-                return;
-
-            // get whose is faster
-            bool playerAttackedFirst = false;
-            if (playerAttack.speed > enemyAttack.speed)
-                playerAttackedFirst = true;
-            else if (playerAttack.speed == enemyAttack.speed)
-                playerAttackedFirst = (new Random().Next(0, 2) == 0);
-
-            Monster firstAttacker = playerAttackedFirst ? playerSelectedMonster : enemySelectedMonster;
-            Monster secondAttacker = playerAttackedFirst ? enemySelectedMonster : playerSelectedMonster;
-
-            // Get teams
-            Team firstTeam = playerAttackedFirst ? playerTeam : enemyTeam;
-            Team secondTeam = playerAttackedFirst ? enemyTeam : playerTeam;
-
-            // Get attacks
-            Attack firstAttack = playerAttackedFirst ? playerAttack : enemyAttack;
-            Attack secondAttack = playerAttackedFirst ? enemyAttack : playerAttack;
-
-            // Perform attacks
-            PerformAttack(firstAttack, firstAttacker, secondTeam);
-            await Task.Delay(BROADCAST_DELAY);
-            PerformAttack(secondAttack, secondAttacker, firstTeam);
-
-            // End turn
-            await StartBroadcastTurn();
-        }
-
-
-        public Attack SelectEnemyAttack() => enemySelectedMonster.GetRandomAttack();
-
-
-        public void PerformAttack(Attack attack, Monster attacker, Team target)
-        {
-            if (attacker.IsDead()) return;
-
-            // Check if attack misses TEMP
-            Random random = new Random();
-            int chance = random.Next(0, 100);
-            if (attack.successChance < chance)
-            {
-                combatBroadcast.SetText($"{attacker.name}'s attack missed!");
-                return;
-            }
-
-            combatBroadcast.SetText($"{attacker.name} used {attack.name}!");
-
-            ElementEffectiveness effectiveness = attack.element.GetElementEffectiveness(target.GetSelectedMonster().element);
-
-            float multiplier = effectiveness switch
-            {
-                ElementEffectiveness.Effective => 1.5f,
-                ElementEffectiveness.NotEffective => 0.5f,
-                _ => 1f
-            };
-
-            target.GetSelectedMonster().TakeDamage(attack.damage * multiplier);
-
-            UpdateHealthBar(target);
-        }
-
-
-        public async void SelectMonster(object sender, MonsterEventArgs e)
-        {
-            BlockAllButtons();
-
-            combatBroadcast.SetText($"{e.monster.name} joined the battle!");
-            await Task.Delay(BROADCAST_DELAY);
-
-            Attack enemyAttack = SelectEnemyAttack();
-            PerformAttack(enemyAttack, enemySelectedMonster, playerTeam);
-
-            await StartBroadcastTurn();
-        }
-
-
-        /*
-            A wild ratata appears!
-            What will player do?
-            Pichu used attackName!
-            The wild ratata used ...
-            Pichu fainted!
-            The wild ratata fainted
-            nome gained 30xp
-            name grew to level 11.
-         */
-
-        public async Task StartBroadcastTurn()
-        {
-            await Task.Delay(BROADCAST_DELAY);
-            combatBroadcast.SetText($"What will {playerSelectedMonster.name} do?");
+            await bm.Display($"What will {playerTeamMenu.team.GetSelectedMonster().name} do?");
             UnblockAllButtons();
         }
 
 
-        public void BlockAllButtons(object sender, AttackEventArgs e) => BlockAllButtons();
-        public void BlockAllButtons(object sender, MonsterEventArgs e) => BlockAllButtons();
+        public async void BroadcastMonsterJoined(object sender, MonsterEventArgs e)
+        {
+            await bm.Display($"{e.monster.name} joined the battle!");
+            await Task.Delay(1000);
+            await bm.Display($"What will {e.monster.name} do?");
+        }
+
+
+        public async void BroadcastMonsterAttacked(object sender, AttackPerformedEventArgs e) => await bm.Display($"{e.attacker.name} used {e.attack.name}");
+
+
+        public async void BroadcastMonsterMissed(object sender, EventArgs e) => await bm.Display($"{enemyTeamMenu.team.GetSelectedMonster().name}'s attack missed!");
+
+        #endregion
+
+
         public void BlockAllButtons(object sender, EventArgs e) => BlockAllButtons();
-        public void UnblockAllButtons(object sender, AttackEventArgs e) => UnblockAllButtons();
-        public void UnblockAllButtons(object sender, MonsterEventArgs e) => UnblockAllButtons();
+        public async void UnblockAllButtons(object sender, EventArgs e)
+        {
+            await Task.Delay(1000);
+            UnblockAllButtons();
+        }
 
 
         public void BlockAllButtons()

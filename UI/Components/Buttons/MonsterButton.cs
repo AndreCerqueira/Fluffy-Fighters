@@ -54,7 +54,10 @@ namespace FluffyFighters.UI.Components.Buttons
         {
             this.monster = monster;
             texture = game.Content.Load<Texture2D>(monster.iconAssetPath);
-            texture = ResizeTexture(texture, scale);
+
+            if (scale != 1)
+                texture = ResizeTexture(texture, scale);
+
             defeatedTexture = game.Content.Load<Texture2D>(DEFEATED_ASSET_PATH);
 
             rectangle = new(0, 0, texture.Width, texture.Height);

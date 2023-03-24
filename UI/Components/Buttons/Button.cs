@@ -21,17 +21,22 @@ namespace FluffyFighters.UI.Components.Buttons
         public Texture2D texture;
         private Color defaultColor = Color.White;
         private Color hoverColor = Color.LightGray;
+        private Color blockedColor = Color.DarkGray;
         public Label label;
+        private bool isBlocked = false;
         private Vector2 labelPosition => new Vector2(rectangle.X + rectangle.Width / 2f, rectangle.Y + rectangle.Height / 2f) - label.font.MeasureString(label.text) / 2f;
 
         // Clicked event
-        public event EventHandler Clicked;
+        public event EventHandler OnClicked;
 
 
         public bool isHovering
         {
             get
             {
+                if (isBlocked)
+                    return false;
+
                 var mouseState = Mouse.GetState();
                 var mouseRectangle = new Rectangle(mouseState.X, mouseState.Y, 1, 1);
 
@@ -58,8 +63,8 @@ namespace FluffyFighters.UI.Components.Buttons
         // Methods
         public override void Update(GameTime gameTime)
         {
-            if (isClicked && isHovering)
-                OnClicked();
+            if (isClicked && isHovering && !isBlocked)
+                Clicked();
 
             base.Update(gameTime);
         }
@@ -67,7 +72,7 @@ namespace FluffyFighters.UI.Components.Buttons
 
         public override void Draw(GameTime gameTime)
         {
-            var color = isHovering ? hoverColor : defaultColor;
+            var color = GetColor();
             var spriteBatch = new SpriteBatch(GraphicsDevice);
 
             spriteBatch.Begin();
@@ -79,8 +84,18 @@ namespace FluffyFighters.UI.Components.Buttons
             base.Draw(gameTime);
         }
 
+        private Color GetColor()
+        {
+            if (isBlocked)
+                return blockedColor;
 
-        public void OnClicked() => Clicked?.Invoke(this, new EventArgs());
+            return isHovering ? hoverColor : defaultColor;
+        }
+
+
+        private void Clicked() => OnClicked?.Invoke(this, new EventArgs());
+        public void Block() => isBlocked = true;
+        public void Unblock() => isBlocked = false;
 
 
         public void SetPosition(Point position)

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace FluffyFighters.UI.Components.Others
 {
-    internal class CombatBroadcast : DrawableGameComponent
+    public class CombatBroadcast : DrawableGameComponent
     {
         // Constants
         private const string ASSET_PATH = "sprites/ui/Round-Broadcast";
