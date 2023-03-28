@@ -44,20 +44,12 @@ namespace FluffyFighters.UI.Managers
 
 
         // Methods
-
-
         public void SelectMonster(object sender, MonsterEventArgs e)
         {
-            // BlockAllButtons();
-
-            // combatBroadcast.SetText($"{e.monster.name} joined the battle!");
-            // await Task.Delay(BROADCAST_DELAY);
-
             Attack enemyAttack = SelectEnemyAttack();
             PerformAttack(enemyAttack, enemySelectedMonster, playerTeam);
 
             onMonsterSelected?.Invoke(sender, e);
-
         }
 
 

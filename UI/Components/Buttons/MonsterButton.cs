@@ -25,7 +25,7 @@ namespace FluffyFighters.UI.Components.Buttons
         private bool isBlocked = false;
         public bool isInteractible = true;
         private Rectangle rectangle;
-        private Monster monster;
+        public Monster monster;
 
         // Clicked event
         public event MonsterEventHandler OnClicked;

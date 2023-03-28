@@ -18,7 +18,6 @@ namespace FluffyFighters.UI.Screens
     public class CombatScreen : GameScreen
     {
         // Properties
-        private ScreenManager screenManager;
         private SkillsMenu skillsMenu;
 
         private LevelUpMenu levelUpMenu;
@@ -29,39 +28,37 @@ namespace FluffyFighters.UI.Screens
         private Point combatBroadcastPosition => new(skillsMenu.rectangle.X + (skillsMenu.rectangle.Width / 2) - (combatBroadcast.texture.Width / 2),
         skillsMenu.rectangle.Y - combatBroadcast.texture.Height);
 
+        private Action<Team> onClose;
         private TeamMenu playerTeamMenu;
         private TeamMenu enemyTeamMenu;
         private CombatManager cm;
         private BroadcastManager bm;
 
         // Constructors
-        public CombatScreen(Game game, ScreenManager screenManager, Team playerTeam, Team enemyTeam) : base(game)
+        public CombatScreen(Game game, Team playerTeam, Team enemyTeam, Action<Team> onClose) : base(game)
         {
-            this.screenManager = screenManager;
             playerTeamMenu = new TeamMenu(game, playerTeam, CombatPosition.Left);
             enemyTeamMenu = new TeamMenu(game, enemyTeam, CombatPosition.Right);
 
             cm = new CombatManager(playerTeam, enemyTeam);
+
+            skillsMenu = new SkillsMenu(Game, playerTeamMenu.team, enemyTeamMenu.team);
+
+            levelUpMenu = new LevelUpMenu(Game, cm.playerTeam, cm.enemyTeam);
+            levelUpMenu.SetPosition(levelUpMenuPosition);
+
+            combatBroadcast = new CombatBroadcast(Game, $"A wild {cm.enemySelectedMonster.name} appears!");
+            combatBroadcast.SetPosition(combatBroadcastPosition);
+            bm = new BroadcastManager(combatBroadcast);
+
+            this.onClose = onClose;
         }
 
 
         // Methods
         public override void Initialize()
         {
-            // Create components
-            skillsMenu = new SkillsMenu(Game, playerTeamMenu.team, enemyTeamMenu.team);
-
-            levelUpMenu = new LevelUpMenu(Game, cm.playerTeam);
-            levelUpMenu.SetPosition(levelUpMenuPosition);
-
-            combatBroadcast = new CombatBroadcast(Game, $"A wild {cm.enemySelectedMonster.name} appears!");
-            combatBroadcast.SetPosition(combatBroadcastPosition);
-            bm = new BroadcastManager(combatBroadcast);
-            // _ = StartBroadcastTurn();
-
-
-            UnblockAllButtons(); // <----------- FORCED
-
+            UnblockAllButtons();
 
             skillsMenu.SubscribeSkillClicked(cm.DoTurn);
 
@@ -81,6 +78,8 @@ namespace FluffyFighters.UI.Screens
             cm.onAttackPerformed += UpdateHealthBar;
             cm.onAttackPerformed += BroadcastMonsterAttacked;
             cm.onAttackFailed += BroadcastMonsterMissed;
+
+            levelUpMenu.onMonstersLeveledUp += Close;
 
             base.Initialize();
         }
@@ -161,6 +160,13 @@ namespace FluffyFighters.UI.Screens
         {
             skillsMenu.UnblockAllSkillButtons();
             playerTeamMenu.UnblockAllMonsterButtons();
+        }
+
+
+        private async void Close(object sender, EventArgs e)
+        {
+            await Task.Delay(1000);
+            onClose?.Invoke(cm.playerTeam);
         }
     }
 }

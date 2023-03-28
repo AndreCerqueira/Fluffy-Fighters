@@ -39,6 +39,7 @@ namespace FluffyFighters.Others
             this.assetPath = assetPath;
             this.level = level;
             this.iconAssetPath = iconAssetPath ?? DEFAULT_ICON_ASSET_PATH;
+            maxXp = 100;
         }
 
 

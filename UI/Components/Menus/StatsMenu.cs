@@ -68,7 +68,7 @@ namespace FluffyFighters.UI.Components.Menus
 
             healthSlider = new(game, monster.maxHealth);
             healthSlider.SetPosition(sliderPositionInStatsMenu);
-            healthSlider.SetValue(monster.currentHealth);
+            healthSlider.SetValue(monster.currentHealth, false);
         }
 
 

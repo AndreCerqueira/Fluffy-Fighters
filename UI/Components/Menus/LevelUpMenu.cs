@@ -33,6 +33,7 @@ namespace FluffyFighters.UI.Components.Menus
         public Texture2D texture { get; private set; }
         private Rectangle rectangle;
         private Team team;
+        private Team opposingTeam;
         private Queue<Monster> monsters;
         private bool _isVisible;
         private bool isVisible
@@ -44,8 +45,6 @@ namespace FluffyFighters.UI.Components.Menus
 
                 if (!_isVisible)
                     nextButton?.Block();
-                else
-                    nextButton?.Unblock();
             }
         }
 
@@ -65,11 +64,15 @@ namespace FluffyFighters.UI.Components.Menus
         private Point buttonNextPosition => new(GraphicsDevice.Viewport.Width / 2 + BUTTON_OFFSET_X,
             GraphicsDevice.Viewport.Height / 3 - texture.Height + BUTTON_OFFSET_Y);
 
+        // Events
+        public event EventHandler onMonstersLeveledUp;
+
 
         // Constructors
-        public LevelUpMenu(Game game, Team team) : base(game)
+        public LevelUpMenu(Game game, Team team, Team opposingTeam) : base(game)
         {
             this.team = team;
+            this.opposingTeam = opposingTeam;
             texture = game.Content.Load<Texture2D>(BACKGROUND_ASSET_PATH);
             rectangle = new(0, 0, texture.Width, texture.Height);
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -78,7 +81,7 @@ namespace FluffyFighters.UI.Components.Menus
             xpSlider = new Slider(game, 100);
             xpSlider.SetPosition(xpSliderPosition);
             xpSlider.SetColor(Color.MediumSlateBlue);
-            xpSlider.SetValue(0);
+            xpSlider.SetValue(0, false);
 
             levelLabel = new Label(game, "1");
             levelLabel.SetScale(2);
@@ -89,7 +92,10 @@ namespace FluffyFighters.UI.Components.Menus
             nextButton.Block();
 
             nextButton.OnClicked += SetMonster;
-            nextButton.OnClicked += TemporaryBlockButton;
+            nextButton.OnClicked += BlockButton;
+
+            xpSlider.onValueMaxed += UpdateMonsterMenu;
+            xpSlider.onValueFinishUpdating += UnblockButton;
         }
 
 
@@ -136,16 +142,14 @@ namespace FluffyFighters.UI.Components.Menus
         }
 
 
-        public void SetMonsters(object sender, EventArgs e)
+        public int GetXpDroped()
         {
-            // while (monsters.Count > 0)
-                // SetMonster();
-
-            // Close Menu
-            // Close();
+            // get xp droped based on level and opposing team
+            return 250;
         }
 
 
+        int xpDroped = 0;
         public void SetMonster(object sender, EventArgs e)
         {
             if (monsters.Count == 0)
@@ -161,12 +165,32 @@ namespace FluffyFighters.UI.Components.Menus
             monsterButton.Unblock();
             monsterButton.isInteractible = false;
 
+            // Initialize Slider
+            xpSlider.SetMaxValue(monster.maxXp);
+            xpSlider.SetValue(monster.xp, false);
+            xpSlider.SetPosition(xpSliderPosition);
+
+            xpDroped = GetXpDroped();
+
+            UpdateMonsterMenu(sender, e);
+        }
+
+
+        private void UpdateMonsterMenu(object sender, EventArgs e)
+        {
+            Monster monster = monsterButton.monster;
+
             levelLabel.SetText(monster.level.ToString());
             levelLabel.SetPosition(levelPosition);
 
             xpSlider.SetMaxValue(monster.maxXp);
-            xpSlider.SetValue(monster.xp);
-            xpSlider.SetPosition(xpSliderPosition);
+            xpSlider.SetValue(0, false);
+
+            // Set new xp value target of the slider, if bigger than max only set max
+            int xpSliderValue = Math.Min(monster.xp + xpDroped, monster.maxXp);
+            xpDroped -= xpSliderValue;
+            xpSlider.SetValue(xpSliderValue);
+            monster.GainXp(xpSliderValue);
         }
 
 
@@ -178,17 +202,17 @@ namespace FluffyFighters.UI.Components.Menus
         }
 
 
-        public async void TemporaryBlockButton(object sender, EventArgs e)
-        {
-            nextButton.Block();
-            await Task.Delay(1000);
-            nextButton.Unblock();
-        }
-        
+        public void BlockButton(object sender, EventArgs e) => nextButton.Block();
+
+
+        public void UnblockButton(object sender, EventArgs e) => nextButton.Unblock(); 
+
 
         public void Close()
         {
             isVisible = false;
+
+            onMonstersLeveledUp?.Invoke(this, EventArgs.Empty);
         }
     }
 }

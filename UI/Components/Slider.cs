@@ -33,6 +33,10 @@ namespace FluffyFighters.UI.Components
             _ => Color.LightGreen
         };
 
+        // Events
+        public event EventHandler onValueMaxed;
+        public event EventHandler onValueFinishUpdating;
+
 
         // Constructors
         public Slider(Game game, int maxValue) : base(game)
@@ -89,8 +93,14 @@ namespace FluffyFighters.UI.Components
 
 
         // AnimateValue is a coroutine that animates the value of the slider
+        bool isAnimating = false;
         private async Task AnimateValue(int value)
         {
+            // wait for the previous animation to finish
+            while (isAnimating)
+                await Task.Delay(1);
+
+            isAnimating = true;
             float startValue = this.value;
             float endValue = value;
             float duration = ANIMATION_DURATION;
@@ -100,9 +110,21 @@ namespace FluffyFighters.UI.Components
                 elapsed += (float)Game.TargetElapsedTime.TotalSeconds;
                 float t = elapsed / duration;
                 this.value = MathHelper.Lerp(startValue, endValue, t);
+
+                if (this.value >= maxValue) { 
+                    onValueMaxed?.Invoke(this, EventArgs.Empty);
+                    foregroundRectangle.Width = 0;
+                    isAnimating = false;
+                    return;
+                }
+
                 foregroundRectangle.Width = (int)(foregroundTexture.Width * percentage);
+
                 await Task.Delay(1);
             }
+
+            isAnimating = false;
+            onValueFinishUpdating?.Invoke(this, EventArgs.Empty);
         }
 
     }
