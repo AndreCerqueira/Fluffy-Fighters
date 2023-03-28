@@ -19,6 +19,7 @@ namespace FluffyFighters.UI.Components.Menus
         private const int OFFSET_Y = 20;
 
         // Properties
+        private SpriteBatch spriteBatch;
         public Rectangle rectangle { get; private set; }
         public Texture2D texture { get; private set; }
         private SkillButton[] skillButtons;
@@ -33,6 +34,7 @@ namespace FluffyFighters.UI.Components.Menus
         // Constructors
         public SkillsMenu(Game game, Team playerTeam, Team enemyTeam) : base(game)
         {
+            spriteBatch = new SpriteBatch(GraphicsDevice);
             texture = game.Content.Load<Texture2D>(BACKGROUND_ASSET_PATH);
             this.playerTeam = playerTeam;
             this.enemyTeam = enemyTeam;
@@ -61,8 +63,6 @@ namespace FluffyFighters.UI.Components.Menus
 
         public override void Draw(GameTime gameTime)
         {
-            var spriteBatch = new SpriteBatch(GraphicsDevice);
-
             spriteBatch.Begin();
             spriteBatch.Draw(texture, rectangle, Color.White);
             spriteBatch.End();

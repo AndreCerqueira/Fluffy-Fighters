@@ -56,7 +56,7 @@ namespace FluffyFighters.UI.Components.Buttons
             texture = game.Content.Load<Texture2D>(monster.iconAssetPath);
 
             if (scale != 1)
-                texture = ResizeTexture(texture, scale);
+                texture = Utils.ResizeTexture(texture, scale);
 
             defeatedTexture = game.Content.Load<Texture2D>(DEFEATED_ASSET_PATH);
 
@@ -119,33 +119,5 @@ namespace FluffyFighters.UI.Components.Buttons
         public void Block(object sender, MonsterEventArgs e) => isBlocked = true;
         public void Block() => isBlocked = true;
         public void Unblock() => isBlocked = false;
-
-
-        private static Texture2D ResizeTexture(Texture2D texture, float scaleFactor)
-        {
-            int newWidth = (int)(texture.Width * scaleFactor);
-            int newHeight = (int)(texture.Height * scaleFactor);
-
-            // Create a new texture with the desired dimensions
-            Texture2D resizedTexture = new Texture2D(texture.GraphicsDevice, newWidth, newHeight);
-
-            // Scale the original texture onto the new texture
-            Color[] textureData = new Color[texture.Width * texture.Height];
-            texture.GetData(textureData);
-
-            Color[] resizedData = new Color[newWidth * newHeight];
-            for (int y = 0; y < newHeight; y++)
-            {
-                for (int x = 0; x < newWidth; x++)
-                {
-                    int index = (int)(y / scaleFactor) * texture.Width + (int)(x / scaleFactor);
-                    resizedData[y * newWidth + x] = textureData[index];
-                }
-            }
-
-            resizedTexture.SetData(resizedData);
-
-            return resizedTexture;
-        }
     }
 }
