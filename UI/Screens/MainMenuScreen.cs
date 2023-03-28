@@ -28,7 +28,7 @@ namespace FluffyFighters.UI.Screens
         Point center => new(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
         Vector2 logoPosition => new(center.X - (logoTexture.Width / 2), center.Y - (logoTexture.Height / 2) - 240);
 
-
+        // Temp
         Attack tacle;
         Attack waterPulse;
         Attack ember;
@@ -99,6 +99,12 @@ namespace FluffyFighters.UI.Screens
         
         private void OnPlayButtonClicked(object sender, EventArgs e)
         {
+            screenManager.LoadScreen(new InGameScreen(Game));
+        }
+
+        
+        private void OnSettingsButtonClicked(object sender, EventArgs e)
+        {
             Monster monster4 = new Monster("Bolhas", 1, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
             Monster monster5 = new Monster("Fofi", 1, Element.Fire, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
             Monster monster6 = new Monster("Tonco", 1, Element.Grass, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
@@ -116,12 +122,6 @@ namespace FluffyFighters.UI.Screens
                 team1 = newTeam1;
                 screenManager.LoadScreen(this);
             }));
-        }
-
-        
-        private void OnSettingsButtonClicked(object sender, EventArgs e)
-        {
-            // Do something when the settings button is clicked
         }
 
         

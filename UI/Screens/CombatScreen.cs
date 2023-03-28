@@ -20,6 +20,10 @@ namespace FluffyFighters.UI.Screens
         // Properties
         private SkillsMenu skillsMenu;
 
+        private CaptureButton captureButton;
+        private Point captureButtonPosition => new(skillsMenu.rectangle.X + skillsMenu.rectangle.Width + CaptureButton.PADDING, 
+                       skillsMenu.rectangle.Y + (skillsMenu.rectangle.Height / 2));
+
         private LevelUpMenu levelUpMenu;
         private Point levelUpMenuPosition => new(skillsMenu.rectangle.X + (skillsMenu.rectangle.Width / 2) - (levelUpMenu.texture.Width / 2), 
             GraphicsDevice.Viewport.Height / 3 - levelUpMenu.texture.Height);
@@ -43,6 +47,9 @@ namespace FluffyFighters.UI.Screens
             cm = new CombatManager(playerTeam, enemyTeam);
 
             skillsMenu = new SkillsMenu(Game, playerTeamMenu.team, enemyTeamMenu.team);
+
+            captureButton = new CaptureButton(Game);
+            captureButton.SetPosition(captureButtonPosition);
 
             levelUpMenu = new LevelUpMenu(Game, cm.playerTeam, cm.enemyTeam);
             levelUpMenu.SetPosition(levelUpMenuPosition);
@@ -92,7 +99,7 @@ namespace FluffyFighters.UI.Screens
             enemyTeamMenu.Update(gameTime);
             levelUpMenu.Update(gameTime);
 
-            Mouse.SetCursor(skillsMenu.isHovering || playerTeamMenu.isHovering || levelUpMenu.nextButton.isHovering ? Button.hoverCursor : Button.defaultCursor);
+            Mouse.SetCursor(skillsMenu.isHovering || playerTeamMenu.isHovering || levelUpMenu.nextButton.isHovering || captureButton.isHovering ? Button.hoverCursor : Button.defaultCursor);
         }
 
 
@@ -102,10 +109,10 @@ namespace FluffyFighters.UI.Screens
 
             combatBroadcast.Draw(gameTime);
             skillsMenu.Draw(gameTime);
-
             playerTeamMenu.Draw(gameTime);
             enemyTeamMenu.Draw(gameTime);
             levelUpMenu.Draw(gameTime);
+            captureButton.Draw(gameTime);
         }
 
 
