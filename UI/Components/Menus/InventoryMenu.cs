@@ -1,10 +1,14 @@
-﻿using FluffyFighters.Others;
+﻿using FluffyFighters.Enums;
+using FluffyFighters.Others;
 using FluffyFighters.UI.Components.Buttons;
 using FluffyFighters.UI.Components.Others;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Timers;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.Diagnostics;
 using System.Linq;
 
 namespace FluffyFighters.UI.Components.Menus
@@ -32,13 +36,14 @@ namespace FluffyFighters.UI.Components.Menus
         private Point exitButtonPosition => new(rectangle.X + rectangle.Width - exitButton.texture.Width + BUTTON_PADDING, rectangle.Y - BUTTON_PADDING);
 
         private Slot[,] slots;
-        private Slot[] selectedSlots;
+        private Slot[] teamSlots;
+        private List<Slot> allSlots => slots.Cast<Slot>().Concat(teamSlots).ToList();
 
         private int screenWidth => GraphicsDevice.Viewport.Width;
         private int screenHeight => GraphicsDevice.Viewport.Height;
 
 
-        public bool isHovering => exitButton.isHovering || slots.Cast<Slot>().Any(slot => slot.isHovering) || selectedSlots.Any(slot => slot.isHovering);         
+        public bool isHovering => exitButton.isHovering || slots.Cast<Slot>().Any(slot => slot.isHovering) || teamSlots.Any(slot => slot.isHovering);         
 
 
         // Constructors
@@ -53,9 +58,29 @@ namespace FluffyFighters.UI.Components.Menus
 
             CreateSlots(game);
 
+            // Auto Select first slots
+            slots[0, 0].Select();
+
+            Monster monster4 = new Monster("Bolhas", 1, Element.Water, new Attack[] { }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
+            Monster monster5 = new Monster("Fofi", 1, Element.Fire, new Attack[] { }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
+            Monster monster6 = new Monster("Tonco", 1, Element.Grass, new Attack[] { }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
+
+            slots[0, 0].SetContent(monster4);
+            slots[0, 1].SetContent(monster5);
+            teamSlots[0].SetContent(monster6);
+
             exitButton = new Button(game, customAssetPath: EXIT_BUTTON_ASSET_PATH);
             exitButton.OnClicked += OnExitButtonClicked;
             exitButton.SetPosition(exitButtonPosition);
+        }
+
+
+        // Methods
+        public override void Update(GameTime gameTime)
+        {
+            allSlots.ForEach(slot => slot.Update(gameTime));
+
+            base.Update(gameTime);
         }
 
 
@@ -85,37 +110,39 @@ namespace FluffyFighters.UI.Components.Menus
                     int x = rectangle.X + SLOT_PADDING_X + i * (slots[i, j].texture.Width + SLOT_MARGIN_X);
                     int y = rectangle.Y + SLOT_PADDING_Y + j * (slots[i, j].texture.Height + SLOT_MARGIN_Y);
                     slots[i, j].SetPosition(new Point(x, y));
+                    slots[i, j].OnClicked += SelectSlot;
                 }
             }
 
             // Create Selected Slots
-            selectedSlots = new Slot[Team.MAX_MONSTERS];
-            for (int i = 0; i < selectedSlots.Length; i++)
+            teamSlots = new Slot[Team.MAX_MONSTERS];
+            for (int i = 0; i < teamSlots.Length; i++)
             {
-                selectedSlots[i] = new Slot(game);
-                int x = (screenWidth / 2) - ((selectedSlots.Length * selectedSlots[i].texture.Width + (selectedSlots.Length - 1) * SLOT_MARGIN_X) / 2) + i * (selectedSlots[i].texture.Width + SLOT_MARGIN_X);
+                teamSlots[i] = new Slot(game);
+                int x = (screenWidth / 2) - ((teamSlots.Length * teamSlots[i].texture.Width + (teamSlots.Length - 1) * SLOT_MARGIN_X) / 2) + i * (teamSlots[i].texture.Width + SLOT_MARGIN_X);
                 int y = texture.Height + SELECTED_SLOT_MARGIN_Y;
-                selectedSlots[i].SetPosition(new Point(x, y));
+                teamSlots[i].SetPosition(new Point(x, y));
+                teamSlots[i].OnClicked += SelectSlot;
             }
         }
 
 
         public void DrawSlots(GameTime gameTime)
         {
-            // Draw inventory slots
-            for (int i = 0; i < SLOT_WIDTH_QUANTITY; i++)
-            {
-                for (int j = 0; j < SLOT_HEIGHT_QUANTITY; j++)
-                {
-                    slots[i, j].Draw(gameTime);
-                }
-            }
+            allSlots.ForEach(slot => slot.Draw(gameTime));
+        }
 
-            // Draw selected slots
-            for (int i = 0;i < selectedSlots.Length; i++)
-            {
-                selectedSlots[i].Draw(gameTime);
-            }
+
+        public void DeselectAllSlots()
+        {
+            allSlots.ForEach(slot => slot.Deselect());
+        }
+
+
+        public void SelectSlot(object sender, Slot e)
+        {
+            DeselectAllSlots();
+            e.Select();
         }
 
 

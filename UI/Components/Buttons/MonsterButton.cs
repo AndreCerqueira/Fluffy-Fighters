@@ -5,18 +5,20 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using static FluffyFighters.Others.Monster;
-using static FluffyFighters.UI.Components.Buttons.SkillButton;
 
 namespace FluffyFighters.UI.Components.Buttons
 {
     public class MonsterButton : DrawableGameComponent
     {
         // Constants
+        private const string BACKGROUND_ASSET_PATH = "sprites/ui/monster-icons/default-icon";
         private const string DEFEATED_ASSET_PATH = "sprites/ui/monster-icons/defeated-icon";
         private const float TEXTURE_SCALE = 0.3f;
 
         // Properties
         private SpriteBatch spriteBatch;
+        public Texture2D backgroundTexture;
+        private Rectangle backgroundRectangle;
         public Texture2D texture;
         private Texture2D defeatedTexture;
         private Color defaultColor = Color.White;
@@ -59,8 +61,13 @@ namespace FluffyFighters.UI.Components.Buttons
                 texture = Utils.ResizeTexture(texture, scale);
 
             defeatedTexture = game.Content.Load<Texture2D>(DEFEATED_ASSET_PATH);
+            backgroundTexture = game.Content.Load<Texture2D>(BACKGROUND_ASSET_PATH);
+
+            if (scale != 1)
+                backgroundTexture = Utils.ResizeTexture(backgroundTexture, scale);
 
             rectangle = new(0, 0, texture.Width, texture.Height);
+            backgroundRectangle = new(0, 0, backgroundTexture.Width, backgroundTexture.Height);
 
             monster.OnDeath += Block;
 
@@ -83,6 +90,7 @@ namespace FluffyFighters.UI.Components.Buttons
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
+            spriteBatch.Draw(backgroundTexture, rectangle, GetColor());
             spriteBatch.Draw(texture, rectangle, GetColor());
 
             if (monster.IsDead() && isInteractible)
