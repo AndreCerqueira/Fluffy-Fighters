@@ -77,6 +77,8 @@ namespace FluffyFighters.UI.Screens
         public override void Update(GameTime gameTime)
         {
             inventoryMenu.Update(gameTime);
+            inventoryButton.Update(gameTime);
+            settingsButton.Update(gameTime);
 
             Mouse.SetCursor(inventoryButton.isHovering || settingsButton.isHovering || inventoryMenu.isHovering ? Button.hoverCursor : Button.defaultCursor);
         }
@@ -84,6 +86,7 @@ namespace FluffyFighters.UI.Screens
 
         private void OnInventoryButtonClicked(object sender, EventArgs e)
         {
+            inventoryMenu.Show();
         }
 
 

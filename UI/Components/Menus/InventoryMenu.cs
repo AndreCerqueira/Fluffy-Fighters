@@ -31,6 +31,7 @@ namespace FluffyFighters.UI.Components.Menus
         private SpriteBatch spriteBatch;
         public Rectangle rectangle { get; private set; }
         public Texture2D texture { get; private set; }
+        private bool isVisible = false;
 
         private Button exitButton;
         private Point exitButtonPosition => new(rectangle.X + rectangle.Width - exitButton.texture.Width + BUTTON_PADDING, rectangle.Y - BUTTON_PADDING);
@@ -38,6 +39,7 @@ namespace FluffyFighters.UI.Components.Menus
         private Slot[,] slots;
         private Slot[] teamSlots;
         private List<Slot> allSlots => slots.Cast<Slot>().Concat(teamSlots).ToList();
+        private Slot previousSelected;
 
         private int screenWidth => GraphicsDevice.Viewport.Width;
         private int screenHeight => GraphicsDevice.Viewport.Height;
@@ -58,9 +60,6 @@ namespace FluffyFighters.UI.Components.Menus
 
             CreateSlots(game);
 
-            // Auto Select first slots
-            slots[0, 0].Select();
-
             Monster monster4 = new Monster("Bolhas", 1, Element.Water, new Attack[] { }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
             Monster monster5 = new Monster("Fofi", 1, Element.Fire, new Attack[] { }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
             Monster monster6 = new Monster("Tonco", 1, Element.Grass, new Attack[] { }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
@@ -78,7 +77,10 @@ namespace FluffyFighters.UI.Components.Menus
         // Methods
         public override void Update(GameTime gameTime)
         {
+            if (!isVisible) return;
+
             allSlots.ForEach(slot => slot.Update(gameTime));
+            exitButton.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -86,6 +88,8 @@ namespace FluffyFighters.UI.Components.Menus
 
         public override void Draw(GameTime gameTime)
         {
+            if (!isVisible) return;
+
             spriteBatch.Begin();
             spriteBatch.Draw(texture, rectangle, Color.White);
             spriteBatch.End();
@@ -141,13 +145,30 @@ namespace FluffyFighters.UI.Components.Menus
 
         public void SelectSlot(object sender, Slot e)
         {
-            DeselectAllSlots();
-            e.Select();
+            if (previousSelected == null)
+            {
+                e.Select();
+                previousSelected = e;
+            }
+            else
+            {
+                // change content between slots
+                Monster previousContent = previousSelected.GetContent();
+                Monster newContent = e.GetContent();
+                previousSelected.SetContent(newContent);
+                e.SetContent(previousContent);
+
+                previousSelected.Deselect();
+                previousSelected = null;
+            }
         }
 
 
-        private void OnExitButtonClicked(object sender, EventArgs e)
-        {
-        }
+        private void OnExitButtonClicked(object sender, EventArgs e) => Hide();
+
+
+        public void Show() => isVisible = true;
+        public void Hide() => isVisible = false;
+
     }
 }

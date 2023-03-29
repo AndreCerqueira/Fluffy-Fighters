@@ -125,10 +125,24 @@ namespace FluffyFighters.UI.Components.Others
 
         public void SetContent(Monster monster)
         {
+            if (monster == null)
+            {
+                RemoveContent();
+                return;
+            }
+
             content = monster;
             contentTexture = Game.Content.Load<Texture2D>(monster.iconAssetPath);
             contentTexture = Utils.ResizeTexture(contentTexture, 0.5f);
             contentRectangle = new Rectangle(rectangle.X, rectangle.Y, contentTexture.Width, contentTexture.Height);
+        }
+
+
+        public void RemoveContent()
+        {
+            content = null;
+            contentTexture = null;
+            contentRectangle = new Rectangle(0, 0, 0, 0);
         }
 
 
