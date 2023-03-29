@@ -34,6 +34,10 @@ namespace FluffyFighters.UI.Screens
         private Point settingsButtonPosition => new(GraphicsDevice.Viewport.Width - settingsButton.texture.Width - BUTTON_MARGIN_X, BUTTON_MARGIN_Y);
 
         private InventoryMenu inventoryMenu;
+        private SettingsMenu settingsMenu;
+        private bool isPaused = false;
+
+        public event EventHandler OnClose;
 
 
         // Constructors
@@ -46,21 +50,12 @@ namespace FluffyFighters.UI.Screens
             settingsButton.OnClicked += OnSettingsButtonClicked;
 
             inventoryMenu = new InventoryMenu(game);
+            settingsMenu = new SettingsMenu(game);
+            settingsMenu.continueButton.OnClicked += OnContinueButtonClicked;
+            settingsMenu.exitButton.OnClicked += OnExitButtonClicked;
 
             settingsButton.SetPosition(settingsButtonPosition);
             inventoryButton.SetPosition(inventoryButtonPosition);
-        }
-
-
-        public override void Initialize()
-        {
-            base.Initialize();
-        }
-
-
-        public override void LoadContent()
-        {
-            base.LoadContent();
         }
 
 
@@ -71,27 +66,41 @@ namespace FluffyFighters.UI.Screens
             inventoryButton.Draw(gameTime);
             settingsButton.Draw(gameTime);
             inventoryMenu.Draw(gameTime);
+            settingsMenu.Draw(gameTime);
         }
 
 
         public override void Update(GameTime gameTime)
         {
+            settingsMenu.Update(gameTime);
             inventoryMenu.Update(gameTime);
             inventoryButton.Update(gameTime);
             settingsButton.Update(gameTime);
 
-            Mouse.SetCursor(inventoryButton.isHovering || settingsButton.isHovering || inventoryMenu.isHovering ? Button.hoverCursor : Button.defaultCursor);
+            Mouse.SetCursor(inventoryButton.isHovering || settingsButton.isHovering || inventoryMenu.isHovering || settingsMenu.isHovering ? Button.hoverCursor : Button.defaultCursor);
         }
 
 
         private void OnInventoryButtonClicked(object sender, EventArgs e)
         {
+            if (isPaused) return;
+
             inventoryMenu.Show();
         }
 
 
         private void OnSettingsButtonClicked(object sender, EventArgs e)
         {
+            settingsMenu.Show();
+            inventoryMenu.Hide();
+            isPaused = true;
         }
+
+
+        private void OnContinueButtonClicked(object sender, EventArgs e) => isPaused = false;
+
+
+        private void OnExitButtonClicked(object sender, EventArgs e) => OnClose?.Invoke(this, EventArgs.Empty);
+        
     }
 }

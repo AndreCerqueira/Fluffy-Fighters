@@ -45,7 +45,7 @@ namespace FluffyFighters.UI.Components.Menus
         private int screenHeight => GraphicsDevice.Viewport.Height;
 
 
-        public bool isHovering => exitButton.isHovering || slots.Cast<Slot>().Any(slot => slot.isHovering) || teamSlots.Any(slot => slot.isHovering);         
+        public bool isHovering => isVisible && (exitButton.isHovering || slots.Cast<Slot>().Any(slot => slot.isHovering) || teamSlots.Any(slot => slot.isHovering));         
 
 
         // Constructors

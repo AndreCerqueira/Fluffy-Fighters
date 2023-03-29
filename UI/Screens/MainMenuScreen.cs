@@ -28,6 +28,8 @@ namespace FluffyFighters.UI.Screens
         Point center => new(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
         Vector2 logoPosition => new(center.X - (logoTexture.Width / 2), center.Y - (logoTexture.Height / 2) - 240);
 
+        private bool isHovering => playButton.isHovering || settingsButton.isHovering || exitButton.isHovering;
+
         // Temp
         Attack tacle;
         Attack waterPulse;
@@ -76,7 +78,32 @@ namespace FluffyFighters.UI.Screens
 
             base.LoadContent();
         }
-        
+
+
+        public override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(backgroundTexture, new Rectangle(Point.Zero, new Point(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height)), Color.White);
+            spriteBatch.Draw(logoTexture, logoPosition, Color.White);
+            spriteBatch.End();
+
+            playButton.Draw(gameTime);
+            settingsButton.Draw(gameTime);
+            exitButton.Draw(gameTime);
+        }
+
+
+        public override void Update(GameTime gameTime)
+        {
+            playButton.Update(gameTime);
+            settingsButton.Update(gameTime);
+            exitButton.Update(gameTime);
+
+            Mouse.SetCursor(isHovering ? Button.hoverCursor : Button.defaultCursor);
+        }
+
 
         private void CreateButtons()
         {
@@ -99,7 +126,9 @@ namespace FluffyFighters.UI.Screens
         
         private void OnPlayButtonClicked(object sender, EventArgs e)
         {
-            screenManager.LoadScreen(new InGameScreen(Game));
+            InGameScreen inGameScreen = new(Game);
+            screenManager.LoadScreen(inGameScreen);
+            inGameScreen.OnClose += OnInGameScreenClosed;
         }
 
         
@@ -130,32 +159,11 @@ namespace FluffyFighters.UI.Screens
             Game.Exit();
         }
 
-        
-        public override void Draw(GameTime gameTime)
+
+        private void OnInGameScreenClosed(object sender, EventArgs e)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            spriteBatch.Begin();
-            spriteBatch.Draw(backgroundTexture, new Rectangle(Point.Zero, new Point(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height)), Color.White);
-            spriteBatch.Draw(logoTexture, logoPosition, Color.White);
-            spriteBatch.End();
-
-            playButton.Draw(gameTime);
-            settingsButton.Draw(gameTime);
-            exitButton.Draw(gameTime);
+            screenManager.LoadScreen(this);
         }
 
-
-        public override void Update(GameTime gameTime)
-        {
-            playButton.Update(gameTime);
-            settingsButton.Update(gameTime);
-            exitButton.Update(gameTime);
-
-            Mouse.SetCursor(isHovering ? Button.hoverCursor : Button.defaultCursor);
-        }
-
-
-        private bool isHovering => playButton.isHovering || settingsButton.isHovering || exitButton.isHovering;
     }
 }
