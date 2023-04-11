@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" nextlayerid="20" nextobjectid="43">
- <tileset firstgid="1" source="../../../../../Future Game Developer/Projects/Fluffy Fighters/FFTiles/Grass.tsx"/>
- <tileset firstgid="9" source="../../../../../Future Game Developer/Projects/Fluffy Fighters/FFTiles/Water.tsx"/>
- <tileset firstgid="38" source="../../../../../Future Game Developer/Projects/Fluffy Fighters/FFTiles/grass2.tsx"/>
- <tileset firstgid="43" source="../../../../../Future Game Developer/Projects/Fluffy Fighters/FFTiles/minipilar.tsx"/>
- <tileset firstgid="45" source="../../../../../Future Game Developer/Projects/Fluffy Fighters/FFTiles/minibucho.tsx"/>
- <tileset firstgid="46" source="../../../../../Future Game Developer/Projects/Fluffy Fighters/FFTiles/arvore.tsx"/>
- <tileset firstgid="47" source="../../../../../Future Game Developer/Projects/Fluffy Fighters/FFTiles/buchoduplo.tsx"/>
- <tileset firstgid="48" source="../../../../../Future Game Developer/Projects/Fluffy Fighters/FFTiles/bucho.tsx"/>
- <tileset firstgid="49" source="../../../../../Future Game Developer/Projects/Fluffy Fighters/FFTiles/pedra.tsx"/>
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" nextlayerid="20" nextobjectid="43">
+ <tileset firstgid="1" source="tilesets/Grass.tsx"/>
+ <tileset firstgid="9" source="tilesets/Water.tsx"/>
+ <tileset firstgid="38" source="tilesets/grass2.tsx"/>
+ <tileset firstgid="43" source="tilesets/minipilar.tsx"/>
+ <tileset firstgid="45" source="tilesets/minibucho.tsx"/>
+ <tileset firstgid="46" source="tilesets/arvore.tsx"/>
+ <tileset firstgid="47" source="tilesets/buchoduplo.tsx"/>
+ <tileset firstgid="48" source="tilesets/bucho.tsx"/>
+ <tileset firstgid="49" source="tilesets/pedra.tsx"/>
  <layer id="1" name="grass" width="30" height="20">
   <data encoding="csv">
 38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,
