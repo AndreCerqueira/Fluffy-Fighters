@@ -1,18 +1,12 @@
-﻿using FluffyFighters.Enums;
-using FluffyFighters.Others;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended.Screens;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using FluffyFighters.UI.Components.Buttons;
 using Microsoft.Xna.Framework.Input;
 using FluffyFighters.UI.Components.Menus;
+using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Tiled.Renderers;
 
 namespace FluffyFighters.UI.Screens
 {
@@ -26,6 +20,10 @@ namespace FluffyFighters.UI.Screens
         private const int BUTTON_MARGIN_Y = 10;
 
         // Properties
+        private SpriteBatch spriteBatch;
+        private TiledMap tiledMap;
+        private TiledMapRenderer tiledMapRenderer;
+
         private Button inventoryButton;
         private Point inventoryButtonPosition => new(GraphicsDevice.Viewport.Width -
             settingsButton.texture.Width - inventoryButton.texture.Width - BUTTON_PADDING - BUTTON_MARGIN_X, BUTTON_MARGIN_Y);
@@ -59,9 +57,20 @@ namespace FluffyFighters.UI.Screens
         }
 
 
+        public override void LoadContent()
+        {
+            tiledMap = Content.Load<TiledMap>("sprites/Mapa");
+            tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, tiledMap);
+
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+        }
+
+
         public override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            tiledMapRenderer.Draw();
 
             inventoryButton.Draw(gameTime);
             settingsButton.Draw(gameTime);
@@ -72,6 +81,8 @@ namespace FluffyFighters.UI.Screens
 
         public override void Update(GameTime gameTime)
         {
+            tiledMapRenderer.Update(gameTime);
+
             settingsMenu.Update(gameTime);
             inventoryMenu.Update(gameTime);
             inventoryButton.Update(gameTime);

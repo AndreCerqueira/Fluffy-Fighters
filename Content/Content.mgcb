@@ -68,6 +68,11 @@
 /processorParam:TextureFormat=Color
 /build:sprites/elements/water.png
 
+#begin sprites/Mapa.tmx
+/importer:
+/processor:
+/build:sprites/Mapa.tmx
+
 #begin sprites/monsters/Bolhas.png
 /importer:TextureImporter
 /processor:TextureProcessor
