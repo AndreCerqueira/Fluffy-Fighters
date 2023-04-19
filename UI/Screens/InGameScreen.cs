@@ -94,7 +94,9 @@ namespace FluffyFighters.UI.Screens
 
             spriteBatch.Begin();
 
-            float scaleFactor = 0.5f;
+            float scaleFactor = 0.75f;
+            int fixedTileSize = 64;
+
             foreach (TiledLayer layer in map.Layers)
             {
                 if (!layer.visible)
@@ -126,7 +128,12 @@ namespace FluffyFighters.UI.Screens
 
                         int scaledTileWidth = (int)(tilesets[tilesetIndex].TileWidth * scaleFactor);
                         int scaledTileHeight = (int)(tilesets[tilesetIndex].TileHeight * scaleFactor);
-                        Rectangle destinationRectangle = new Rectangle((int)(x * scaledTileWidth), (int)(y * scaledTileHeight), scaledTileWidth, scaledTileHeight);
+
+                        // Calculate the starting position of the destination rectangle based on the object's size
+                        int destinationX = (int)(x * fixedTileSize * scaleFactor) - (scaledTileWidth - (int)(fixedTileSize * scaleFactor));
+                        int destinationY = (int)(y * fixedTileSize * scaleFactor) - (scaledTileHeight - (int)(fixedTileSize * scaleFactor));
+
+                        Rectangle destinationRectangle = new Rectangle(destinationX, destinationY, scaledTileWidth, scaledTileHeight);
 
                         spriteBatch.Draw(tilesetTextures[tilesetIndex], destinationRectangle, sourceRectangle, Color.White);
                     }
