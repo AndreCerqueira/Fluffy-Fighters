@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using FluffyFighters.UI.Screens;
 
 namespace FluffyFighters.Characters
 {
@@ -44,12 +45,12 @@ namespace FluffyFighters.Characters
             }
         }
 
-        public virtual void Draw()
+        public virtual void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
 
             Rectangle sourceRectangle = new Rectangle(width * currentColumn, height * currentRow, width, height);
-            spriteBatch.Draw(texture, position, sourceRectangle, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position, sourceRectangle, Color.White, 0f, Vector2.Zero, InGameScreen.GAME_SCALE_FACTOR, SpriteEffects.None, 0f);
 
             spriteBatch.End();
         }

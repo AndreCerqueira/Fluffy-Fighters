@@ -7,7 +7,7 @@ namespace FluffyFighters.Characters
     public class Player : AnimatedSprite
     {
         // Constants
-        private const string PLAYER_ASSET_PATH = "sprites/player/player_spritesheet"; //
+        private const string PLAYER_ASSET_PATH = "sprites/player/player_spritesheet";
         private const int PLAYER_ROWS = 5;
         private const int PLAYER_COLUMNS = 4;
         private const float SPEED = 100f;
