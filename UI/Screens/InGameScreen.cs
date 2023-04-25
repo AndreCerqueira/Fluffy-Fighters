@@ -15,6 +15,8 @@ using Microsoft.Xna.Framework.Input;
 using FluffyFighters.UI.Components.Menus;
 using System.IO;
 using TiledCS;
+using FluffyFighters.Characters;
+using System.Numerics;
 
 namespace FluffyFighters.UI.Screens
 {
@@ -45,6 +47,7 @@ namespace FluffyFighters.UI.Screens
         private TiledTileset[] tilesets;
         private Texture2D[] tilesetTextures;
 
+        private Player player;
 
         public event EventHandler OnClose;
 
@@ -78,7 +81,8 @@ namespace FluffyFighters.UI.Screens
             tilesets = new TiledTileset[tilesetCount];
             tilesetTextures = new Texture2D[tilesetCount];
 
-            var test = Content.Load<Texture2D>("sprites/player/player_spritesheet");
+            player = new Player(Game);
+
             var test2 = Content.Load<Texture2D>("sprites/monsters/fofi_spritesheet");
             var test3 = Content.Load<Texture2D>("sprites/monsters/bolhas_spritesheet");
             var test4 = Content.Load<Texture2D>("sprites/monsters/toco_spritesheet");
@@ -148,6 +152,8 @@ namespace FluffyFighters.UI.Screens
 
             spriteBatch.End();
 
+            player.Draw();
+
             inventoryButton.Draw(gameTime);
             settingsButton.Draw(gameTime);
             inventoryMenu.Draw(gameTime);
@@ -161,6 +167,8 @@ namespace FluffyFighters.UI.Screens
             inventoryMenu.Update(gameTime);
             inventoryButton.Update(gameTime);
             settingsButton.Update(gameTime);
+
+            player.Update(gameTime);
 
             Mouse.SetCursor(inventoryButton.isHovering || settingsButton.isHovering || inventoryMenu.isHovering || settingsMenu.isHovering ? Button.hoverCursor : Button.defaultCursor);
         }

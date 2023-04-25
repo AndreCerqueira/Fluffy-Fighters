@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/progressBar.png</SourceFile>
-  <SourceTime>2023-04-11T17:05:25.6916639+01:00</SourceTime>
+  <SourceTime>2023-04-25T15:38:59.7292448+01:00</SourceTime>
   <DestFile>C:/IPCA/Fluffy-Fighters/Content/bin/DesktopGL/sprites/ui/progressBar.xnb</DestFile>
-  <DestTime>2023-04-19T12:11:20.9756835+01:00</DestTime>
+  <DestTime>2023-04-25T18:57:37.7183358+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T12:44:56+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

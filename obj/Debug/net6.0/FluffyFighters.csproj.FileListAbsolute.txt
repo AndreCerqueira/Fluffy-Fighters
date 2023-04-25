@@ -319,3 +319,17 @@ C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\ne
 C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\monsters\fofi_spritesheet.xnb
 C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\monsters\toco_spritesheet.xnb
 C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\player\player_spritesheet.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\monsters\bolhas_spritesheet.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\monsters\fofi_spritesheet.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\monsters\toco_spritesheet.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\player\player_spritesheet.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\tilesImages\arvore.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\tilesImages\bucho.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\tilesImages\buchoduplo.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\tilesImages\grass2.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\tilesImages\grassTiles.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\tilesImages\minibucho.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\tilesImages\minipilar.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\tilesImages\pedra.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\tilesImages\tronco.xnb
+C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\sprites\tilesImages\Water.xnb

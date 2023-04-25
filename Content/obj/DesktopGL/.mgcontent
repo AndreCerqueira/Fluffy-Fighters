@@ -9,9 +9,13 @@
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/grass.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/neutral.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/water.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/bolhas_spritesheet.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/Bolhas.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/fofi_spritesheet.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/Fofi.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/toco_spritesheet.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/Tonco.png</File>
+    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/player/player_spritesheet.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/tilesImages/arvore.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/tilesImages/bucho.png</File>
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/tilesImages/buchoduplo.png</File>
@@ -51,6 +55,10 @@
     <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/title.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
