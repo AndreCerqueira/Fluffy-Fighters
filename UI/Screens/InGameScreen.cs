@@ -78,6 +78,12 @@ namespace FluffyFighters.UI.Screens
             tilesets = new TiledTileset[tilesetCount];
             tilesetTextures = new Texture2D[tilesetCount];
 
+            var test = Content.Load<Texture2D>("sprites/player/player_spritesheet");
+            var test2 = Content.Load<Texture2D>("sprites/monsters/fofi_spritesheet");
+            var test3 = Content.Load<Texture2D>("sprites/monsters/bolhas_spritesheet");
+            var test4 = Content.Load<Texture2D>("sprites/monsters/toco_spritesheet");
+
+
             for (int i = 0; i < tilesetCount; i++)
             {
                 tilesets[i] = new TiledTileset("Content\\sprites\\tilesets\\" + Path.GetFileName(map.Tilesets[i].source));

@@ -68,6 +68,18 @@
 /processorParam:TextureFormat=Color
 /build:sprites/elements/water.png
 
+#begin sprites/monsters/bolhas_spritesheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:sprites/monsters/bolhas_spritesheet.png
+
 #begin sprites/monsters/Bolhas.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -79,6 +91,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:sprites/monsters/Bolhas.png
+
+#begin sprites/monsters/fofi_spritesheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:sprites/monsters/fofi_spritesheet.png
 
 #begin sprites/monsters/Fofi.png
 /importer:TextureImporter
@@ -92,6 +116,18 @@
 /processorParam:TextureFormat=Color
 /build:sprites/monsters/Fofi.png
 
+#begin sprites/monsters/toco_spritesheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:sprites/monsters/toco_spritesheet.png
+
 #begin sprites/monsters/Tonco.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -103,6 +139,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:sprites/monsters/Tonco.png
+
+#begin sprites/player/player_spritesheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:sprites/player/player_spritesheet.png
 
 #begin sprites/tilesImages/arvore.png
 /importer:TextureImporter
