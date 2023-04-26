@@ -71,11 +71,11 @@ namespace FluffyFighters.UI.Screens
         public override void LoadContent()
         {
             player = new Player(Game);
-            map = new Map(Game, "\\sprites\\Mapa.tmx");
+            map = new Map(Game, player, "\\sprites\\Mapa.tmx");
 
-            var test2 = Content.Load<Texture2D>("sprites/monsters/fofi_spritesheet");
-            var test3 = Content.Load<Texture2D>("sprites/monsters/bolhas_spritesheet");
-            var test4 = Content.Load<Texture2D>("sprites/monsters/toco_spritesheet");
+            // var test2 = Content.Load<Texture2D>("sprites/monsters/fofi_spritesheet");
+            // var test3 = Content.Load<Texture2D>("sprites/monsters/bolhas_spritesheet");
+            // var test4 = Content.Load<Texture2D>("sprites/monsters/toco_spritesheet");
 
         }
 
@@ -85,8 +85,6 @@ namespace FluffyFighters.UI.Screens
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             map.Draw(gameTime);
-
-            player.Draw(gameTime);
 
             inventoryButton.Draw(gameTime);
             settingsButton.Draw(gameTime);
@@ -103,8 +101,6 @@ namespace FluffyFighters.UI.Screens
             settingsButton.Update(gameTime);
 
             map.Update(gameTime);
-
-            player.Update(gameTime);
 
             Mouse.SetCursor(inventoryButton.isHovering || settingsButton.isHovering || inventoryMenu.isHovering || settingsMenu.isHovering ? Button.hoverCursor : Button.defaultCursor);
         }

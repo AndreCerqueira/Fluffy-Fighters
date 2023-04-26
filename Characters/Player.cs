@@ -60,5 +60,21 @@ namespace FluffyFighters.Characters
 
             base.Update(gameTime);
         }
+
+
+        public void DrawCollider(SpriteBatch spriteBatch)
+        {
+            Rectangle rectangle = GetCollider();
+
+            Texture2D texture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+            texture.SetData(new Color[] { Color.Aqua });
+            spriteBatch.Draw(texture, rectangle, Color.Aqua);
+        }
+
+
+        public Rectangle GetCollider()
+        {
+            return new Rectangle((int)position.X + 32, (int)position.Y + 64, 32, 32);
+        }
     }
 }

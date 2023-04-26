@@ -7,18 +7,19 @@ namespace FluffyFighters.Characters
     public class AnimatedSprite
     {
         private SpriteBatch spriteBatch;
-        private Texture2D texture;
+        protected Texture2D texture;
         private int rows;
         private int columns;
         protected int currentRow;
         private int currentColumn;
-        private int width;
-        private int height;
+        protected int width;
+        protected int height;
         private float timer;
         private float animationSpeed;
 
         public Vector2 position { get; set; }
 
+        
         public AnimatedSprite(Game game, Texture2D texture, int rows, int columns)
         {
             this.texture = texture;
@@ -33,6 +34,7 @@ namespace FluffyFighters.Characters
             spriteBatch = new SpriteBatch(game.GraphicsDevice);
         }
 
+
         public virtual void Update(GameTime gameTime)
         {
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -45,14 +47,11 @@ namespace FluffyFighters.Characters
             }
         }
 
-        public virtual void Draw(GameTime gameTime)
-        {
-            spriteBatch.Begin();
 
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
             Rectangle sourceRectangle = new Rectangle(width * currentColumn, height * currentRow, width, height);
             spriteBatch.Draw(texture, position, sourceRectangle, Color.White, 0f, Vector2.Zero, InGameScreen.GAME_SCALE_FACTOR, SpriteEffects.None, 0f);
-
-            spriteBatch.End();
         }
     }
 }
