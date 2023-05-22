@@ -12,8 +12,8 @@ namespace FluffyFighters.Characters
         private int columns;
         protected int currentRow;
         private int currentColumn;
-        protected int width;
-        protected int height;
+        public int width;
+        public int height;
         private float timer;
         private float animationSpeed;
 

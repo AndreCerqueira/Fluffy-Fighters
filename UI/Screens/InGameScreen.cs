@@ -1,22 +1,12 @@
-﻿using FluffyFighters.Enums;
-using FluffyFighters.Others;
+﻿using FluffyFighters.Others;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended.Screens;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using FluffyFighters.UI.Components.Buttons;
 using Microsoft.Xna.Framework.Input;
 using FluffyFighters.UI.Components.Menus;
-using System.IO;
-using TiledCS;
 using FluffyFighters.Characters;
-using System.Numerics;
 
 namespace FluffyFighters.UI.Screens
 {
@@ -43,6 +33,7 @@ namespace FluffyFighters.UI.Screens
         private SettingsMenu settingsMenu;
         private bool isPaused = false;
 
+        private Camera camera;
         private Map map;
         private Player player;
 
@@ -58,6 +49,8 @@ namespace FluffyFighters.UI.Screens
             settingsButton = new Button(game, customAssetPath: SETTINGS_BUTTON_ASSET_PATH);
             settingsButton.OnClicked += OnSettingsButtonClicked;
 
+            camera = new Camera(Player.SPEED);
+
             inventoryMenu = new InventoryMenu(game);
             settingsMenu = new SettingsMenu(game);
             settingsMenu.continueButton.OnClicked += OnContinueButtonClicked;
@@ -72,7 +65,8 @@ namespace FluffyFighters.UI.Screens
         {
             player = new Player(Game);
             map = new Map(Game, player, "\\sprites\\Mapa.tmx");
-
+            player.map = map;
+            
             // var test2 = Content.Load<Texture2D>("sprites/monsters/fofi_spritesheet");
             // var test3 = Content.Load<Texture2D>("sprites/monsters/bolhas_spritesheet");
             // var test4 = Content.Load<Texture2D>("sprites/monsters/toco_spritesheet");
@@ -84,7 +78,8 @@ namespace FluffyFighters.UI.Screens
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            map.Draw(gameTime);
+            Vector2 screenPosition = camera.Position;
+            map.Draw(screenPosition, gameTime);
 
             inventoryButton.Draw(gameTime);
             settingsButton.Draw(gameTime);
@@ -95,12 +90,15 @@ namespace FluffyFighters.UI.Screens
 
         public override void Update(GameTime gameTime)
         {
+            camera.Follow(player.position, gameTime);
+
             settingsMenu.Update(gameTime);
             inventoryMenu.Update(gameTime);
             inventoryButton.Update(gameTime);
             settingsButton.Update(gameTime);
 
-            map.Update(gameTime);
+            Vector2 screenPosition = camera.Position;
+            map.Update(screenPosition, gameTime);
 
             Mouse.SetCursor(inventoryButton.isHovering || settingsButton.isHovering || inventoryMenu.isHovering || settingsMenu.isHovering ? Button.hoverCursor : Button.defaultCursor);
         }

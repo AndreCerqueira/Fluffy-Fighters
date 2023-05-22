@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using FluffyFighters.Others;
 
 namespace FluffyFighters.Characters
 {
@@ -10,18 +11,19 @@ namespace FluffyFighters.Characters
         private const string PLAYER_ASSET_PATH = "sprites/player/player_spritesheet";
         private const int PLAYER_ROWS = 5;
         private const int PLAYER_COLUMNS = 4;
-        private const float SPEED = 100f;
+        public const float SPEED = 100f;
         private const int IDLE_ROW = 0;
         private const int WALK_LEFT_ROW = 4;
         private const int WALK_RIGHT_ROW = 3;
         private const int WALK_UP_ROW = 2;
         private const int WALK_DOWN_ROW = 1;
 
+        public Map map { get; set; }
         public Vector2 velocity { get; set; }
 
         public Player(Game game) : 
             base(game, game.Content.Load<Texture2D>(PLAYER_ASSET_PATH), PLAYER_ROWS, PLAYER_COLUMNS) 
-        { 
+        {
         }
 
         public override void Update(GameTime gameTime)
@@ -44,7 +46,7 @@ namespace FluffyFighters.Characters
                 playerInput.Normalize();
 
             velocity = playerInput * SPEED * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            position += velocity;
+            map.Offset += velocity; // TODO: Move Map, with collisions, remove camera probably
 
             // Atualize a animação do jogador com base na direção
             if (playerInput.X < 0)

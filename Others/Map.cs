@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TiledCS;
 using FluffyFighters.Characters;
+using MonoGame.Extended;
 
 namespace FluffyFighters.Others
 {
@@ -17,14 +18,15 @@ namespace FluffyFighters.Others
         // Constants
         private const float GAME_SCALE_FACTOR = 0.75f;
         private const int FIXED_TILE_SIZE = 64;
-        private readonly Vector2 PLAYER_START_POSITION = new(12, 1);
+        private readonly Vector2 PLAYER_START_POSITION = new(12, 6);
 
         // Properties
         private SpriteBatch spriteBatch;
-        private TiledMap map;
-        private TiledTileset[] tilesets;
+        public TiledMap map;
+        public TiledTileset[] tilesets;
         private Texture2D[] tilesetTextures;
-        private string[] layersOverPlayer;
+        private string[] layersOverPlayer; 
+        public Vector2 Offset { get; set; }
 
         private Player player;
 
@@ -52,20 +54,20 @@ namespace FluffyFighters.Others
         }
 
 
-        public void Update(GameTime gameTime)
+        public void Update(Vector2 screenPosition, GameTime gameTime)
         {
             Vector2 previousPosition = player.position;
 
             player.Update(gameTime);
 
-            if (CheckCollision(player.GetCollider()))
+            if (CheckCollision(screenPosition, player.GetCollider()))
             {
                 player.position = previousPosition;
             }
         }
 
 
-        public void Draw(GameTime gameTime)
+        public void Draw(Vector2 screenPosition, GameTime gameTime)
         {
             spriteBatch.Begin();
 
@@ -75,10 +77,10 @@ namespace FluffyFighters.Others
                 if (!layer.visible || layersOverPlayer.Contains(layer.name))
                     continue;
 
-                DrawLayer(layer);
+                DrawLayer(screenPosition, layer);
             }
 
-            // DrawRectangles(spriteBatch, GetCollisionRectangles(), Color.Red);
+            // DrawRectangles(spriteBatch, GetCollisionRectangles(screenPosition), Color.Red);
             // player.DrawCollider(spriteBatch);
 
             player.Draw(spriteBatch);
@@ -89,14 +91,14 @@ namespace FluffyFighters.Others
                 if (!layer.visible || !layersOverPlayer.Contains(layer.name))
                     continue;
 
-                DrawLayer(layer);
+                DrawLayer(screenPosition, layer);
             }
 
             spriteBatch.End();
         }
 
 
-        private void DrawLayer(TiledLayer layer)
+        private void DrawLayer(Vector2 screenPosition, TiledLayer layer)
         {
             for (int y = 0; y < layer.height; y++)
             {
@@ -126,8 +128,12 @@ namespace FluffyFighters.Others
                     int scaledTileHeight = (int)(tilesets[tilesetIndex].TileHeight * GAME_SCALE_FACTOR);
 
                     // Calculate the starting position of the destination rectangle based on the object's size
-                    int destinationX = (int)(x * FIXED_TILE_SIZE * GAME_SCALE_FACTOR) - (scaledTileWidth - (int)(FIXED_TILE_SIZE * GAME_SCALE_FACTOR));
-                    int destinationY = (int)(y * FIXED_TILE_SIZE * GAME_SCALE_FACTOR) - (scaledTileHeight - (int)(FIXED_TILE_SIZE * GAME_SCALE_FACTOR));
+                    int destinationX = (int)(x * FIXED_TILE_SIZE * GAME_SCALE_FACTOR) - (scaledTileWidth - (int)(FIXED_TILE_SIZE * GAME_SCALE_FACTOR)) - (int)Offset.X;
+                    int destinationY = (int)(y * FIXED_TILE_SIZE * GAME_SCALE_FACTOR) - (scaledTileHeight - (int)(FIXED_TILE_SIZE * GAME_SCALE_FACTOR)) - (int)Offset.Y;
+
+                    // Adjust destination based on the screen position
+                    destinationX -= (int)screenPosition.X;
+                    destinationY -= (int)screenPosition.Y;
 
                     Rectangle destinationRectangle = new Rectangle(destinationX, destinationY, scaledTileWidth, scaledTileHeight);
 
@@ -137,7 +143,7 @@ namespace FluffyFighters.Others
         }
 
 
-        private List<Rectangle> GetCollisionRectangles()
+        private List<Rectangle> GetCollisionRectangles(Vector2 screenPosition)
         {
             List<Rectangle> collisionRectangles = new List<Rectangle>();
 
@@ -148,8 +154,8 @@ namespace FluffyFighters.Others
                 foreach (TiledObject obj in collisionLayer.objects)
                 {
                     Rectangle rect = new Rectangle(
-                        (int)(obj.x * GAME_SCALE_FACTOR),
-                        (int)(obj.y * GAME_SCALE_FACTOR),
+                        (int)(obj.x * GAME_SCALE_FACTOR - screenPosition.X - (int)Offset.X),
+                        (int)(obj.y * GAME_SCALE_FACTOR - screenPosition.Y - (int)Offset.Y),
                         (int)(obj.width * GAME_SCALE_FACTOR),
                         (int)(obj.height * GAME_SCALE_FACTOR)
                     );
@@ -162,9 +168,9 @@ namespace FluffyFighters.Others
         }
 
 
-        public bool CheckCollision(Rectangle rectangle)
+        public bool CheckCollision(Vector2 screenPosition, Rectangle rectangle)
         {
-            List<Rectangle> collisionRectangles = GetCollisionRectangles();
+            List<Rectangle> collisionRectangles = GetCollisionRectangles(screenPosition);
 
             foreach (Rectangle collisionRectangle in collisionRectangles)
             {
