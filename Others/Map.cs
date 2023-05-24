@@ -56,13 +56,13 @@ namespace FluffyFighters.Others
 
         public void Update(Vector2 screenPosition, GameTime gameTime)
         {
-            Vector2 previousPosition = player.position;
+            Vector2 previousOffset = Offset;
 
             player.Update(gameTime);
 
             if (CheckCollision(screenPosition, player.GetCollider()))
             {
-                player.position = previousPosition;
+                Offset = previousOffset;
             }
         }
 
@@ -80,8 +80,8 @@ namespace FluffyFighters.Others
                 DrawLayer(screenPosition, layer);
             }
 
-            // DrawRectangles(spriteBatch, GetCollisionRectangles(screenPosition), Color.Red);
-            // player.DrawCollider(spriteBatch);
+            DrawRectangles(spriteBatch, GetCollisionRectangles(screenPosition), Color.Red);
+            player.DrawCollider(spriteBatch);
 
             player.Draw(spriteBatch);
 

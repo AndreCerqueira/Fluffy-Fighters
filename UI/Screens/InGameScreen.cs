@@ -33,7 +33,6 @@ namespace FluffyFighters.UI.Screens
         private SettingsMenu settingsMenu;
         private bool isPaused = false;
 
-        private Camera camera;
         private Map map;
         private Player player;
 
@@ -48,8 +47,6 @@ namespace FluffyFighters.UI.Screens
 
             settingsButton = new Button(game, customAssetPath: SETTINGS_BUTTON_ASSET_PATH);
             settingsButton.OnClicked += OnSettingsButtonClicked;
-
-            camera = new Camera(Player.SPEED);
 
             inventoryMenu = new InventoryMenu(game);
             settingsMenu = new SettingsMenu(game);
@@ -76,10 +73,10 @@ namespace FluffyFighters.UI.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            Color backgroundColor = new(85, 107, 211);
+            GraphicsDevice.Clear(backgroundColor);
 
-            Vector2 screenPosition = camera.Position;
-            map.Draw(screenPosition, gameTime);
+            map.Draw(player.position, gameTime);
 
             inventoryButton.Draw(gameTime);
             settingsButton.Draw(gameTime);
@@ -90,15 +87,12 @@ namespace FluffyFighters.UI.Screens
 
         public override void Update(GameTime gameTime)
         {
-            camera.Follow(player.position, gameTime);
-
             settingsMenu.Update(gameTime);
             inventoryMenu.Update(gameTime);
             inventoryButton.Update(gameTime);
             settingsButton.Update(gameTime);
 
-            Vector2 screenPosition = camera.Position;
-            map.Update(screenPosition, gameTime);
+            map.Update(player.position, gameTime);
 
             Mouse.SetCursor(inventoryButton.isHovering || settingsButton.isHovering || inventoryMenu.isHovering || settingsMenu.isHovering ? Button.hoverCursor : Button.defaultCursor);
         }
