@@ -71,6 +71,8 @@ namespace FluffyFighters.Others
         {
             spriteBatch.Begin();
 
+            // é aqui a ordem z
+
             // Draw layers below player
             foreach (TiledLayer layer in map.Layers)
             {
@@ -138,6 +140,9 @@ namespace FluffyFighters.Others
                     Rectangle destinationRectangle = new Rectangle(destinationX, destinationY, scaledTileWidth, scaledTileHeight);
 
                     spriteBatch.Draw(tilesetTextures[tilesetIndex], destinationRectangle, sourceRectangle, Color.White);
+
+                    float layerDepth = destinationY / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                    spriteBatch.Draw(tilesetTextures[tilesetIndex], destinationRectangle, sourceRectangle, Color.White, 0f, Vector2.Zero, SpriteEffects.None, layerDepth);
                 }
             }
         }
