@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>D:/IPCA/Fluffy-Fighters/Content/sprites/player/player_spritesheet.png</SourceFile>
-  <SourceTime>2023-05-22T17:29:29.5351367+01:00</SourceTime>
+  <SourceTime>2023-05-28T19:23:03.7265128+01:00</SourceTime>
   <DestFile>D:/IPCA/Fluffy-Fighters/Content/bin/DesktopGL/Content/sprites/player/player_spritesheet.xnb</DestFile>
-  <DestTime>2023-05-22T17:29:44.3462859+01:00</DestTime>
+  <DestTime>2023-05-28T19:27:34.9765276+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T12:44:56+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

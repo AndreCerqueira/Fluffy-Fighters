@@ -51,7 +51,8 @@ namespace FluffyFighters.Characters
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             Rectangle sourceRectangle = new Rectangle(width * currentColumn, height * currentRow, width, height);
-            spriteBatch.Draw(texture, position, sourceRectangle, Color.White, 0f, Vector2.Zero, InGameScreen.GAME_SCALE_FACTOR, SpriteEffects.None, 0f);
+            float layerDepth = 0.4f;// MathHelper.Clamp((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2f, 0f, 1f);;
+            spriteBatch.Draw(texture, position, sourceRectangle, Color.White, 0f, Vector2.Zero, InGameScreen.GAME_SCALE_FACTOR, SpriteEffects.None, layerDepth);
         }
     }
 }

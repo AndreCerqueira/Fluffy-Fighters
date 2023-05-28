@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>D:/IPCA/Fluffy-Fighters/Content/sprites/monsters/Tonco.png</SourceFile>
-  <SourceTime>2023-05-22T17:29:29.5341369+01:00</SourceTime>
+  <SourceTime>2023-05-28T19:23:03.7245121+01:00</SourceTime>
   <DestFile>D:/IPCA/Fluffy-Fighters/Content/bin/DesktopGL/Content/sprites/monsters/Tonco.xnb</DestFile>
-  <DestTime>2023-05-22T17:29:44.263266+01:00</DestTime>
+  <DestTime>2023-05-28T19:27:34.9215153+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T12:44:56+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

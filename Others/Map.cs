@@ -33,7 +33,7 @@ namespace FluffyFighters.Others
 
         public Map(Game game, Player player, string mapPath)
         {
-            layersOverPlayer = new string[] { "trees", "pilares", "pedras", "bushes" };
+            layersOverPlayer = new string[] { "trees", "pilares", "pedras", "bushes", "water" };
 
             this.player = player;
             player.position = PLAYER_START_POSITION * FIXED_TILE_SIZE * GAME_SCALE_FACTOR;
@@ -69,9 +69,7 @@ namespace FluffyFighters.Others
 
         public void Draw(Vector2 screenPosition, GameTime gameTime)
         {
-            spriteBatch.Begin();
-
-            // é aqui a ordem z
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend);
 
             // Draw layers below player
             foreach (TiledLayer layer in map.Layers)
@@ -79,10 +77,10 @@ namespace FluffyFighters.Others
                 if (!layer.visible || layersOverPlayer.Contains(layer.name))
                     continue;
 
-                DrawLayer(screenPosition, layer);
+                DrawLayer(screenPosition, layer, true);
             }
 
-            DrawRectangles(spriteBatch, GetCollisionRectangles(screenPosition), Color.Red);
+            // DrawRectangles(spriteBatch, GetCollisionRectangles(screenPosition), Color.Red);
             player.DrawCollider(spriteBatch);
 
             player.Draw(spriteBatch);
@@ -93,14 +91,14 @@ namespace FluffyFighters.Others
                 if (!layer.visible || !layersOverPlayer.Contains(layer.name))
                     continue;
 
-                DrawLayer(screenPosition, layer);
+                DrawLayer(screenPosition, layer, false);
             }
 
             spriteBatch.End();
         }
 
 
-        private void DrawLayer(Vector2 screenPosition, TiledLayer layer)
+        private void DrawLayer(Vector2 screenPosition, TiledLayer layer, bool isBackground)
         {
             for (int y = 0; y < layer.height; y++)
             {
@@ -141,7 +139,12 @@ namespace FluffyFighters.Others
 
                     spriteBatch.Draw(tilesetTextures[tilesetIndex], destinationRectangle, sourceRectangle, Color.White);
 
-                    float layerDepth = destinationY / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                    if (layer.name == "water")
+                    {
+
+                    }
+
+                    float layerDepth = isBackground ? 0f : GetLayerDepth(destinationY + tilesetTextures[tilesetIndex].Height);
                     spriteBatch.Draw(tilesetTextures[tilesetIndex], destinationRectangle, sourceRectangle, Color.White, 0f, Vector2.Zero, SpriteEffects.None, layerDepth);
                 }
             }
@@ -197,6 +200,13 @@ namespace FluffyFighters.Others
                 texture.SetData(new Color[] { color });
                 spriteBatch.Draw(texture, rectangle, color);
             }
+        }
+
+
+        public float GetLayerDepth(float y)
+        {
+            var result = MathHelper.Clamp(y / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height, 0.01f, 1f);
+            return result;
         }
     }
 }
