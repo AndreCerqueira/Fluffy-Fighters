@@ -29,6 +29,7 @@ namespace FluffyFighters.Others
         public Vector2 Offset { get; set; }
 
         private Player player;
+        private MapMonster mapMonster;
 
 
         public Map(Game game, Player player, string mapPath)
@@ -40,6 +41,7 @@ namespace FluffyFighters.Others
 
             spriteBatch = new SpriteBatch(game.GraphicsDevice);
             map = new TiledMap(game.Content.RootDirectory + mapPath);
+            mapMonster = new MapMonster(game, this, "sprites/monsters/fofi_spritesheet");
 
             int tilesetCount = map.Tilesets.Length;
             tilesets = new TiledTileset[tilesetCount];
@@ -59,6 +61,8 @@ namespace FluffyFighters.Others
             Vector2 previousOffset = Offset;
 
             player.Update(gameTime);
+
+            mapMonster.Update(gameTime);
 
             if (CheckCollision(screenPosition, player.GetCollider()))
             {
@@ -84,6 +88,8 @@ namespace FluffyFighters.Others
             player.DrawCollider(spriteBatch);
 
             player.Draw(spriteBatch);
+
+            mapMonster.Draw(spriteBatch);
 
             // Draw layers over player
             foreach (TiledLayer layer in map.Layers)
@@ -138,11 +144,6 @@ namespace FluffyFighters.Others
                     Rectangle destinationRectangle = new Rectangle(destinationX, destinationY, scaledTileWidth, scaledTileHeight);
 
                     spriteBatch.Draw(tilesetTextures[tilesetIndex], destinationRectangle, sourceRectangle, Color.White);
-
-                    if (layer.name == "water")
-                    {
-
-                    }
 
                     float layerDepth = isBackground ? 0f : GetLayerDepth(destinationY + tilesetTextures[tilesetIndex].Height);
                     spriteBatch.Draw(tilesetTextures[tilesetIndex], destinationRectangle, sourceRectangle, Color.White, 0f, Vector2.Zero, SpriteEffects.None, layerDepth);

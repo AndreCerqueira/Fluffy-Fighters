@@ -11,11 +11,11 @@ namespace FluffyFighters.Characters
         private int rows;
         private int columns;
         protected int currentRow;
-        private int currentColumn;
+        protected int currentColumn;
         public int width;
         public int height;
         private float timer;
-        private float animationSpeed;
+        protected float animationSpeed;
 
         public Vector2 position { get; set; }
 
@@ -51,7 +51,7 @@ namespace FluffyFighters.Characters
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             Rectangle sourceRectangle = new Rectangle(width * currentColumn, height * currentRow, width, height);
-            float layerDepth = 0.4f;// MathHelper.Clamp((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2f, 0f, 1f);;
+            float layerDepth = 0.4f;
             spriteBatch.Draw(texture, position, sourceRectangle, Color.White, 0f, Vector2.Zero, InGameScreen.GAME_SCALE_FACTOR, SpriteEffects.None, layerDepth);
         }
     }
