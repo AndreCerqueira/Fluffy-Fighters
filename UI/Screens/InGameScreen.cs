@@ -94,8 +94,11 @@ namespace FluffyFighters.UI.Screens
 
             map.Update(player.position, gameTime);
 
-            Mouse.SetCursor(inventoryButton.isHovering || settingsButton.isHovering || inventoryMenu.isHovering || settingsMenu.isHovering ? Button.hoverCursor : Button.defaultCursor);
+            Mouse.SetCursor(isHoverMonster || inventoryButton.isHovering || settingsButton.isHovering || inventoryMenu.isHovering || settingsMenu.isHovering ? Button.hoverCursor : Button.defaultCursor);
         }
+
+
+        private bool isHoverMonster => map.spawner != null && map.spawner.monsters.Find(m => m.isHovering) != null;
 
 
         private void OnInventoryButtonClicked(object sender, EventArgs e)

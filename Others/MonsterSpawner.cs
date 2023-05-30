@@ -13,7 +13,7 @@ namespace FluffyFighters.Others
 
         private Game game;
         private Map map;
-        private List<MapMonster> monsters;
+        public List<MapMonster> monsters;
 
 
         public MonsterSpawner(Game game, Map map)

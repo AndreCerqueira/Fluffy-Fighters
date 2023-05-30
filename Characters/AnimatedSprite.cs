@@ -8,14 +8,15 @@ namespace FluffyFighters.Characters
     {
         private SpriteBatch spriteBatch;
         protected Texture2D texture;
-        private int rows;
-        private int columns;
+        protected int rows;
+        protected int columns;
         protected int currentRow;
         protected int currentColumn;
         public int width;
         public int height;
         private float timer;
         protected float animationSpeed;
+        private Rectangle rectangle;
 
         public Vector2 position { get; set; }
 

@@ -4,10 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluffyFighters.Characters
 {
@@ -27,7 +23,26 @@ namespace FluffyFighters.Characters
         private float idleTime;
         private float speed;
         private float maxPatrolTime;
+        private Color defaultColor = Color.White;
+        private Color hoverColor = Color.LightGray;
+        private Rectangle rectangle => new Rectangle(width * currentColumn, height * currentRow, width, height);
 
+        public bool isHovering
+        {
+            get
+            {
+                var mouseState = Mouse.GetState();
+                var mouseRectangle = new Rectangle(mouseState.X, mouseState.Y, 1, 1);
+
+                Rectangle newRectangle = new Rectangle((int)position.X - (int)map.Offset.X, (int)position.Y - (int)map.Offset.Y, width, height);
+                return mouseRectangle.Intersects(newRectangle);
+            }
+        }
+
+        public bool isClicked => Mouse.GetState().LeftButton == ButtonState.Pressed;
+
+        // Clicked event
+        public event EventHandler OnClicked;
 
         public MapMonster(Game game, Map map, string assetPath) :
             base(game, game.Content.Load<Texture2D>(assetPath), MONSTER_ROWS, MONSTER_COLUMNS)
@@ -39,12 +54,28 @@ namespace FluffyFighters.Characters
             maxPatrolTime = GetRandomMaxPatrolTime();
         }
 
+
         public override void Update(GameTime gameTime)
         {
+            if (isClicked && isHovering)
+                Clicked();
+
             Patrol(gameTime);
 
             base.Update(gameTime);
         }
+
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            var color = GetColor();
+            Vector2 pos = position - map.Offset;
+            float layerDepth = 0.4f;
+            spriteBatch.Draw(texture, pos, rectangle, color, 0f, Vector2.Zero, InGameScreen.GAME_SCALE_FACTOR, SpriteEffects.None, layerDepth);
+        }
+
+
+        private void Clicked() => OnClicked?.Invoke(this, new EventArgs());
 
 
         public void DrawCollider(SpriteBatch spriteBatch)
@@ -63,14 +94,8 @@ namespace FluffyFighters.Characters
         }
 
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            Rectangle sourceRectangle = new Rectangle(width * currentColumn, height * currentRow, width, height);
-            Vector2 pos = position - map.Offset;
-            float layerDepth = 0.4f;
-            spriteBatch.Draw(texture, pos, sourceRectangle, Color.White, 0f, Vector2.Zero, InGameScreen.GAME_SCALE_FACTOR, SpriteEffects.None, layerDepth);
-        }
-
+        private Color GetColor() =>isHovering ? hoverColor : defaultColor;
+        
 
         public void Patrol(GameTime gameTime)
         {

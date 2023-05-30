@@ -84,6 +84,7 @@ namespace FluffyFighters.UI.Components.Buttons
             base.Draw(gameTime);
         }
 
+
         private Color GetColor()
         {
             if (isBlocked)

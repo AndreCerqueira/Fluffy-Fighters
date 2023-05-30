@@ -29,7 +29,7 @@ namespace FluffyFighters.Others
         public Vector2 Offset { get; set; }
 
         private Player player;
-        private MonsterSpawner spawner;
+        public MonsterSpawner spawner;
 
 
         public Map(Game game, Player player, string mapPath)
