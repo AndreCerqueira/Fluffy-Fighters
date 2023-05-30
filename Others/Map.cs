@@ -16,8 +16,8 @@ namespace FluffyFighters.Others
     public class Map
     {
         // Constants
-        private const float GAME_SCALE_FACTOR = 0.75f;
-        private const int FIXED_TILE_SIZE = 64;
+        public const float GAME_SCALE_FACTOR = 0.75f;
+        public const int FIXED_TILE_SIZE = 64;
         private readonly Vector2 PLAYER_START_POSITION = new(12, 6);
 
         // Properties
@@ -29,7 +29,7 @@ namespace FluffyFighters.Others
         public Vector2 Offset { get; set; }
 
         private Player player;
-        private MapMonster mapMonster;
+        private MonsterSpawner spawner;
 
 
         public Map(Game game, Player player, string mapPath)
@@ -41,7 +41,7 @@ namespace FluffyFighters.Others
 
             spriteBatch = new SpriteBatch(game.GraphicsDevice);
             map = new TiledMap(game.Content.RootDirectory + mapPath);
-            mapMonster = new MapMonster(game, this, "sprites/monsters/fofi_spritesheet");
+            spawner = new MonsterSpawner(game, this);
 
             int tilesetCount = map.Tilesets.Length;
             tilesets = new TiledTileset[tilesetCount];
@@ -62,7 +62,7 @@ namespace FluffyFighters.Others
 
             player.Update(gameTime);
 
-            mapMonster.Update(gameTime);
+            spawner.Update(gameTime);
 
             if (CheckCollision(screenPosition, player.GetCollider()))
             {
@@ -85,11 +85,11 @@ namespace FluffyFighters.Others
             }
 
             // DrawRectangles(spriteBatch, GetCollisionRectangles(screenPosition), Color.Red);
-            player.DrawCollider(spriteBatch);
+            // player.DrawCollider(spriteBatch);
 
             player.Draw(spriteBatch);
 
-            mapMonster.Draw(spriteBatch);
+            spawner.Draw(spriteBatch, gameTime);
 
             // Draw layers over player
             foreach (TiledLayer layer in map.Layers)

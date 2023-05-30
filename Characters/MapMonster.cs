@@ -16,17 +16,17 @@ namespace FluffyFighters.Characters
         // Constants
         private const int MONSTER_ROWS = 4;
         private const int MONSTER_COLUMNS = 4;
-        public const float SPEED = 70f;
         private const int WALK_LEFT_ROW = 1;
         private const int WALK_RIGHT_ROW = 3;
         private const int WALK_UP_ROW = 2;
         private const int WALK_DOWN_ROW = 0;
-        private const int MAX_PATROL_TIME = 3;
 
         public Map map { get; set; }
         public Vector2 velocity { get; set; }
         private float patrolTime;
         private float idleTime;
+        private float speed;
+        private float maxPatrolTime;
 
 
         public MapMonster(Game game, Map map, string assetPath) :
@@ -35,6 +35,8 @@ namespace FluffyFighters.Characters
             this.map = map;
             animationSpeed = 0.4f;
             position = new Vector2(100, 100);
+            speed = GetRandomSpeed();
+            maxPatrolTime = GetRandomMaxPatrolTime();
         }
 
         public override void Update(GameTime gameTime)
@@ -74,17 +76,17 @@ namespace FluffyFighters.Characters
         {
             if (patrolTime > 0)
             {
-                position += velocity * SPEED * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                position += velocity * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 patrolTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             else
             {
                 idleTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                if (idleTime >= MAX_PATROL_TIME)
+                if (idleTime >= maxPatrolTime)
                 {
                     ChooseRandomDirection();
-                    patrolTime = MAX_PATROL_TIME;
+                    patrolTime = maxPatrolTime;
                     idleTime = 0f;
                 }
             }
@@ -103,6 +105,21 @@ namespace FluffyFighters.Characters
             else if (velocity.Y < 0)
                 currentRow = WALK_UP_ROW;
         }
+
+
+        private float GetRandomSpeed()
+        {
+            Random random = new Random();
+            return random.Next(40, 100);
+        }
+
+
+        private float GetRandomMaxPatrolTime()
+        {
+            Random random = new Random();
+            return random.Next(1, 5);
+        }
+
 
         private void ChooseRandomDirection()
         {
