@@ -1,4 +1,5 @@
 ﻿using FluffyFighters.Characters;
+using FluffyFighters.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
@@ -14,6 +15,20 @@ namespace FluffyFighters.Others
         private Game game;
         private Map map;
         public List<MapMonster> monsters;
+
+        private EventHandler<Monster> onMonsterClicked;
+        public EventHandler<Monster> OnMonsterClicked
+        {
+            get { return onMonsterClicked; }
+            set
+            {
+                onMonsterClicked = value;
+                foreach (MapMonster monster in monsters)
+                {
+                    monster.OnClicked += onMonsterClicked;
+                }
+            }
+        }
 
 
         public MonsterSpawner(Game game, Map map)
@@ -67,17 +82,54 @@ namespace FluffyFighters.Others
         {
             Random random = new Random();
             int monsterId = random.Next(0, 3);
+            int level = GetRandomLevel();
+            Monster monster;
+            MapMonster mapMonster;
 
             switch (monsterId)
             {
                 case 0:
-                    return new MapMonster(game, map, "sprites/monsters/fofi_spritesheet");
+                    monster = new Monster("Fofi", GetRandomHealthByLevel(level), Element.Fire, GetRandomAttacksByElement(Element.Fire, level), "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon", level);
+                    mapMonster = new MapMonster(game, map, "sprites/monsters/fofi_spritesheet", monster);
+                    break;
                 case 1:
-                    return new MapMonster(game, map, "sprites/monsters/bolhas_spritesheet");
+                    monster = new Monster("Bolhas", GetRandomHealthByLevel(level), Element.Fire, GetRandomAttacksByElement(Element.Water, level), "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon", level);
+                    mapMonster = new MapMonster(game, map, "sprites/monsters/bolhas_spritesheet", monster);
+                    break;
                 default:
-                    return new MapMonster(game, map, "sprites/monsters/toco_spritesheet");
+                    monster = new Monster("Tonco", GetRandomHealthByLevel(level), Element.Fire, GetRandomAttacksByElement(Element.Grass, level), "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon", level);
+                    mapMonster = new MapMonster(game, map, "sprites/monsters/toco_spritesheet", monster);
+                    break;
             }
 
+            return mapMonster;
         }
+
+
+        // get random level 1-10
+        private int GetRandomLevel()
+        {
+            Random random = new Random();
+            return random.Next(1, 11);
+        }
+
+
+        // get random attacks by element
+        private Attack[] GetRandomAttacksByElement(Element element, int level)
+        {
+            Attack[] attacks = new Attack[4];
+            for (int i = 0; i < 4; i++)
+                attacks[i] = Attack.GetRandomAttack(element, level);
+            return attacks;
+        }
+
+
+        // get random health by level
+        private int GetRandomHealthByLevel(int level)
+        {
+            Random random = new Random();
+            return random.Next(10, 100) * level;
+        }
+
     }
 }

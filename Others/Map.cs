@@ -84,11 +84,7 @@ namespace FluffyFighters.Others
                 DrawLayer(screenPosition, layer, true);
             }
 
-            // DrawRectangles(spriteBatch, GetCollisionRectangles(screenPosition), Color.Red);
-            // player.DrawCollider(spriteBatch);
-
             player.Draw(spriteBatch);
-
             spawner.Draw(spriteBatch, gameTime);
 
             // Draw layers over player

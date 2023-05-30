@@ -17,6 +17,7 @@ namespace FluffyFighters.Characters
         private const int WALK_UP_ROW = 2;
         private const int WALK_DOWN_ROW = 0;
 
+        public Monster monster { get; set; }
         public Map map { get; set; }
         public Vector2 velocity { get; set; }
         private float patrolTime;
@@ -42,9 +43,9 @@ namespace FluffyFighters.Characters
         public bool isClicked => Mouse.GetState().LeftButton == ButtonState.Pressed;
 
         // Clicked event
-        public event EventHandler OnClicked;
+        public event EventHandler<Monster> OnClicked;
 
-        public MapMonster(Game game, Map map, string assetPath) :
+        public MapMonster(Game game, Map map, string assetPath, Monster monster) :
             base(game, game.Content.Load<Texture2D>(assetPath), MONSTER_ROWS, MONSTER_COLUMNS)
         {
             this.map = map;
@@ -52,6 +53,7 @@ namespace FluffyFighters.Characters
             position = new Vector2(100, 100);
             speed = GetRandomSpeed();
             maxPatrolTime = GetRandomMaxPatrolTime();
+            this.monster = monster;
         }
 
 
@@ -75,7 +77,7 @@ namespace FluffyFighters.Characters
         }
 
 
-        private void Clicked() => OnClicked?.Invoke(this, new EventArgs());
+        private void Clicked() => OnClicked?.Invoke(this, monster);
 
 
         public void DrawCollider(SpriteBatch spriteBatch)

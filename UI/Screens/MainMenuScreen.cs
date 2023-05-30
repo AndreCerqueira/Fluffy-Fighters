@@ -28,7 +28,7 @@ namespace FluffyFighters.UI.Screens
         Point center => new(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
         Vector2 logoPosition => new(center.X - (logoTexture.Width / 2), center.Y - (logoTexture.Height / 2) - 240);
 
-        private bool isHovering => playButton.isHovering || settingsButton.isHovering || exitButton.isHovering;
+        private bool isHovering => playButton.isHovering || exitButton.isHovering; //  || settingsButton.isHovering
 
         // Temp
         Attack tacle;
@@ -90,7 +90,7 @@ namespace FluffyFighters.UI.Screens
             spriteBatch.End();
 
             playButton.Draw(gameTime);
-            settingsButton.Draw(gameTime);
+            // settingsButton.Draw(gameTime);
             exitButton.Draw(gameTime);
         }
 
@@ -98,7 +98,7 @@ namespace FluffyFighters.UI.Screens
         public override void Update(GameTime gameTime)
         {
             playButton.Update(gameTime);
-            settingsButton.Update(gameTime);
+            // settingsButton.Update(gameTime);
             exitButton.Update(gameTime);
 
             Mouse.SetCursor(isHovering ? Button.hoverCursor : Button.defaultCursor);
@@ -112,13 +112,14 @@ namespace FluffyFighters.UI.Screens
             playButton.SetPosition(position);
             playButton.OnClicked += OnPlayButtonClicked;
 
-            settingsButton = new Button(Game, "Settings");
-            position = new(center.X - (settingsButton.texture.Width / 2), center.Y + 0);
-            settingsButton.SetPosition(position);
-            settingsButton.OnClicked += OnSettingsButtonClicked;
+            // settingsButton = new Button(Game, "Settings");
+            // position = new(center.X - (settingsButton.texture.Width / 2), center.Y + 0);
+            // settingsButton.SetPosition(position);
+            // settingsButton.OnClicked += OnSettingsButtonClicked;
 
             exitButton = new Button(Game, "Exit");
-            position = new(center.X - (exitButton.texture.Width / 2), center.Y + (exitButton.texture.Height + Button.PADDING) * 1);
+            position = new(center.X - (exitButton.texture.Width / 2), center.Y + 0);
+            // position = new(center.X - (exitButton.texture.Width / 2), center.Y + (exitButton.texture.Height + Button.PADDING) * 1);
             exitButton.SetPosition(position);
             exitButton.OnClicked += OnExitButtonClicked;
         }
@@ -128,29 +129,14 @@ namespace FluffyFighters.UI.Screens
         {
             InGameScreen inGameScreen = new(Game);
             screenManager.LoadScreen(inGameScreen);
+            inGameScreen.map.spawner.OnMonsterClicked += OnMonsterClicked;
             inGameScreen.OnClose += OnInGameScreenClosed;
         }
 
         
         private void OnSettingsButtonClicked(object sender, EventArgs e)
         {
-            Monster monster4 = new Monster("Bolhas", 1, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
-            Monster monster5 = new Monster("Fofi", 1, Element.Fire, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
-            Monster monster6 = new Monster("Tonco", 1, Element.Grass, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
-            Team team2 = new Team();
-            int random = new Random().Next(4, 7);
-            if (random == 4)
-                team2.AddMonster(monster4);
-            else if (random == 5)
-                team2.AddMonster(monster5);
-            else if (random == 6)
-                team2.AddMonster(monster6);
 
-            screenManager.LoadScreen(new CombatScreen(Game, team1, team2, (newTeam1) =>
-            {
-                team1 = newTeam1;
-                screenManager.LoadScreen(this);
-            }));
         }
 
         
@@ -165,5 +151,24 @@ namespace FluffyFighters.UI.Screens
             screenManager.LoadScreen(this);
         }
 
+
+        private void OnMonsterClicked(object sender, Monster m)
+        {
+            Monster monster4 = new Monster("Bolhas", 1, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
+            Monster monster5 = new Monster("Fofi", 1, Element.Fire, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
+            Monster monster6 = new Monster("Tonco", 1, Element.Grass, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
+            
+            Team enemyTeam = new Team();
+            enemyTeam.AddMonster(m);
+
+            screenManager.LoadScreen(new CombatScreen(Game, team1, enemyTeam, (newTeam1) =>
+            {
+                team1 = newTeam1;
+                InGameScreen inGameScreen = new(Game);
+                screenManager.LoadScreen(inGameScreen);
+                inGameScreen.map.spawner.OnMonsterClicked += OnMonsterClicked;
+                inGameScreen.OnClose += OnInGameScreenClosed;
+            }));
+        }
     }
 }

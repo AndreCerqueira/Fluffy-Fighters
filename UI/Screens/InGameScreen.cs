@@ -29,11 +29,11 @@ namespace FluffyFighters.UI.Screens
         private Button settingsButton;
         private Point settingsButtonPosition => new(GraphicsDevice.Viewport.Width - settingsButton.texture.Width - BUTTON_MARGIN_X, BUTTON_MARGIN_Y);
 
-        private InventoryMenu inventoryMenu;
+        // private InventoryMenu inventoryMenu;
         private SettingsMenu settingsMenu;
         private bool isPaused = false;
 
-        private Map map;
+        public Map map;
         private Player player;
 
         public event EventHandler OnClose;
@@ -48,7 +48,7 @@ namespace FluffyFighters.UI.Screens
             settingsButton = new Button(game, customAssetPath: SETTINGS_BUTTON_ASSET_PATH);
             settingsButton.OnClicked += OnSettingsButtonClicked;
 
-            inventoryMenu = new InventoryMenu(game);
+            // inventoryMenu = new InventoryMenu(game);
             settingsMenu = new SettingsMenu(game);
             settingsMenu.continueButton.OnClicked += OnContinueButtonClicked;
             settingsMenu.exitButton.OnClicked += OnExitButtonClicked;
@@ -63,11 +63,6 @@ namespace FluffyFighters.UI.Screens
             player = new Player(Game);
             map = new Map(Game, player, "\\sprites\\Mapa.tmx");
             player.map = map;
-            
-            // var test2 = Content.Load<Texture2D>("sprites/monsters/fofi_spritesheet");
-            // var test3 = Content.Load<Texture2D>("sprites/monsters/bolhas_spritesheet");
-            // var test4 = Content.Load<Texture2D>("sprites/monsters/toco_spritesheet");
-
         }
 
 
@@ -80,7 +75,7 @@ namespace FluffyFighters.UI.Screens
 
             inventoryButton.Draw(gameTime);
             settingsButton.Draw(gameTime);
-            inventoryMenu.Draw(gameTime);
+            // inventoryMenu.Draw(gameTime);
             settingsMenu.Draw(gameTime);
         }
 
@@ -88,13 +83,14 @@ namespace FluffyFighters.UI.Screens
         public override void Update(GameTime gameTime)
         {
             settingsMenu.Update(gameTime);
-            inventoryMenu.Update(gameTime);
+            // inventoryMenu.Update(gameTime);
             inventoryButton.Update(gameTime);
             settingsButton.Update(gameTime);
 
             map.Update(player.position, gameTime);
 
-            Mouse.SetCursor(isHoverMonster || inventoryButton.isHovering || settingsButton.isHovering || inventoryMenu.isHovering || settingsMenu.isHovering ? Button.hoverCursor : Button.defaultCursor);
+            //  || inventoryMenu.isHovering
+            Mouse.SetCursor(isHoverMonster || inventoryButton.isHovering || settingsButton.isHovering || settingsMenu.isHovering ? Button.hoverCursor : Button.defaultCursor);
         }
 
 
@@ -105,14 +101,14 @@ namespace FluffyFighters.UI.Screens
         {
             if (isPaused) return;
 
-            inventoryMenu.Show();
+            // inventoryMenu.Show();
         }
 
 
         private void OnSettingsButtonClicked(object sender, EventArgs e)
         {
             settingsMenu.Show();
-            inventoryMenu.Hide();
+            // inventoryMenu.Hide();
             isPaused = true;
         }
 
