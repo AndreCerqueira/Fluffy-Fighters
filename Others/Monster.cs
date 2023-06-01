@@ -66,6 +66,9 @@ namespace FluffyFighters.Others
         }
 
 
+        public void HealAll() => currentHealth = maxHealth;
+
+
         public void GainXp(int amount)
         {
             xp += amount;
@@ -73,6 +76,10 @@ namespace FluffyFighters.Others
             {
                 level++;
                 xp -= 100;
+
+                // Upgrade max health
+                Random r = new Random();
+                maxHealth += 10 * r.Next(1, 6);
             }
         }
 

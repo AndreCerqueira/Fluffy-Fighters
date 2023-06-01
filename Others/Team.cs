@@ -54,6 +54,13 @@ namespace FluffyFighters.Others
         public List<Monster> GetMonsters() => monsters.Where(m => m != null).ToList();
 
 
+        public void HeallAllMonsters()
+        {
+            foreach (var monster in monsters)
+                monster.HealAll();
+        }
+
+
         public void SelectMonster(int position) => currentMonsterIndex = position;
         public void SelectMonster(Monster monster) => currentMonsterIndex = monsters.ToList().IndexOf(monster);
 

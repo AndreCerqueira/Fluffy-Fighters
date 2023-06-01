@@ -38,7 +38,7 @@ namespace FluffyFighters.UI.Screens
         Monster monster1;
         Monster monster2;
         Monster monster3;
-        Team team1;
+        Team playerTeam;
 
 
         public MainMenuScreen(Game game, ScreenManager screenManager) : base(game)
@@ -52,10 +52,10 @@ namespace FluffyFighters.UI.Screens
             monster1 = new Monster("Bolhas", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
             monster2 = new Monster("Fofi", 100, Element.Fire, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
             monster3 = new Monster("Tonco", 100, Element.Grass, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
-            team1 = new Team();
-            team1.AddMonster(monster3);
-            team1.AddMonster(monster1);
-            team1.AddMonster(monster2);
+            playerTeam = new Team();
+            playerTeam.AddMonster(monster3);
+            playerTeam.AddMonster(monster1);
+            playerTeam.AddMonster(monster2);
         }
         
 
@@ -161,9 +161,10 @@ namespace FluffyFighters.UI.Screens
             Team enemyTeam = new Team();
             enemyTeam.AddMonster(m);
 
-            screenManager.LoadScreen(new CombatScreen(Game, team1, enemyTeam, (newTeam1) =>
+            screenManager.LoadScreen(new CombatScreen(Game, playerTeam, enemyTeam, (newTeam1) =>
             {
-                team1 = newTeam1;
+                playerTeam = newTeam1;
+                playerTeam.HeallAllMonsters();
                 InGameScreen inGameScreen = new(Game);
                 screenManager.LoadScreen(inGameScreen);
                 inGameScreen.map.spawner.OnMonsterClicked += OnMonsterClicked;
