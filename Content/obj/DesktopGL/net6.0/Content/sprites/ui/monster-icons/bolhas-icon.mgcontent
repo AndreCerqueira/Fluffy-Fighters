@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/monster-icons/bolhas-icon.png</SourceFile>
-  <SourceTime>2023-05-28T19:23:03.7393693+01:00</SourceTime>
-  <DestFile>D:/IPCA/Fluffy-Fighters/Content/bin/DesktopGL/Content/sprites/ui/monster-icons/bolhas-icon.xnb</DestFile>
-  <DestTime>2023-05-28T19:27:35.2423805+01:00</DestTime>
+  <SourceFile>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/fluddy/Fluffy-Fighters/Content/sprites/ui/monster-icons/bolhas-icon.png</SourceFile>
+  <SourceTime>2023-06-04T14:23:28.6098974+01:00</SourceTime>
+  <DestFile>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/fluddy/Fluffy-Fighters/Content/bin/DesktopGL/Content/sprites/ui/monster-icons/bolhas-icon.xnb</DestFile>
+  <DestTime>2023-06-04T14:23:49.4287986+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T12:44:56+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
