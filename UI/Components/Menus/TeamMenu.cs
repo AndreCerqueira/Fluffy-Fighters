@@ -6,6 +6,7 @@ using FluffyFighters.UI.Components.Others;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Screens;
+using System;
 using System.Linq;
 using static FluffyFighters.Others.Monster;
 
@@ -31,6 +32,9 @@ namespace FluffyFighters.UI.Components.Menus
         private Point monsterButtonPosition => new(combatPosition == CombatPosition.Left ? MONSTER_BUTTON_OFFSET_X :
             GraphicsDevice.Viewport.Width - monsterButtons[0].texture.Width - MONSTER_BUTTON_OFFSET_X, MONSTER_OFFSET_Y);
 
+        // Events
+        public event EventHandler OnLose;
+        
 
         // Constructors
         public TeamMenu(Game game, Team team, CombatPosition combatPosition) : base(game)
@@ -59,6 +63,9 @@ namespace FluffyFighters.UI.Components.Menus
 
             foreach (MonsterButton monsterButton in monsterButtons)
                 monsterButton.Update(gameTime);
+
+            if (isAllDead)
+                OnLose?.Invoke(this, EventArgs.Empty);
         }
 
 
@@ -103,5 +110,8 @@ namespace FluffyFighters.UI.Components.Menus
 
 
         public bool isHovering => monsterButtons.Any(mb => mb.isHovering);
+
+
+        public bool isAllDead => team.GetMonsters().All(m => m.IsDead());
     }
 }

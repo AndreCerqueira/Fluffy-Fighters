@@ -1,4 +1,5 @@
-﻿using FluffyFighters.Enums;
+﻿using FluffyFighters.Args;
+using FluffyFighters.Enums;
 using FluffyFighters.Others;
 using FluffyFighters.UI.Components.Buttons;
 using Microsoft.Xna.Framework;
@@ -30,15 +31,15 @@ namespace FluffyFighters.UI.Screens
 
         private bool isHovering => playButton.isHovering || exitButton.isHovering; //  || settingsButton.isHovering
 
-        // Temp
-        Attack tacle;
-        Attack waterPulse;
-        Attack ember;
-        Attack magicalLeaf;
-        Monster monster1;
-        Monster monster2;
-        Monster monster3;
-        Team playerTeam;
+        // Player starting monsters
+        private Attack tacle;
+        private Attack waterPulse;
+        private Attack ember;
+        private Attack magicalLeaf;
+        private Monster monster1;
+        private Monster monster2;
+        private Monster monster3;
+        private Team playerTeam;
 
 
         public MainMenuScreen(Game game, ScreenManager screenManager) : base(game)
@@ -56,6 +57,7 @@ namespace FluffyFighters.UI.Screens
             playerTeam.AddMonster(monster3);
             playerTeam.AddMonster(monster1);
             playerTeam.AddMonster(monster2);
+            playerTeam.OnLose += OnPlayerTeamLose;
         }
         
 
@@ -134,9 +136,10 @@ namespace FluffyFighters.UI.Screens
         }
 
         
-        private void OnSettingsButtonClicked(object sender, EventArgs e)
+        private void OnPlayerTeamLose(object sender, LoseEventArgs e)
         {
-
+            e.team.HeallAllMonsters();
+            screenManager.LoadScreen(this);
         }
 
         
@@ -151,7 +154,7 @@ namespace FluffyFighters.UI.Screens
             screenManager.LoadScreen(this);
         }
 
-
+        
         private void OnMonsterClicked(object sender, Monster m)
         {
             Monster monster4 = new Monster("Bolhas", 1, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");

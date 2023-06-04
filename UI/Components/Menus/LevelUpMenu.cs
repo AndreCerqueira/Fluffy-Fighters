@@ -141,11 +141,10 @@ namespace FluffyFighters.UI.Components.Menus
             SetMonster(this, EventArgs.Empty);
         }
 
-
+        
         public int GetXpDroped()
         {
-            // get xp droped based on level and opposing team
-            return 250;
+            return 120;
         }
 
 
