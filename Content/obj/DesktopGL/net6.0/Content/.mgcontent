@@ -4,6 +4,13 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/fluddy/Fluffy-Fighters/Content/audio/Cut.mp3</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/fluddy/Fluffy-Fighters/Content/audio/levelup.wav</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/fluddy/Fluffy-Fighters/Content/audio/xDeviruchi - And The Journey Begins .wav</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/fluddy/Fluffy-Fighters/Content/audio/xDeviruchi - Decisive Battle.wav</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/fluddy/Fluffy-Fighters/Content/audio/xDeviruchi - Prepare for Battle! .wav</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/fluddy/Fluffy-Fighters/Content/audio/xDeviruchi - Take some rest and eat some food!.wav</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/fluddy/Fluffy-Fighters/Content/audio/xDeviruchi - The Final of The Fantasy.wav</File>
     <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/fluddy/Fluffy-Fighters/Content/File.spritefont</File>
     <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/fluddy/Fluffy-Fighters/Content/sprites/elements/fire.png</File>
     <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/fluddy/Fluffy-Fighters/Content/sprites/elements/grass.png</File>
@@ -55,6 +62,13 @@
     <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/fluddy/Fluffy-Fighters/Content/sprites/ui/title.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
