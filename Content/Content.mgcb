@@ -13,47 +13,23 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin audio/Cut.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:audio/Cut.mp3
-
-#begin audio/levelup.wav
+#begin AndTheJourneyBegins_.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:audio/levelup.wav
+/build:AndTheJourneyBegins_.wav
 
-#begin audio/xDeviruchi - And The Journey Begins .wav
+#begin Cut.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:audio/xDeviruchi - And The Journey Begins .wav
+/build:Cut.wav
 
-#begin audio/xDeviruchi - Decisive Battle.wav
+#begin DecisiveBattle.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:audio/xDeviruchi - Decisive Battle.wav
-
-#begin audio/xDeviruchi - Prepare for Battle! .wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:audio/xDeviruchi - Prepare for Battle! .wav
-
-#begin audio/xDeviruchi - Take some rest and eat some food!.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:audio/xDeviruchi - Take some rest and eat some food!.wav
-
-#begin audio/xDeviruchi - The Final of The Fantasy.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:audio/xDeviruchi - The Final of The Fantasy.wav
+/build:DecisiveBattle.wav
 
 #begin File.spritefont
 /importer:FontDescriptionImporter
@@ -61,6 +37,18 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:File.spritefont
+
+#begin levelup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:levelup.wav
+
+#begin PrepareforBattle.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PrepareforBattle.wav
 
 #begin sprites/elements/fire.png
 /importer:TextureImporter
@@ -637,4 +625,10 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:sprites/ui/title.png
+
+#begin TheFinalofTheFantasy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:TheFinalofTheFantasy.wav
 
