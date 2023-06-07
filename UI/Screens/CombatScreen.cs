@@ -105,7 +105,7 @@ namespace FluffyFighters.UI.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.LightSeaGreen);
 
             combatBroadcast.Draw(gameTime);
             skillsMenu.Draw(gameTime);

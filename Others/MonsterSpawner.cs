@@ -93,11 +93,11 @@ namespace FluffyFighters.Others
                     mapMonster = new MapMonster(game, map, "sprites/monsters/fofi_spritesheet", monster);
                     break;
                 case 1:
-                    monster = new Monster("Bolhas", GetRandomHealthByLevel(level), Element.Fire, GetRandomAttacksByElement(Element.Water, level), "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon", level);
+                    monster = new Monster("Bolhas", GetRandomHealthByLevel(level), Element.Water, GetRandomAttacksByElement(Element.Water, level), "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon", level);
                     mapMonster = new MapMonster(game, map, "sprites/monsters/bolhas_spritesheet", monster);
                     break;
                 default:
-                    monster = new Monster("Tonco", GetRandomHealthByLevel(level), Element.Fire, GetRandomAttacksByElement(Element.Grass, level), "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon", level);
+                    monster = new Monster("Tonco", GetRandomHealthByLevel(level), Element.Grass, GetRandomAttacksByElement(Element.Grass, level), "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon", level);
                     mapMonster = new MapMonster(game, map, "sprites/monsters/toco_spritesheet", monster);
                     break;
             }

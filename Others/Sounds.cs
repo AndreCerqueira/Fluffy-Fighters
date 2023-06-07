@@ -19,7 +19,7 @@ namespace FluffyFighters.Others
 
         public static void LoadSounds(ContentManager Content)
         {
-            main = Content.Load<SoundEffect>("AndTheJourneyBegins_");
+            main = Content.Load<SoundEffect>("audio/AndTheJourneyBegins_");
             cut = Content.Load<SoundEffect>("Cut");
             battle = Content.Load<SoundEffect>("DecisiveBattle");
             prepareBattle = Content.Load<SoundEffect>("PrepareForBattle");
