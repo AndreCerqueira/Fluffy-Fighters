@@ -387,3 +387,118 @@ Propriedades:
 5. Métodos Update e Draw: Os métodos Update() e Draw() são sobrescritos para adicionar funcionalidade de atualização e desenho específica de monstro.
 6. Métodos auxiliares: Existem vários métodos auxiliares como Patrol(), UpdateAnimation(), GetRandomSpeed(), GetRandomMaxPatrolTime(), e ChooseRandomDirection(). Esses métodos adicionam funcionalidades como patrulhar o mapa de forma aleatória, atualizar a animação com base na direção, gerar velocidades e tempos de patrulha aleatórios e escolher uma direção aleatória.
 7. Métodos relacionados à colisão: GetCollider() retorna um Rectangle que representa o colisor do monstro, e DrawCollider() desenha o colisor.
+
+### Attack
+A classe Attack representa um ataque que um personagem de um jogo pode usar. Esses ataques têm várias propriedades que determinam a eficácia do ataque, incluindo:
+- name: O nome do ataque.
+- element: O elemento do ataque. Esta propriedade usa um tipo Element, que presumivelmente é um enum com várias opções de elementos possíveis, como Fogo, Água, Grama, etc.
+- damage: A quantidade de dano que o ataque inflige.
+- speed: A velocidade com que o ataque é lançado.
+- successChance: A chance de sucesso do ataque.
+
+### Código
+```cs
+public class Attack
+{
+    // Properties
+    public string name { get; private set; }
+    public Element element { get; private set; }
+    public int damage { get; private set; }
+    public int speed { get; private set; }
+    public float successChance { get; private set; }
+
+    // Constructors
+    public Attack(string name, Element element, int damage, int speed, float successChance)
+    {
+        this.name = name;
+        this.element = element;
+        this.damage = damage;
+        this.speed = speed;
+        this.successChance = successChance;
+    }
+
+
+    // Methods
+    // GetRandomAttack
+    public static Attack GetRandomAttack(Element element, int level)
+    {
+        string name = GetRandomName(element);
+        int damage = GetRandomDamage(level);
+        int speed = GetRandomSpeed(damage);
+        float successChance = GetRandomSuccessChance(damage);
+
+        return new Attack(name, element, damage, speed, successChance);
+    }
+
+
+    private static string GetRandomName(Element element)
+    {
+        Random rnd = new Random();
+        string[] nameArray;
+
+        switch (element)
+        {
+            case Element.Water:
+                nameArray = new string[] { "Water Splash", "Aqua Beam", "Hydro Blast" };
+                break;
+            case Element.Fire:
+                nameArray = new string[] { "Fire Punch", "Inferno Strike", "Flame Burst" };
+                break;
+            case Element.Grass:
+                nameArray = new string[] { "Leaf Blade", "Vine Whip", "Nature's Fury" };
+                break;
+            case Element.Neutral:
+                nameArray = new string[] { "Neutral Strike", "Elemental Blast", "Mystic Wave" };
+                break;
+            default:
+                nameArray = new string[] { "Unknown Element" };
+                break;
+        }
+
+        return nameArray[rnd.Next(0, nameArray.Length)];
+    }
+
+
+    private static int GetRandomDamage(int level)
+    {
+        Random rnd = new Random();
+
+        if (level < 5) 
+            return rnd.Next(10, 40);
+        else
+            return rnd.Next(20, 70);
+    }
+
+
+    private static int GetRandomSpeed(int damage)
+    {
+        Random rnd = new Random();
+        float speedMultiplier = (float)damage / 100;
+
+        int minSpeed = (int)(100 - (speedMultiplier * 100));
+        int maxSpeed = 100;
+
+        return rnd.Next(minSpeed, maxSpeed + 1);
+    }
+
+
+    private static float GetRandomSuccessChance(int damage)
+    {
+        Random rnd = new Random();
+        float successMultiplier = (float)damage / 100; 
+
+        float minSuccessChance = successMultiplier * 0.5f;  
+        float maxSuccessChance = 1.0f;
+
+        return ((float)rnd.NextDouble() * (maxSuccessChance - minSuccessChance) + minSuccessChance) * 100f;
+    }
+}
+```
+Há um único construtor para a classe Attack, que inicializa todas as propriedades acima.
+Existem também vários métodos na classe Attack:
+1. GetRandomAttack: Este método cria um ataque com valores aleatórios para nome, dano, velocidade e chance de sucesso. Ele utiliza a função GetRandomName para gerar um nome de ataque aleatório baseado no elemento, e funções GetRandomDamage, GetRandomSpeed e GetRandomSuccessChance para gerar valores aleatórios para dano, velocidade e chance de sucesso, respectivamente.
+2. GetRandomName: Este método gera um nome de ataque aleatório baseado no elemento. Cada elemento tem um conjunto de possíveis nomes de ataque, e um nome é escolhido aleatoriamente desse conjunto.
+3. GetRandomDamage: Este método gera um valor de dano aleatório baseado no nível fornecido. A faixa de valores possíveis para o dano depende do nível.
+4. GetRandomSpeed: Este método gera um valor de velocidade aleatório baseado no valor do dano. O dano atua como um multiplicador para determinar a faixa de valores possíveis para a velocidade.
+5. GetRandomSuccessChance: Este método gera um valor de chance de sucesso aleatório baseado no valor do dano. Novamente, o dano atua como um multiplicador para determinar a faixa de valores possíveis para a chance de sucesso.
+
