@@ -206,3 +206,184 @@ public class Player : AnimatedSprite
 
 Em geral, essa classe fornece a funcionalidade básica para um jogador em um jogo, incluindo a capacidade de se mover pelo teclado e exibir diferentes animações com base na direção do movimento. Ele também inclui a capacidade de lidar com colisões, embora o código real para isso não esteja presente.
 
+### MapMonster
+A classe MapMonster herda de AnimatedSprite e representa um monstro no mapa do jogo. A classe MapMonster inclui vários campos e métodos que são específicos para a representação de um monstro em um mapa.
+
+### Código
+```cs
+public class MapMonster : AnimatedSprite
+{
+    // Constants
+    private const int MONSTER_ROWS = 4;
+    private const int MONSTER_COLUMNS = 4;
+    private const int WALK_LEFT_ROW = 1;
+    private const int WALK_RIGHT_ROW = 3;
+    private const int WALK_UP_ROW = 2;
+    private const int WALK_DOWN_ROW = 0;
+
+    public Monster monster { get; set; }
+    public Map map { get; set; }
+    public Vector2 velocity { get; set; }
+    private float patrolTime;
+    private float idleTime;
+    private float speed;
+    private float maxPatrolTime;
+    private Color defaultColor = Color.White;
+    private Color hoverColor = Color.LightGray;
+    private Rectangle rectangle => new Rectangle(width * currentColumn, height * currentRow, width, height);
+
+    public bool isHovering
+    {
+        get
+        {
+            var mouseState = Mouse.GetState();
+            var mouseRectangle = new Rectangle(mouseState.X, mouseState.Y, 1, 1);
+
+            Rectangle newRectangle = new Rectangle((int)position.X - (int)map.Offset.X, (int)position.Y - (int)map.Offset.Y, width, height);
+            return mouseRectangle.Intersects(newRectangle);
+        }
+    }
+
+    public bool isClicked => Mouse.GetState().LeftButton == ButtonState.Pressed;
+
+    // Clicked event
+    public event EventHandler<Monster> OnClicked;
+
+    public MapMonster(Game game, Map map, string assetPath, Monster monster) :
+        base(game, game.Content.Load<Texture2D>(assetPath), MONSTER_ROWS, MONSTER_COLUMNS)
+    {
+        this.map = map;
+        animationSpeed = 0.4f;
+        position = new Vector2(100, 100);
+        speed = GetRandomSpeed();
+        maxPatrolTime = GetRandomMaxPatrolTime();
+        this.monster = monster;
+    }
+
+
+    public override void Update(GameTime gameTime)
+    {
+        if (isClicked && isHovering)
+            Clicked();
+
+        Patrol(gameTime);
+
+        base.Update(gameTime);
+    }
+
+
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+        var color = GetColor();
+        Vector2 pos = position - map.Offset;
+        float layerDepth = 0.4f;
+        spriteBatch.Draw(texture, pos, rectangle, color, 0f, Vector2.Zero, InGameScreen.GAME_SCALE_FACTOR, SpriteEffects.None, layerDepth);
+    }
+
+
+    private void Clicked() => OnClicked?.Invoke(this, monster);
+
+
+    public void DrawCollider(SpriteBatch spriteBatch)
+    {
+        Rectangle rectangle = GetCollider();
+
+        Texture2D texture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+        texture.SetData(new Color[] { Color.Aqua });
+        spriteBatch.Draw(texture, rectangle, Color.Aqua);
+    }
+
+
+    public Rectangle GetCollider()
+    {
+        return new Rectangle((int)position.X + 32, (int)position.Y + 64, 32, 32);
+    }
+
+
+    private Color GetColor() =>isHovering ? hoverColor : defaultColor;
+
+
+    public void Patrol(GameTime gameTime)
+    {
+        if (patrolTime > 0)
+        {
+            position += velocity * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            patrolTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
+        else
+        {
+            idleTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (idleTime >= maxPatrolTime)
+            {
+                ChooseRandomDirection();
+                patrolTime = maxPatrolTime;
+                idleTime = 0f;
+            }
+        }
+
+        UpdateAnimation();
+    }
+
+    private void UpdateAnimation()
+    {
+        if (velocity.X > 0)
+            currentRow = WALK_RIGHT_ROW;
+        else if (velocity.X < 0)
+            currentRow = WALK_LEFT_ROW;
+        else if (velocity.Y > 0)
+            currentRow = WALK_DOWN_ROW;
+        else if (velocity.Y < 0)
+            currentRow = WALK_UP_ROW;
+    }
+
+
+    private float GetRandomSpeed()
+    {
+        Random random = new Random();
+        return random.Next(40, 100);
+    }
+
+
+    private float GetRandomMaxPatrolTime()
+    {
+        Random random = new Random();
+        return random.Next(1, 5);
+    }
+
+
+    private void ChooseRandomDirection()
+    {
+        Random random = new Random();
+        int direction = random.Next(0, 4);
+        switch (direction)
+        {
+            case 0:
+                velocity = new Vector2(0, -1);
+                break;
+            case 1:
+                velocity = new Vector2(0, 1);
+                break;
+            case 2:
+                velocity = new Vector2(-1, 0);
+                break;
+            case 3:
+                velocity = new Vector2(1, 0);
+                break;
+        }
+    }
+}
+```
+1. Constantes: Semelhante à classe Player, temos várias constantes que definem o número de linhas e colunas na folha de sprite do monstro e a direção em que o monstro está se movendo.
+Propriedades:
+2. Propriedades:
+- monster é uma propriedade que armazena o monstro associado a este MapMonster.
+- map é uma propriedade que armazena o mapa atual em que o monstro está.
+- velocity é uma propriedade que armazena a velocidade atual do monstro.
+- isHovering e isClicked são propriedades que detectam se o monstro está sendo apontado ou clicado pelo mouse.
+- rectangle retorna um Rectangle que representa a parte atual da folha de sprites a ser desenhada.
+3. Eventos: OnClicked é um evento que é acionado quando o monstro é clicado.
+4. Construtor: O construtor MapMonster() inicializa um novo MapMonster com o mapa e a textura fornecidos, bem como o número de linhas e colunas.
+5. Métodos Update e Draw: Os métodos Update() e Draw() são sobrescritos para adicionar funcionalidade de atualização e desenho específica de monstro.
+6. Métodos auxiliares: Existem vários métodos auxiliares como Patrol(), UpdateAnimation(), GetRandomSpeed(), GetRandomMaxPatrolTime(), e ChooseRandomDirection(). Esses métodos adicionam funcionalidades como patrulhar o mapa de forma aleatória, atualizar a animação com base na direção, gerar velocidades e tempos de patrulha aleatórios e escolher uma direção aleatória.
+7. Métodos relacionados à colisão: GetCollider() retorna um Rectangle que representa o colisor do monstro, e DrawCollider() desenha o colisor.
