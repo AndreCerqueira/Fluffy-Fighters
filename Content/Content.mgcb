@@ -13,23 +13,41 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin AndTheJourneyBegins_.wav
+#begin audio/AndTheJourneyBegins_.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:AndTheJourneyBegins_.wav
+/build:audio/AndTheJourneyBegins_.wav
 
-#begin Cut.wav
+#begin audio/Cut.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Cut.wav
+/build:audio/Cut.wav
 
-#begin DecisiveBattle.wav
+#begin audio/DecisiveBattle.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:DecisiveBattle.wav
+/build:audio/DecisiveBattle.wav
+
+#begin audio/levelup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audio/levelup.wav
+
+#begin audio/PrepareforBattle.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audio/PrepareforBattle.wav
+
+#begin audio/TheFinalofTheFantasy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audio/TheFinalofTheFantasy.wav
 
 #begin File.spritefont
 /importer:FontDescriptionImporter
@@ -37,18 +55,6 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:File.spritefont
-
-#begin levelup.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:levelup.wav
-
-#begin PrepareforBattle.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:PrepareforBattle.wav
 
 #begin sprites/elements/fire.png
 /importer:TextureImporter
@@ -625,10 +631,4 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:sprites/ui/title.png
-
-#begin TheFinalofTheFantasy.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:TheFinalofTheFantasy.wav
 

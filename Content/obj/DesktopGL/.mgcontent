@@ -4,57 +4,69 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/IPCA/Fluffy-Fighters/Content/File.spritefont</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/fire.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/grass.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/neutral.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/elements/water.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/bolhas_spritesheet.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/Bolhas.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/fofi_spritesheet.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/Fofi.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/toco_spritesheet.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/monsters/Tonco.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/player/player_spritesheet.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/tilesImages/arvore.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/tilesImages/bucho.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/tilesImages/buchoduplo.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/tilesImages/grass2.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/tilesImages/grassTiles.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/tilesImages/minibucho.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/tilesImages/minipilar.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/tilesImages/pedra.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/tilesImages/tronco.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/tilesImages/Water.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/background.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/ball.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/button.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/captureButton.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/exitButton.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/hearth.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/inventoryBackground.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/invetoryIcon.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/LevelUpDilaog.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/monster-icons/bolhas-icon.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/monster-icons/default-icon.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/monster-icons/defeated-icon.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/monster-icons/fofi-icon.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/monster-icons/highlighted-icon.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/monster-icons/tonco-icon.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/nextButton.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/playerStatsBackground.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/progressBar.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/progressBarContent.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/Round-Broadcast.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/settingsBackground.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/settingsIcon.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/Skill-Description.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/skillButton1.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/skillButton2.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/skillsMenuBackground.png</File>
-    <File>C:/IPCA/Fluffy-Fighters/Content/sprites/ui/title.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/audio/AndTheJourneyBegins_.wav</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/audio/Cut.wav</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/audio/DecisiveBattle.wav</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/audio/levelup.wav</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/audio/PrepareforBattle.wav</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/audio/TheFinalofTheFantasy.wav</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/File.spritefont</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/elements/fire.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/elements/grass.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/elements/neutral.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/elements/water.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/monsters/bolhas_spritesheet.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/monsters/Bolhas.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/monsters/fofi_spritesheet.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/monsters/Fofi.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/monsters/toco_spritesheet.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/monsters/Tonco.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/player/player_spritesheet.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/tilesImages/arvore.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/tilesImages/bucho.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/tilesImages/buchoduplo.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/tilesImages/grass2.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/tilesImages/grassTiles.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/tilesImages/minibucho.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/tilesImages/minipilar.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/tilesImages/pedra.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/tilesImages/tronco.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/tilesImages/Water.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/background.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/ball.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/button.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/captureButton.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/exitButton.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/hearth.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/inventoryBackground.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/invetoryIcon.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/LevelUpDilaog.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/monster-icons/bolhas-icon.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/monster-icons/default-icon.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/monster-icons/defeated-icon.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/monster-icons/fofi-icon.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/monster-icons/highlighted-icon.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/monster-icons/tonco-icon.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/nextButton.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/playerStatsBackground.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/progressBar.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/progressBarContent.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/Round-Broadcast.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/settingsBackground.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/settingsIcon.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/Skill-Description.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/skillButton1.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/skillButton2.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/skillsMenuBackground.png</File>
+    <File>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/title.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

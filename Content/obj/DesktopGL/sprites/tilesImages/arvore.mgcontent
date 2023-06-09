@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/IPCA/Fluffy-Fighters/Content/sprites/tilesImages/arvore.png</SourceFile>
-  <SourceTime>2023-06-06T15:05:30.3232465+01:00</SourceTime>
-  <DestFile>C:/IPCA/Fluffy-Fighters/Content/bin/DesktopGL/sprites/tilesImages/arvore.xnb</DestFile>
-  <DestTime>2023-06-06T16:57:01.2488112+01:00</DestTime>
+  <SourceFile>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/tilesImages/arvore.png</SourceFile>
+  <SourceTime>2023-06-09T16:09:09.5059456+01:00</SourceTime>
+  <DestFile>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/bin/DesktopGL/sprites/tilesImages/arvore.xnb</DestFile>
+  <DestTime>2023-06-09T16:11:15.1245151+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T12:44:56+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

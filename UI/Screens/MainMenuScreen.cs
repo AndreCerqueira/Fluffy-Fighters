@@ -71,8 +71,8 @@ namespace FluffyFighters.UI.Screens
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // Sounds.LoadSounds(Content);
-            // Sounds.main.Play(volume: 0.5f, pitch: 0.0f, pan: 0.0f);
+            Sounds.LoadSounds(Content);
+            Sounds.main.Play(volume: 0.05f, pitch: 0.0f, pan: 0.0f);
 
             // Load textures
             backgroundTexture = Content.Load<Texture2D>(BACKGROUND_ASSET_PATH);

@@ -547,3 +547,15 @@ C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\xDeviruchi - Decisive Bat
 C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\xDeviruchi - Prepare for Battle! .xnb
 C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\xDeviruchi - Take some rest and eat some food!.xnb
 C:\IPCA\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\xDeviruchi - The Final of The Fantasy.xnb
+C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\Cut.ogg
+C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\xDeviruchi - And The Journey Begins .xnb
+C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\xDeviruchi - Decisive Battle.xnb
+C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\xDeviruchi - Prepare for Battle! .xnb
+C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\xDeviruchi - Take some rest and eat some food!.xnb
+C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\xDeviruchi - The Final of The Fantasy.xnb
+C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\AndTheJourneyBegins_.xnb
+C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\Cut.xnb
+C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\DecisiveBattle.xnb
+C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\levelup.xnb
+C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\PrepareforBattle.xnb
+C:\Users\Utilizador\Documents\Projetos C, C#\TDV\ff\Fluffy-Fighters\bin\Debug\net6.0\Content\audio\TheFinalofTheFantasy.xnb
