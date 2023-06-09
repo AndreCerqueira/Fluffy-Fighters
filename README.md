@@ -502,3 +502,811 @@ Existem também vários métodos na classe Attack:
 4. GetRandomSpeed: Este método gera um valor de velocidade aleatório baseado no valor do dano. O dano atua como um multiplicador para determinar a faixa de valores possíveis para a velocidade.
 5. GetRandomSuccessChance: Este método gera um valor de chance de sucesso aleatório baseado no valor do dano. Novamente, o dano atua como um multiplicador para determinar a faixa de valores possíveis para a chance de sucesso.
 
+### Monster
+A classe Monster representa um monstro no jogo, com várias propriedades e métodos que governam seu comportamento e estado.
+
+### Código
+```cs
+public class Monster
+{
+    // Delegates
+    public delegate void MonsterEventHandler(object sender, MonsterEventArgs e);
+
+    // Constants
+    public const string DEFAULT_ICON_ASSET_PATH = "sprites/ui/monster-icons/default-icon";
+
+    // Properties
+    public string assetPath { get; private set; }
+    public string iconAssetPath { get; private set; }
+    public string name { get; private set; }
+    public int currentHealth { get; private set; }
+    public int maxHealth { get; private set; }
+    public int level { get; private set; }
+    public int maxXp { get; private set; }
+    public int xp { get; private set; }
+    public Element element { get; }
+    public Attack[] attacks { get; private set; }
+
+    // Events
+    public event MonsterEventHandler OnDeath;
+
+
+    // Constructors
+    public Monster(string name, int maxHealth, Element element, Attack[] attacks, string assetPath, string iconAssetPath = null, int level = 1)
+    {
+        this.name = name;
+        this.maxHealth = maxHealth;
+        this.currentHealth = maxHealth;
+        this.element = element;
+        this.attacks = attacks;
+        this.assetPath = assetPath;
+        this.level = level;
+        this.iconAssetPath = iconAssetPath ?? DEFAULT_ICON_ASSET_PATH;
+        maxXp = 100;
+    }
+
+
+    // Methods
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= (int)Math.Round(damage);
+
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0;
+            Death();
+        }
+    }
+
+
+    public void Heal(int amount)
+    {
+        currentHealth += amount;
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+    }
+
+
+    public void HealAll() => currentHealth = maxHealth;
+
+
+    public void GainXp(int amount)
+    {
+        xp += amount;
+        if (xp >= 100)
+        {
+            level++;
+            xp -= 100;
+
+            // Upgrade max health
+            Random r = new Random();
+            maxHealth += 10 * r.Next(1, 6);
+        }
+    }
+
+
+    public Attack GetRandomAttack()
+    {
+        return attacks[new Random().Next(attacks.Length)];
+    }
+
+
+    public void Death() => OnDeath?.Invoke(this, new MonsterEventArgs(this));
+
+
+    public bool IsDead() => currentHealth <= 0;
+}
+```
+Delegates: MonsterEventHandler é um delegate que define a assinatura de um método que será chamado quando um evento relacionado ao monstro for disparado.
+Constantes: DEFAULT_ICON_ASSET_PATH é uma constante que define o caminho padrão para o ícone do monstro.
+Propriedades: Monster tem várias propriedades para representar o estado atual do monstro, como o caminho do asset, o caminho do ícone, o nome, a saúde atual e máxima, o nível, a experiência (xp), o elemento e os ataques disponíveis para o monstro.
+Eventos: OnDeath é um evento que é disparado quando o monstro morre.
+Construtores: O construtor Monster() inicializa um novo monstro com os parâmetros fornecidos.
+
+Métodos:
+- TakeDamage(float damage) é usado para causar danos ao monstro.
+- Heal(int amount) e HealAll() são usados para curar o monstro.
+- GainXp(int amount) é usado para dar experiência ao monstro e atualizar seu nível e saúde máxima quando necessário.
+- GetRandomAttack() retorna um ataque aleatório dos ataques disponíveis do monstro.
+- Death() dispara o evento OnDeath.
+- IsDead() verifica se o monstro está morto.
+
+A classe Monster fornece uma boa estrutura para um monstro em um jogo, permitindo danos, cura, ganho de experiência e morte. Além disso, o evento OnDeath permite que outras partes do código respondam quando um monstro morre.
+
+### MonsterSpawner
+A classe MonsterSpawner é responsável por gerenciar e spawnar (criar) monstros no jogo.
+
+### Código
+```cs
+public class MonsterSpawner
+{
+    private const int MONSTER_QUANTITY = 20;
+
+    private Game game;
+    private Map map;
+    public List<MapMonster> monsters;
+
+    private EventHandler<Monster> onMonsterClicked;
+    public EventHandler<Monster> OnMonsterClicked
+    {
+        get { return onMonsterClicked; }
+        set
+        {
+            onMonsterClicked = value;
+            foreach (MapMonster monster in monsters)
+            {
+                monster.OnClicked += onMonsterClicked;
+            }
+        }
+    }
+
+
+    public MonsterSpawner(Game game, Map map)
+    {
+        this.game = game;
+        this.map = map;
+        monsters = new List<MapMonster>();
+
+        for (int i = 0; i < MONSTER_QUANTITY; i++)
+        {
+            MapMonster monster = GetRandomMonster();
+            monster.position = GetRandomSpawnPosition();
+            monsters.Add(monster);
+        }
+
+    }
+
+
+    public void Update(GameTime gameTime)
+    {
+        foreach (MapMonster monster in monsters)
+        {
+            monster.Update(gameTime);
+        }
+    }
+
+
+    public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+    {
+        foreach (MapMonster monster in monsters)
+        {
+            monster.Draw(spriteBatch);
+        }
+    }
+
+
+    // Get Random Spawn Position
+    public Vector2 GetRandomSpawnPosition()
+    {
+        Random random = new Random();
+        Vector2 spawnPosition = new Vector2();
+
+        spawnPosition.X = random.Next(0, (int)Math.Round(map.map.Width * Map.FIXED_TILE_SIZE * Map.GAME_SCALE_FACTOR));
+        spawnPosition.Y = random.Next(0, (int)Math.Round(map.map.Height * Map.FIXED_TILE_SIZE * Map.GAME_SCALE_FACTOR));
+
+        return spawnPosition;
+    }
+
+
+    public MapMonster GetRandomMonster()
+    {
+        Random random = new Random();
+        int monsterId = random.Next(0, 3);
+        int level = GetRandomLevel();
+        Monster monster;
+        MapMonster mapMonster;
+
+        switch (monsterId)
+        {
+            case 0:
+                monster = new Monster("Fofi", GetRandomHealthByLevel(level), Element.Fire, GetRandomAttacksByElement(Element.Fire, level), "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon", level);
+                mapMonster = new MapMonster(game, map, "sprites/monsters/fofi_spritesheet", monster);
+                break;
+            case 1:
+                monster = new Monster("Bolhas", GetRandomHealthByLevel(level), Element.Water, GetRandomAttacksByElement(Element.Water, level), "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon", level);
+                mapMonster = new MapMonster(game, map, "sprites/monsters/bolhas_spritesheet", monster);
+                break;
+            default:
+                monster = new Monster("Tonco", GetRandomHealthByLevel(level), Element.Grass, GetRandomAttacksByElement(Element.Grass, level), "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon", level);
+                mapMonster = new MapMonster(game, map, "sprites/monsters/toco_spritesheet", monster);
+                break;
+        }
+
+        return mapMonster;
+    }
+
+
+    // get random level 1-10
+    private int GetRandomLevel()
+    {
+        Random random = new Random();
+        return random.Next(1, 11);
+    }
+
+
+    // get random attacks by element
+    private Attack[] GetRandomAttacksByElement(Element element, int level)
+    {
+        Attack[] attacks = new Attack[4];
+        for (int i = 0; i < 4; i++)
+            attacks[i] = Attack.GetRandomAttack(element, level);
+        return attacks;
+    }
+
+
+    // get random health by level
+    private int GetRandomHealthByLevel(int level)
+    {
+        Random random = new Random();
+        return random.Next(10, 100) * level;
+    }
+
+}
+```
+
+Constantes: MONSTER_QUANTITY é a quantidade de monstros que serão criados.
+Propriedades:
+- game é uma instância do jogo.
+- map é uma instância do mapa onde os monstros serão spawnados.
+- monsters é uma lista que armazena os monstros spawnados.
+- OnMonsterClicked é um evento que é disparado quando um monstro é clicado.
+Construtores: O construtor MonsterSpawner() cria uma nova instância de MonsterSpawner, inicializa suas propriedades e gera um número definido de monstros em posições aleatórias.
+
+Métodos:
+- Update(GameTime gameTime) atualiza o estado de cada monstro.
+- Draw(SpriteBatch spriteBatch, GameTime gameTime) desenha cada monstro na tela.
+- GetRandomSpawnPosition() retorna uma posição aleatória no mapa para spawnar um monstro.
+- GetRandomMonster() cria e retorna um monstro aleatório.
+- GetRandomLevel(), GetRandomAttacksByElement(Element element, int level), GetRandomHealthByLevel(int level) são métodos auxiliares usados para gerar um monstro com um nível, ataques e saúde aleatórios.
+
+Esta classe, em particular, se encarrega de gerenciar os monstros no jogo, cuidando da criação dos monstros, atualização de seus estados e exibição na tela. Além disso, ela também se encarrega de gerar aleatoriamente as propriedades dos monstros, como posição, nível, ataques e saúde. Por último, ela também permite que outras partes do código se inscrevam para serem notificadas quando um monstro é clicado, através do evento OnMonsterClicked.
+
+### Team
+A classe Team parece representar um time de monstros em um jogo, provavelmente algum tipo de jogo de batalha de monstros.
+
+### Código
+```cs
+public class Team
+{
+    // Delegates
+    public delegate void LoseEventHandler(object sender, LoseEventArgs e);
+
+    // Constants
+    public const int MAX_MONSTERS = 3;
+
+    // Properties
+    private Monster[] monsters { get; set; }
+    private int currentMonsterIndex { get; set; }
+
+    // Events
+    public event LoseEventHandler OnLose;
+
+
+    // Constructors
+    public Team()
+    {
+        this.monsters = new Monster[MAX_MONSTERS];
+        currentMonsterIndex = 0;
+
+    }
+
+
+    // Methods
+    public void AddMonster(Monster monster, int? position = null)
+    {
+        int pos = position ?? monsters.ToList().IndexOf(null);
+
+        if (pos > MAX_MONSTERS || !HaveAvailableSpots())
+            throw new ArgumentOutOfRangeException("position", "Position must be less than or equal to MAX_MONSTERS.");
+
+        monster.OnDeath += OnMonsterDeath;
+        monsters[pos] = monster;
+    }
+
+
+    public void RemoveMonster(Monster monster)
+    {
+        monsters.Where(m => m == monster).ToList().Remove(monster);
+    }
+
+
+    public Monster GetMonster(int position) => monsters[position];
+    public Monster GetSelectedMonster() => monsters[currentMonsterIndex];
+    public List<Monster> GetMonsters() => monsters.Where(m => m != null).ToList();
+
+
+    public void HeallAllMonsters()
+    {
+        foreach (var monster in monsters)
+            monster.HealAll();
+    }
+
+
+    public void SelectMonster(int position) => currentMonsterIndex = position;
+    public void SelectMonster(Monster monster) => currentMonsterIndex = monsters.ToList().IndexOf(monster);
+
+
+    public void SelectNextMonster()
+    {
+        currentMonsterIndex++;
+        if (currentMonsterIndex > MAX_MONSTERS)
+            currentMonsterIndex = 0;
+    }
+
+
+    public void SelectPreviousMonster()
+    {
+        currentMonsterIndex--;
+        if (currentMonsterIndex < 0)
+            currentMonsterIndex = 0;
+    }
+
+
+    public bool HaveAvailableSpots() => monsters.Where(m => m == null).ToList().Count > 0;
+
+
+    private bool HaveMonstersAlive() => monsters.Where(m => m != null && m.currentHealth > 0).ToList().Count > 0;
+
+
+    private void OnMonsterDeath(object sender, MonsterEventArgs e)
+    {
+        if (!HaveMonstersAlive())
+            Lose();
+    }
+
+
+    private void Lose() => OnLose?.Invoke(this, new LoseEventArgs(this));
+
+}
+```
+
+Constantes: MAX_MONSTERS é o número máximo de monstros que um time pode ter.
+Propriedades:
+- monsters é um array que armazena os monstros do time.
+- currentMonsterIndex é um índice que aponta para o monstro atualmente selecionado no array monsters.
+
+Eventos:
+- OnLose é um evento disparado quando todos os monstros do time estão mortos.
+
+Construtores: O construtor Team() cria uma nova instância de Team, inicializando as propriedades monsters e currentMonsterIndex.
+
+Métodos:
+- AddMonster(Monster monster, int? position = null) adiciona um monstro ao time em uma posição específica ou na primeira posição vazia. Também configura o monstro para acionar o método OnMonsterDeath quando morre.
+- RemoveMonster(Monster monster) remove um monstro do time.
+- GetMonster(int position), GetSelectedMonster(), GetMonsters() retornam um monstro em uma posição específica, o monstro atualmente selecionado, e todos os monstros do time, respectivamente.
+- HealAllMonsters() cura todos os monstros do time.
+- SelectMonster(int position) e SelectMonster(Monster monster) permitem selecionar um monstro por posição ou por referência, respectivamente.
+- SelectNextMonster() e SelectPreviousMonster() alteram a seleção para o próximo ou anterior monstro, respectivamente.
+- HaveAvailableSpots() e HaveMonstersAlive() verificam se há espaços disponíveis no time e se há monstros vivos, respectivamente.
+- OnMonsterDeath(object sender, MonsterEventArgs e) é acionado quando um monstro morre. Se não houver monstros vivos, o evento OnLose é disparado.
+- Lose() dispara o evento OnLose.
+
+No geral, essa classe gerencia um time de monstros, permitindo a adição e remoção de monstros, seleção de um monstro específico, e cura de todos os monstros. Ela também controla o evento de derrota do time, que é disparado quando todos os monstros estão mortos.
+
+### Map
+Esta é uma classe Map que parece estar projetada para um jogo 2D usando sprites para renderização.
+
+### Código
+```cs
+public class Map
+{
+    // Constants
+    public const float GAME_SCALE_FACTOR = 0.75f;
+    public const int FIXED_TILE_SIZE = 64;
+    private readonly Vector2 PLAYER_START_POSITION = new(12, 6);
+
+    // Properties
+    private SpriteBatch spriteBatch;
+    public TiledMap map;
+    public TiledTileset[] tilesets;
+    private Texture2D[] tilesetTextures;
+    private string[] layersOverPlayer; 
+    public Vector2 Offset { get; set; }
+
+    private Player player;
+    public MonsterSpawner spawner;
+
+
+    public Map(Game game, Player player, string mapPath)
+    {
+        layersOverPlayer = new string[] { "trees", "pilares", "pedras", "bushes", "water" };
+
+        this.player = player;
+        player.position = PLAYER_START_POSITION * FIXED_TILE_SIZE * GAME_SCALE_FACTOR;
+
+        spriteBatch = new SpriteBatch(game.GraphicsDevice);
+        map = new TiledMap(game.Content.RootDirectory + mapPath);
+        spawner = new MonsterSpawner(game, this);
+
+        int tilesetCount = map.Tilesets.Length;
+        tilesets = new TiledTileset[tilesetCount];
+        tilesetTextures = new Texture2D[tilesetCount];
+
+        for (int i = 0; i < tilesetCount; i++)
+        {
+            tilesets[i] = new TiledTileset("Content\\sprites\\tilesets\\" + Path.GetFileName(map.Tilesets[i].source));
+            string imagePath = "Content\\sprites\\tilesImages\\" + Path.GetFileName(tilesets[i].Image.source);
+            tilesetTextures[i] = Texture2D.FromStream(game.GraphicsDevice, File.OpenRead(imagePath));
+        }
+    }
+
+
+    public void Update(Vector2 screenPosition, GameTime gameTime)
+    {
+        Vector2 previousOffset = Offset;
+
+        player.Update(gameTime);
+
+        spawner.Update(gameTime);
+
+        if (CheckCollision(screenPosition, player.GetCollider()))
+        {
+            Offset = previousOffset;
+        }
+    }
+
+
+    public void Draw(Vector2 screenPosition, GameTime gameTime)
+    {
+        spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend);
+
+        // Draw layers below player
+        foreach (TiledLayer layer in map.Layers)
+        {
+            if (!layer.visible || layersOverPlayer.Contains(layer.name))
+                continue;
+
+            DrawLayer(screenPosition, layer, true);
+        }
+
+        player.Draw(spriteBatch);
+        spawner.Draw(spriteBatch, gameTime);
+
+        // Draw layers over player
+        foreach (TiledLayer layer in map.Layers)
+        {
+            if (!layer.visible || !layersOverPlayer.Contains(layer.name))
+                continue;
+
+            DrawLayer(screenPosition, layer, false);
+        }
+
+        spriteBatch.End();
+    }
+
+
+    private void DrawLayer(Vector2 screenPosition, TiledLayer layer, bool isBackground)
+    {
+        for (int y = 0; y < layer.height; y++)
+        {
+            for (int x = 0; x < layer.width; x++)
+            {
+                int index = y * layer.width + x;
+                int tileId = layer.data[index];
+                if (tileId == 0)
+                    continue;
+
+                // get tileset index for the tile
+                int tilesetIndex = 0;
+                for (int i = 0; i < map.Tilesets.Length; i++)
+                {
+                    if (tileId >= map.Tilesets[i].firstgid)
+                        tilesetIndex = i;
+                }
+                if (tilesetIndex == 0)
+                    continue;
+
+                int tilesetTileId = tileId - map.Tilesets[tilesetIndex].firstgid;
+                int tilesetTileX = tilesetTileId % tilesets[tilesetIndex].Columns;
+                int tilesetTileY = tilesetTileId / tilesets[tilesetIndex].Columns;
+                Rectangle sourceRectangle = new Rectangle(tilesetTileX * tilesets[tilesetIndex].TileWidth, tilesetTileY * tilesets[tilesetIndex].TileHeight, tilesets[tilesetIndex].TileWidth, tilesets[tilesetIndex].TileHeight);
+
+                int scaledTileWidth = (int)(tilesets[tilesetIndex].TileWidth * GAME_SCALE_FACTOR);
+                int scaledTileHeight = (int)(tilesets[tilesetIndex].TileHeight * GAME_SCALE_FACTOR);
+
+                // Calculate the starting position of the destination rectangle based on the object's size
+                int destinationX = (int)(x * FIXED_TILE_SIZE * GAME_SCALE_FACTOR) - (scaledTileWidth - (int)(FIXED_TILE_SIZE * GAME_SCALE_FACTOR)) - (int)Offset.X;
+                int destinationY = (int)(y * FIXED_TILE_SIZE * GAME_SCALE_FACTOR) - (scaledTileHeight - (int)(FIXED_TILE_SIZE * GAME_SCALE_FACTOR)) - (int)Offset.Y;
+
+                // Adjust destination based on the screen position
+                destinationX -= (int)screenPosition.X;
+                destinationY -= (int)screenPosition.Y;
+
+                Rectangle destinationRectangle = new Rectangle(destinationX, destinationY, scaledTileWidth, scaledTileHeight);
+
+                spriteBatch.Draw(tilesetTextures[tilesetIndex], destinationRectangle, sourceRectangle, Color.White);
+
+                float layerDepth = isBackground ? 0f : GetLayerDepth(destinationY + tilesetTextures[tilesetIndex].Height);
+                spriteBatch.Draw(tilesetTextures[tilesetIndex], destinationRectangle, sourceRectangle, Color.White, 0f, Vector2.Zero, SpriteEffects.None, layerDepth);
+            }
+        }
+    }
+
+
+    private List<Rectangle> GetCollisionRectangles(Vector2 screenPosition)
+    {
+        List<Rectangle> collisionRectangles = new List<Rectangle>();
+
+        TiledLayer collisionLayer = map.Layers.First(l => l.name == "Colisions");
+
+        if (collisionLayer != null)
+        {
+            foreach (TiledObject obj in collisionLayer.objects)
+            {
+                Rectangle rect = new Rectangle(
+                    (int)(obj.x * GAME_SCALE_FACTOR - screenPosition.X - (int)Offset.X),
+                    (int)(obj.y * GAME_SCALE_FACTOR - screenPosition.Y - (int)Offset.Y),
+                    (int)(obj.width * GAME_SCALE_FACTOR),
+                    (int)(obj.height * GAME_SCALE_FACTOR)
+                );
+
+                collisionRectangles.Add(rect);
+            }
+        }
+
+        return collisionRectangles;
+    }
+
+
+    public bool CheckCollision(Vector2 screenPosition, Rectangle rectangle)
+    {
+        List<Rectangle> collisionRectangles = GetCollisionRectangles(screenPosition);
+
+        foreach (Rectangle collisionRectangle in collisionRectangles)
+        {
+            if (collisionRectangle.Intersects(rectangle))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    public void DrawRectangles(SpriteBatch spriteBatch, List<Rectangle> rectangles, Color color)
+    {
+        foreach (Rectangle rectangle in rectangles)
+        {
+            Texture2D texture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+            texture.SetData(new Color[] { color });
+            spriteBatch.Draw(texture, rectangle, color);
+        }
+    }
+
+
+    public float GetLayerDepth(float y)
+    {
+        var result = MathHelper.Clamp(y / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height, 0.01f, 1f);
+        return result;
+    }
+}
+```
+
+
+
+Constantes: GAME_SCALE_FACTOR, FIXED_TILE_SIZE e PLAYER_START_POSITION são constantes utilizadas para ajustar o mapa e a posição do jogador.
+
+Propriedades:
+- spriteBatch é um objeto SpriteBatch usado para renderizar os sprites no mapa.
+- map e tilesets parecem ser relacionados ao mapa e conjuntos de tiles do jogo, provavelmente representando estruturas do mapa.
+- tilesetTextures parece ser um array de Texture2D que provavelmente guarda as texturas dos tiles.
+- layersOverPlayer é um array de strings que provavelmente contém os nomes das camadas que serão desenhadas por cima do jogador.
+- Offset provavelmente é usado para ajustar a posição dos elementos do jogo.
+- player é um objeto Player que representa o jogador do jogo.
+- spawner é um MonsterSpawner, provavelmente responsável por gerar monstros no jogo.
+
+Construtores: O construtor Map() inicializa uma nova instância de Map.
+
+Métodos:
+- Update(Vector2 screenPosition, GameTime gameTime) atualiza o estado do mapa e do jogador, além de verificar colisões.
+- Draw(Vector2 screenPosition, GameTime gameTime) desenha os elementos do mapa, incluindo as camadas do mapa, o jogador e os monstros.
+- DrawLayer(Vector2 screenPosition, TiledLayer layer, bool isBackground) é um método auxiliar que desenha uma camada do mapa.
+- GetCollisionRectangles(Vector2 screenPosition) retorna uma lista de retângulos que representam áreas de colisão no mapa.
+- CheckCollision(Vector2 screenPosition, Rectangle rectangle) verifica se o retângulo fornecido colide com qualquer retângulo de colisão no mapa.
+- GetLayerDepth(float y) retorna a profundidade de uma camada no mapa.
+No geral, essa classe controla o carregamento e desenho do mapa, a atualização e renderização do jogador e a geração de monstros, bem como a detecção de colisões.
+    
+### MainMenuScreen
+Este código é para a classe MainMenuScreen, que é responsável por criar e controlar o menu principal de um jogo. Esta classe é um tipo de GameScreen, que é provavelmente uma classe de jogo genérica ou abstrata em algum lugar em sua base de código. 
+    
+### Código
+```cs
+public class MainMenuScreen : GameScreen
+{
+    // Constants
+    private const string BACKGROUND_ASSET_PATH = "sprites/ui/background";
+    private const string LOGO_ASSET_PATH = "sprites/ui/title";
+
+    // Properties
+    private ScreenManager screenManager;
+    private SpriteBatch spriteBatch;
+    private Texture2D backgroundTexture;
+    private Texture2D logoTexture;
+    private Button playButton;
+    private Button settingsButton;
+    private Button exitButton;
+
+    // Positioning
+    Point center => new(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+    Vector2 logoPosition => new(center.X - (logoTexture.Width / 2), center.Y - (logoTexture.Height / 2) - 240);
+
+    private bool isHovering => playButton.isHovering || exitButton.isHovering; //  || settingsButton.isHovering
+
+    // Player starting monsters
+    private Attack tacle;
+    private Attack waterPulse;
+    private Attack ember;
+    private Attack magicalLeaf;
+    private Monster monster1;
+    private Monster monster2;
+    private Monster monster3;
+    private Team playerTeam;
+
+
+    public MainMenuScreen(Game game, ScreenManager screenManager) : base(game)
+    {
+        this.screenManager = screenManager;
+
+        tacle = new Attack("Tackle", Element.Neutral, 10, 80, 100);
+        waterPulse = new Attack("Water Pulse", Element.Water, 20, 70, 100);
+        ember = new Attack("Ember", Element.Fire, 30, 60, 100);
+        magicalLeaf = new Attack("Magical Leaf", Element.Grass, 40, 50, 100);
+        monster1 = new Monster("Bolhas", 100, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
+        monster2 = new Monster("Fofi", 100, Element.Fire, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
+        monster3 = new Monster("Tonco", 100, Element.Grass, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
+        playerTeam = new Team();
+        playerTeam.AddMonster(monster3);
+        playerTeam.AddMonster(monster1);
+        playerTeam.AddMonster(monster2);
+        playerTeam.OnLose += OnPlayerTeamLose;
+    }
+
+
+    public override void Initialize()
+    {
+        base.Initialize();
+    }
+
+
+    public override void LoadContent()
+    {
+        spriteBatch = new SpriteBatch(GraphicsDevice);
+
+        // Sounds.LoadSounds(Content);
+        // Sounds.main.Play(volume: 0.5f, pitch: 0.0f, pan: 0.0f);
+
+        // Load textures
+        backgroundTexture = Content.Load<Texture2D>(BACKGROUND_ASSET_PATH);
+        logoTexture = Content.Load<Texture2D>(LOGO_ASSET_PATH);
+
+        // Create buttons
+        CreateButtons();
+
+        base.LoadContent();
+    }
+
+
+    public override void Draw(GameTime gameTime)
+    {
+        GraphicsDevice.Clear(Color.CornflowerBlue);
+
+        spriteBatch.Begin();
+        spriteBatch.Draw(backgroundTexture, new Rectangle(Point.Zero, new Point(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height)), Color.White);
+        spriteBatch.Draw(logoTexture, logoPosition, Color.White);
+        spriteBatch.End();
+
+        playButton.Draw(gameTime);
+        // settingsButton.Draw(gameTime);
+        exitButton.Draw(gameTime);
+    }
+
+
+    public override void Update(GameTime gameTime)
+    {
+        playButton.Update(gameTime);
+        // settingsButton.Update(gameTime);
+        exitButton.Update(gameTime);
+
+        Mouse.SetCursor(isHovering ? Button.hoverCursor : Button.defaultCursor);
+    }
+
+
+    private void CreateButtons()
+    {
+        playButton = new Button(Game, "Play");
+        Point position = new(center.X - (playButton.texture.Width / 2), center.Y + (playButton.texture.Height + Button.PADDING) * -1);
+        playButton.SetPosition(position);
+        playButton.OnClicked += OnPlayButtonClicked;
+
+        // settingsButton = new Button(Game, "Settings");
+        // position = new(center.X - (settingsButton.texture.Width / 2), center.Y + 0);
+        // settingsButton.SetPosition(position);
+        // settingsButton.OnClicked += OnSettingsButtonClicked;
+
+        exitButton = new Button(Game, "Exit");
+        position = new(center.X - (exitButton.texture.Width / 2), center.Y + 0);
+        // position = new(center.X - (exitButton.texture.Width / 2), center.Y + (exitButton.texture.Height + Button.PADDING) * 1);
+        exitButton.SetPosition(position);
+        exitButton.OnClicked += OnExitButtonClicked;
+    }
+
+
+    private void OnPlayButtonClicked(object sender, EventArgs e)
+    {
+        InGameScreen inGameScreen = new(Game);
+        screenManager.LoadScreen(inGameScreen);
+        inGameScreen.map.spawner.OnMonsterClicked += OnMonsterClicked;
+        inGameScreen.OnClose += OnInGameScreenClosed;
+    }
+
+
+    private void OnPlayerTeamLose(object sender, LoseEventArgs e)
+    {
+        e.team.HeallAllMonsters();
+        screenManager.LoadScreen(this);
+    }
+
+
+    private void OnExitButtonClicked(object sender, EventArgs e)
+    {
+        Game.Exit();
+    }
+
+
+    private void OnInGameScreenClosed(object sender, EventArgs e)
+    {
+        screenManager.LoadScreen(this);
+    }
+
+
+    private void OnMonsterClicked(object sender, Monster m)
+    {
+        Monster monster4 = new Monster("Bolhas", 1, Element.Water, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Bolhas", "sprites/ui/monster-icons/bolhas-icon");
+        Monster monster5 = new Monster("Fofi", 1, Element.Fire, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Fofi", "sprites/ui/monster-icons/fofi-icon");
+        Monster monster6 = new Monster("Tonco", 1, Element.Grass, new Attack[] { tacle, waterPulse, ember, magicalLeaf }, "sprites/monsters/Tonco", "sprites/ui/monster-icons/tonco-icon");
+
+        Team enemyTeam = new Team();
+        enemyTeam.AddMonster(m);
+
+        screenManager.LoadScreen(new CombatScreen(Game, playerTeam, enemyTeam, (newTeam1) =>
+        {
+            playerTeam = newTeam1;
+            playerTeam.HeallAllMonsters();
+            InGameScreen inGameScreen = new(Game);
+            screenManager.LoadScreen(inGameScreen);
+            inGameScreen.map.spawner.OnMonsterClicked += OnMonsterClicked;
+            inGameScreen.OnClose += OnInGameScreenClosed;
+        }));
+    }
+}
+```
+
+Propriedades e campos:
+- BACKGROUND_ASSET_PATH e LOGO_ASSET_PATH: Strings constantes usadas para localizar as imagens de fundo e logo do menu.
+- screenManager, spriteBatch, backgroundTexture, logoTexture, playButton, settingsButton, e exitButton: São objetos utilizados para gerenciar a tela, desenhar objetos 2D, e manipular os botões do menu, respectivamente.
+- center e logoPosition: Pontos usados para centralizar elementos na tela.
+- isHovering: Um booleano que verifica se o mouse está passando sobre um dos botões.
+- tacle, waterPulse, ember, magicalLeaf, monster1, monster2, monster3, e playerTeam: São objetos relacionados ao gameplay do jogo.
+
+Construtor MainMenuScreen:
+No construtor, ele inicializa os objetos relacionados ao gameplay. Além disso, ele atribui ao evento OnLose de playerTeam o método OnPlayerTeamLose.
+
+Método Initialize e LoadContent:
+O método Initialize não faz nada especial além de chamar a implementação base, o que provavelmente faz alguma configuração genérica. No método LoadContent, os recursos gráficos do menu são carregados e os botões são criados.
+
+Métodos Draw e Update:
+No método Draw, a tela é limpa, o background e o logo são desenhados, e os botões são desenhados também. No método Update, a atualização dos botões é feita e a imagem do cursor é atualizada dependendo se ele está sobre um botão ou não.
+
+Método CreateButtons:
+Cria os botões do menu e os posiciona na tela. Além disso, atribui métodos a serem chamados quando os botões são clicados.
+
+Métodos OnPlayButtonClicked, OnExitButtonClicked, OnInGameScreenClosed, e OnMonsterClicked:
+São os métodos que são chamados quando os botões são clicados. OnPlayButtonClicked carrega a tela do jogo, OnExitButtonClicked fecha o jogo, OnInGameScreenClosed recarrega o menu quando a tela do jogo é fechada, e OnMonsterClicked carrega a tela de combate quando um monstro é clicado.
+
+Método OnPlayerTeamLose:
+É o método que é chamado quando o jogador perde. Ele recupera a saúde de todos os monstros do jogador e recarrega a tela do menu.
+
+Em geral, esta classe cuida da lógica por trás do menu principal do jogo, que inclui o carregamento de recursos, a criação de botões, o desenho dos elementos na tela, e a manipulação dos eventos de clique dos botões. Além disso, lida com o carregamento das outras telas do jogo e com a perda do jogo pelo jogador.
