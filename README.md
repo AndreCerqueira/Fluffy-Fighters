@@ -1085,8 +1085,6 @@ public class Map
 }
 ```
 
-
-
 Constantes: GAME_SCALE_FACTOR, FIXED_TILE_SIZE e PLAYER_START_POSITION são constantes utilizadas para ajustar o mapa e a posição do jogador.
 
 Propriedades:
@@ -1310,3 +1308,183 @@ Método OnPlayerTeamLose:
 É o método que é chamado quando o jogador perde. Ele recupera a saúde de todos os monstros do jogador e recarrega a tela do menu.
 
 Em geral, esta classe cuida da lógica por trás do menu principal do jogo, que inclui o carregamento de recursos, a criação de botões, o desenho dos elementos na tela, e a manipulação dos eventos de clique dos botões. Além disso, lida com o carregamento das outras telas do jogo e com a perda do jogo pelo jogador.
+
+### CombatManager
+A classe CombatManager é responsável pela lógica de combate do jogo.
+    
+### Código
+```cs
+public class CombatManager
+{
+    // Delegates
+    public delegate void AttackPerformedEventHandler(object sender, AttackPerformedEventArgs e);
+
+    // Constants
+    private const int ATTACK_DELAY = 1000;
+
+    // Properties
+    public Team playerTeam;
+    public Team enemyTeam;
+    public Monster playerSelectedMonster => playerTeam.GetSelectedMonster();
+    public Monster enemySelectedMonster => enemyTeam.GetSelectedMonster();
+
+
+    // Constructors
+    public CombatManager(Team playerTeam, Team enemyTeam)
+    {
+        this.playerTeam = playerTeam;
+        this.enemyTeam = enemyTeam;
+    }
+
+    // Events
+    public event MonsterEventHandler onMonsterSelected;
+    public event EventHandler onMonsterDied;
+    public event EventHandler onTurnEnd;
+    public event EventHandler onTurnStart;
+    public event AttackPerformedEventHandler onAttackPerformed;
+    public event EventHandler onAttackFailed;
+    public event EventHandler onBattleEnd;
+
+
+    // Methods
+    public void SelectMonster(object sender, MonsterEventArgs e)
+    {
+        Attack enemyAttack = SelectEnemyAttack();
+        PerformAttack(enemyAttack, enemySelectedMonster, playerTeam);
+
+        onMonsterSelected?.Invoke(sender, e);
+    }
+
+
+    public Attack SelectEnemyAttack() => enemySelectedMonster.GetRandomAttack();
+
+
+    public Queue<Action> GetAttackOrder(Attack playerAttack)
+    {
+        Queue<Action> actions = new Queue<Action>();
+        Attack enemyAttack = SelectEnemyAttack();
+
+        if (playerSelectedMonster.IsDead() || enemySelectedMonster.IsDead())
+            return null;
+
+        // get whose is faster
+        bool playerAttackedFirst = false;
+        if (playerAttack.speed > enemyAttack.speed)
+            playerAttackedFirst = true;
+        else if (playerAttack.speed == enemyAttack.speed)
+            playerAttackedFirst = (new Random().Next(0, 2) == 0);
+
+        Monster firstAttacker = playerAttackedFirst ? playerSelectedMonster : enemySelectedMonster;
+        Monster secondAttacker = playerAttackedFirst ? enemySelectedMonster : playerSelectedMonster;
+
+        // Get teams
+        Team firstTeam = playerAttackedFirst ? playerTeam : enemyTeam;
+        Team secondTeam = playerAttackedFirst ? enemyTeam : playerTeam;
+
+        // Get attacks
+        Attack firstAttack = playerAttackedFirst ? playerAttack : enemyAttack;
+        Attack secondAttack = playerAttackedFirst ? enemyAttack : playerAttack;
+
+        // Perform attacks
+        actions.Enqueue(() => PerformAttack(firstAttack, firstAttacker, secondTeam));
+        actions.Enqueue(() => PerformAttack(secondAttack, secondAttacker, firstTeam));
+
+        return actions;
+    }
+
+
+    public async void DoTurn(object sender, AttackEventArgs e)
+    {
+        onTurnStart?.Invoke(this, EventArgs.Empty);
+
+        Queue<Action> actions = GetAttackOrder(e.attack);
+        if (actions == null) return;
+
+        while (actions.Count > 0) { 
+            Action action = actions.Dequeue();
+            action();
+            await Task.Delay(1000);
+        }
+
+        onTurnEnd?.Invoke(this, EventArgs.Empty);
+    }
+
+
+    public void PerformAttack(Attack attack, Monster attacker, Team target)
+    {
+        if (attacker.IsDead() || !IsAttackSuccessful(attack))
+        {
+            onAttackFailed?.Invoke(this, EventArgs.Empty);
+            return;
+        }
+
+        float damage = GetDamage(attack, attacker, target.GetSelectedMonster());
+        target.GetSelectedMonster().TakeDamage(damage);
+
+        onAttackPerformed?.Invoke(this, new AttackPerformedEventArgs(attack, attacker, target));
+    }
+
+
+    private bool IsAttackSuccessful(Attack attack)
+    {
+        Random random = new Random();
+        int chance = random.Next(0, 100);
+        return attack.successChance >= chance;
+    }
+
+
+    private float GetAttackMultiplier(Attack attack, Monster target)
+    {
+        ElementEffectiveness effectiveness = attack.element.GetElementEffectiveness(target.element);
+        return effectiveness switch
+        {
+            ElementEffectiveness.Effective => 1.5f,
+            ElementEffectiveness.NotEffective => 0.5f,
+            _ => 1f
+        };
+    }
+
+
+    private float GetDamage(Attack attack, Monster attacker, Monster target)
+    {
+        float multiplier = GetAttackMultiplier(attack, target);
+        return attack.damage * multiplier;
+    }
+
+}
+```
+Propriedades:
+- ATTACK_DELAY: uma constante que representa o atraso entre os ataques.
+- playerTeam e enemyTeam: são instâncias da classe Team, que provavelmente representam as equipes do jogador e do inimigo, respectivamente.
+- playerSelectedMonster e enemySelectedMonster: retornam o monstro selecionado para cada equipe.
+
+Construtor CombatManager: O construtor inicializa as equipes do jogador e do inimigo.
+
+Eventos:
+Existem vários eventos que podem ser disparados durante um combate, incluindo onMonsterSelected, onMonsterDied, onTurnEnd, onTurnStart, onAttackPerformed, onAttackFailed e onBattleEnd. Esses eventos permitem que a interface do usuário ou outras partes do jogo respondam a ações durante o combate.
+
+Método SelectMonster:
+Este método é chamado quando um monstro é selecionado. Ele seleciona um ataque do monstro inimigo e executa o ataque. Ele então dispara o evento onMonsterSelected.
+
+Método SelectEnemyAttack:
+Este método retorna um ataque aleatório do monstro selecionado pelo inimigo.
+
+Método GetAttackOrder:
+Este método determina a ordem dos ataques com base na velocidade do ataque do jogador e do inimigo. Ele cria uma fila de ações, onde cada ação é um ataque de um monstro a outro.
+
+Método DoTurn:
+Este método executa um turno, que consiste em executar ações na fila criada pelo método GetAttackOrder. Entre cada ação, há um atraso de um segundo. Ele dispara os eventos onTurnStart e onTurnEnd.
+
+Método PerformAttack:
+Este método realiza um ataque de um monstro a outro. Se o atacante estiver morto ou o ataque não for bem-sucedido, o método retorna e dispara o evento onAttackFailed. Caso contrário, o monstro de destino recebe dano e o evento onAttackPerformed é disparado.
+
+Método IsAttackSuccessful:
+Este método determina se um ataque é bem-sucedido com base na chance de sucesso do ataque.
+
+Método GetAttackMultiplier:
+Este método determina o multiplicador de dano com base na eficácia do elemento do ataque contra o elemento do monstro de destino.
+
+Método GetDamage:
+Este método calcula o dano que um ataque causa a um monstro, levando em consideração o multiplicador de dano.
+
+Em geral, essa classe implementa a lógica de combate do jogo, permitindo que monstros ataquem uns aos outros, determinando a ordem dos ataques e calculando o dano dos ataques. Ela também fornece vários eventos que podem ser usados para atualizar a interface do usuário ou responder a ações durante o combate.
