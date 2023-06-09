@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/sprites/ui/settingsBackground.png</SourceFile>
-  <SourceTime>2023-06-09T16:09:09.5214682+01:00</SourceTime>
-  <DestFile>C:/Users/Utilizador/Documents/Projetos C, C#/TDV/ff/Fluffy-Fighters/Content/bin/DesktopGL/Content/sprites/ui/settingsBackground.xnb</DestFile>
-  <DestTime>2023-06-09T16:12:23.1090763+01:00</DestTime>
+  <SourceFile>D:/IPCA/Fluffy-Fighters/Content/sprites/ui/settingsBackground.png</SourceFile>
+  <SourceTime>2023-06-09T16:48:10.7129375+01:00</SourceTime>
+  <DestFile>D:/IPCA/Fluffy-Fighters/Content/bin/DesktopGL/Content/sprites/ui/settingsBackground.xnb</DestFile>
+  <DestTime>2023-06-09T16:49:08.2709374+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T12:44:56+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

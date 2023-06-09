@@ -6,6 +6,7 @@ using FluffyFighters.UI.Components.Menus;
 using FluffyFighters.UI.Components.Others;
 using FluffyFighters.UI.Managers;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Screens;
@@ -92,6 +93,15 @@ namespace FluffyFighters.UI.Screens
         }
 
 
+        public override void LoadContent()
+        {
+            Sounds.LoadSounds(Content);
+            skillsMenu.SubscribeSkillClicked(PlayAttackSound);
+
+            base.LoadContent();
+        }
+
+
         public override void Update(GameTime gameTime)
         {
             skillsMenu.Update(gameTime);
@@ -120,6 +130,12 @@ namespace FluffyFighters.UI.Screens
         {
             TeamMenu teamMenu = (e.target == playerTeamMenu.team) ? playerTeamMenu : enemyTeamMenu;
             teamMenu.statsMenu.SetHealth(e.target.GetSelectedMonster().currentHealth);
+        }
+
+
+        public void PlayAttackSound(object sender, AttackEventArgs e)
+        {
+            Sounds.cut.Play(volume: 0.05f, pitch: 0.0f, pan: 0.0f);
         }
 
 

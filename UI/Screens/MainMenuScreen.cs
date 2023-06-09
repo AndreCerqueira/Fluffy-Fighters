@@ -3,6 +3,7 @@ using FluffyFighters.Enums;
 using FluffyFighters.Others;
 using FluffyFighters.UI.Components.Buttons;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Screens;
@@ -72,7 +73,10 @@ namespace FluffyFighters.UI.Screens
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Sounds.LoadSounds(Content);
-            Sounds.main.Play(volume: 0.05f, pitch: 0.0f, pan: 0.0f);
+            SoundEffectInstance instance = Sounds.main.CreateInstance();
+            instance.IsLooped = true;
+            instance.Play();
+            instance.Volume = 0.002f;
 
             // Load textures
             backgroundTexture = Content.Load<Texture2D>(BACKGROUND_ASSET_PATH);

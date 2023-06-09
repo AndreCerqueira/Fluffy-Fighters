@@ -110,7 +110,7 @@ namespace FluffyFighters.Others
         private int GetRandomLevel()
         {
             Random random = new Random();
-            return random.Next(1, 11);
+            return random.Next(1, 6);
         }
 
 

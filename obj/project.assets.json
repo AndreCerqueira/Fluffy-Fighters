@@ -284,19 +284,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Utilizador\\.nuget\\packages\\": {}
+    "C:\\Users\\andre\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Utilizador\\Documents\\Projetos C, C#\\TDV\\ff\\Fluffy-Fighters\\FluffyFighters.csproj",
+      "projectUniqueName": "D:\\IPCA\\Fluffy-Fighters\\FluffyFighters.csproj",
       "projectName": "FluffyFighters",
-      "projectPath": "C:\\Users\\Utilizador\\Documents\\Projetos C, C#\\TDV\\ff\\Fluffy-Fighters\\FluffyFighters.csproj",
-      "packagesPath": "C:\\Users\\Utilizador\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Utilizador\\Documents\\Projetos C, C#\\TDV\\ff\\Fluffy-Fighters\\obj\\",
+      "projectPath": "D:\\IPCA\\Fluffy-Fighters\\FluffyFighters.csproj",
+      "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
+      "outputPath": "D:\\IPCA\\Fluffy-Fighters\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Utilizador\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\andre\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -355,7 +355,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

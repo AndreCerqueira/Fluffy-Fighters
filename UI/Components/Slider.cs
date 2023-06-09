@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FluffyFighters.Args;
+using FluffyFighters.Others;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -115,6 +117,7 @@ namespace FluffyFighters.UI.Components
                     onValueMaxed?.Invoke(this, EventArgs.Empty);
                     foregroundRectangle.Width = 0;
                     isAnimating = false;
+                    Sounds.levelUp.Play(volume: 0.05f, pitch: 0.0f, pan: 0.0f);
                     return;
                 }
 
